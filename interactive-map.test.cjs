@@ -8,3 +8,5 @@ if(!html.includes('aria-live="polite" id="districtHint"')) throw new Error('Не
 console.log('interactive map contract: OK');
 
 if(!html.includes('.map-card,.district-hint{display:none}')) throw new Error('Постоянные плашки поверх карты не скрыты');
+
+if(html.includes('.district-zone[aria-pressed=true]:after{opacity:1')) throw new Error('Подпись выбранного округа остаётся закреплённой');
