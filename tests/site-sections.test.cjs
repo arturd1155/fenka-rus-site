@@ -3,8 +3,8 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {execFileSync}=require('node:child_process');
 
-const routes=['regions','leadership','documents','reports','about','projects','events','media','news','support','contacts','privacy'];
-const primary=['/about/','/regions/','/projects/','/events/','/media/','/news/','/contacts/','/support/'];
+const routes=['regions','leadership','documents','reports','about','projects','youth','events','media','news','support','contacts','privacy'];
+const primary=['/about/','/regions/','/projects/','/youth/','/events/','/media/','/news/','/contacts/','/support/'];
 
 test('site structure defines every approved route in order',()=>{
   const {sections}=require('../site/site-structure.cjs');
@@ -112,4 +112,11 @@ test('leadership page has one harmonious title and a dedicated compact hero',()=
   assert.match(leadership,/<h1>Руководство и Совет ФЕНКА<\/h1>/);
   assert.doesNotMatch(leadership,/<h1>Руководство<\/h1>/);
   assert.doesNotMatch(leadership,/class="leadership-intro"/);
+});
+test('youth department is a working media-free section ready for approved content',()=>{
+  const youth=fs.readFileSync('dist/youth/index.html','utf8');
+  assert.match(youth,/<h1>Молодёжный департамент ФЕНКА<\/h1>/);
+  for(const title of ['О департаменте','Направления работы','Команда','Проекты','Новости']) assert.match(youth,new RegExp(title));
+  assert.match(youth,/href="\/youth\/" aria-current="page">Молодёжь<\/a>/);
+  assert.doesNotMatch(youth,/<img[^>]+class="youth/);
 });
