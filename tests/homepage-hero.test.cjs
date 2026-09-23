@@ -43,3 +43,9 @@ test('about section combines manifesto and history',()=>{
   assert.match(html,/class="fenka-timeline"/);
   assert.ok((html.match(/<time/g)||[]).length>=3);
 });
+
+test('distribution contains every homepage dependency',()=>{
+  for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png']){
+    assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
+  }
+});
