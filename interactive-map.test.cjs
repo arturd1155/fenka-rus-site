@@ -6,3 +6,5 @@ if(!html.includes('function selectDistrict(')) throw new Error('Нет един�
 if(!html.includes('data-district-zone="7"')) throw new Error('Нет всех восьми округов');
 if(!html.includes('aria-live="polite" id="districtHint"')) throw new Error('Нет доступной подписи выбранного округа');
 console.log('interactive map contract: OK');
+
+if(!html.includes('.map-card,.district-hint{display:none}')) throw new Error('Постоянные плашки поверх карты не скрыты');
