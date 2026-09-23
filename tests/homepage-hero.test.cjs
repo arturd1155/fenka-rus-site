@@ -61,7 +61,7 @@ test('distribution uses homepage at root and regions as a site section',()=>{
   assert.match(home,/id="homeHero"/);
   assert.match(home,/href="\/regions\/"/);
   assert.match(regions,/id="map"/);
-  assert.match(regions,/href="\/"[^>]*aria-label="ФЕНКА/);
+  assert.match(regions,/class="global-brand"[^>]*href="\/"/);
 });
 
 test('published homepage has no local-only prototype asset links',()=>{
