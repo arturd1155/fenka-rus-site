@@ -80,3 +80,14 @@ test('migrates the approved personal data consent without legacy placeholders',(
   assert.match(privacy,/20 апреля 2020 года/);
   assert.doesNotMatch(privacy,/#(?:SITE_URL|PD_TERMS_PAGE_URL|LEGAL_NAME|ADMIN_EMAIL|LEGAL_ADDRESS)#/);
 });
+test('migrates head office contacts with safe actionable links and map',()=>{
+  const contacts=fs.readFileSync('dist/contacts/index.html','utf8');
+  assert.match(contacts,/Головной офис/);
+  assert.match(contacts,/\+7 \(903\) 130-11-43/);
+  assert.match(contacts,/\+7 \(499\) 130-11-43/);
+  assert.match(contacts,/mailto:info@fenkar\.ru/);
+  assert.match(contacts,/115093, г\. Москва, пер\. Партийный, д\. 1, корп\. 57, стр\. 3/);
+  assert.match(contacts,/101000, г\. Москва, Подсосенский пер\., 21, стр\. 1/);
+  assert.match(contacts,/yandex\.ru\/map-widget\/v1\/-\/CCUo5UHeGC/);
+  assert.doesNotMatch(contacts,/promeco73\.ru/);
+});
