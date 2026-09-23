@@ -44,3 +44,5 @@ test('homepage and regions use permanent routes without duplicate homepage map',
   }
   assert.doesNotMatch(fs.readFileSync('dist/index.html','utf8'),/<section class="map-section/);
 });
+
+ test('legacy homepage script tolerates shared navigation',()=>{ assert.match(fs.readFileSync('app.js','utf8'),/if\(menuButton&&mobileNav\)/); });
