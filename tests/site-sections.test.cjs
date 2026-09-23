@@ -117,6 +117,6 @@ test('youth department is a working media-free section ready for approved conten
   const youth=fs.readFileSync('dist/youth/index.html','utf8');
   assert.match(youth,/<h1>Молодёжный департамент ФЕНКА<\/h1>/);
   for(const title of ['О департаменте','Направления работы','Команда','Проекты','Новости']) assert.match(youth,new RegExp(title));
-  assert.match(youth,/href="\/youth\/" aria-current="page">Молодёжь<\/a>/);
+  assert.match(youth,/href="\/youth\/" aria-current="page">МолДеп<\/a>/);
   assert.doesNotMatch(youth,/<img[^>]+class="youth/);
 });
