@@ -36,3 +36,10 @@ test('homepage initializes one interruptible hero controller',()=>{
   assert.match(js,/cancelAnimationFrame/);
   assert.match(js,/dataset\.scene/);
 });
+
+test('about section combines manifesto and history',()=>{
+  assert.match(html,/class="fenka-manifesto"/);
+  assert.equal((html.match(/class="manifesto-point"/g)||[]).length,3);
+  assert.match(html,/class="fenka-timeline"/);
+  assert.ok((html.match(/<time/g)||[]).length>=3);
+});
