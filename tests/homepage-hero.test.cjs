@@ -46,11 +46,20 @@ test('about section combines manifesto and history',()=>{
 
 test('distribution contains every homepage dependency',()=>{
   for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png']){
-    assert.equal(fs.existsSync(`dist/home/${file}`),true,`missing dist/home/${file}`);
+    assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
   }
 });
 
 test('all about links target the implemented section and branding is official',()=>{
   assert.doesNotMatch(html,/href="#about"/);
   assert.equal((html.match(/src="fenka-logo-official\.png"/g)||[]).length,2);
+});
+
+test('distribution uses homepage at root and regions as a site section',()=>{
+  const home=fs.readFileSync('dist/index.html','utf8');
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  assert.match(home,/id="homeHero"/);
+  assert.match(home,/href="\/regions\/"/);
+  assert.match(regions,/id="map"/);
+  assert.match(regions,/href="\/"[^>]*aria-label="ФЕНКА/);
 });
