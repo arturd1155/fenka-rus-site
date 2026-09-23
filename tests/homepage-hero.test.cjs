@@ -49,3 +49,8 @@ test('distribution contains every homepage dependency',()=>{
     assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
   }
 });
+
+test('all about links target the implemented section and branding is official',()=>{
+  assert.doesNotMatch(html,/href="#about"/);
+  assert.equal((html.match(/src="fenka-logo-official\.png"/g)||[]).length,2);
+});
