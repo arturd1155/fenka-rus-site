@@ -27,3 +27,12 @@ test('styles define all scenes and accessibility fallbacks',()=>{
   assert.match(sceneCss,/prefers-reduced-motion:\s*reduce/);
   assert.match(sceneCss,/@media\s*\(max-width:\s*720px\)/);
 });
+
+test('homepage initializes one interruptible hero controller',()=>{
+  const js=fs.readFileSync('app.js','utf8');
+  assert.match(html,/<script src="hero-controller\.js"><\/script>[\s\S]*<script src="app\.js"><\/script>/);
+  assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(js,/addEventListener\('scroll'/);
+  assert.match(js,/cancelAnimationFrame/);
+  assert.match(js,/dataset\.scene/);
+});
