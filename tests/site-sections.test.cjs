@@ -70,3 +70,13 @@ test('migrates legacy documents and financial reports with source links',()=>{
   assert.match(reports,/2021/);
   assert.match(reports,/2020/);
 });
+test('migrates the approved personal data consent without legacy placeholders',()=>{
+  const privacy=fs.readFileSync('dist/privacy/index.html','utf8');
+  assert.match(privacy,/Согласие на обработку персональных данных/);
+  assert.match(privacy,/Общественная организация «Федеральная еврейская национально-культурная автономия» \(ОО «ФЕНКА»\)/);
+  assert.match(privacy,/fenka\.online/);
+  assert.match(privacy,/info@fenkar\.ru/);
+  assert.match(privacy,/115093, г\. Москва, пер\. Партийный, д\. 1, корп\. 57, стр\. 3/);
+  assert.match(privacy,/20 апреля 2020 года/);
+  assert.doesNotMatch(privacy,/#(?:SITE_URL|PD_TERMS_PAGE_URL|LEGAL_NAME|ADMIN_EMAIL|LEGAL_ADDRESS)#/);
+});
