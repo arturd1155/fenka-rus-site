@@ -46,3 +46,11 @@ test('homepage and regions use permanent routes without duplicate homepage map',
 });
 
  test('legacy homepage script tolerates shared navigation',()=>{ assert.match(fs.readFileSync('app.js','utf8'),/if\(menuButton&&mobileNav\)/); });
+
+test('regions tabs switch between district map and complete region list',()=>{
+  const html=fs.readFileSync('regions-interactive.html','utf8');
+  assert.match(html,/data-view="map"/);
+  assert.match(html,/data-view="list"/);
+  assert.match(html,/function showAllRegions\(/);
+  assert.match(html,/viewButtons\.forEach/);
+});
