@@ -54,3 +54,8 @@ test('regions tabs switch between district map and complete region list',()=>{
   assert.match(html,/function showAllRegions\(/);
   assert.match(html,/viewButtons\.forEach/);
 });
+test('published regions build keeps district data before attaching tabs',()=>{
+  const html=fs.readFileSync('dist/regions/index.html','utf8');
+  assert.match(html,/const districts=/);
+  assert.ok(html.indexOf('const districts=')<html.indexOf('function showAllRegions('));
+});
