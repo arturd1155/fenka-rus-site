@@ -63,3 +63,10 @@ test('distribution uses homepage at root and regions as a site section',()=>{
   assert.match(regions,/id="map"/);
   assert.match(regions,/href="\/"[^>]*aria-label="ФЕНКА/);
 });
+
+test('published homepage has no local-only prototype asset links',()=>{
+  const builtHtml=fs.readFileSync('dist/index.html','utf8');
+  const builtCss=fs.readFileSync('dist/style.css','utf8');
+  assert.doesNotMatch(builtHtml,/\.\.\/test\//);
+  assert.doesNotMatch(builtCss,/\.\.\/test\//);
+});
