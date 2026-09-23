@@ -91,3 +91,11 @@ test('migrates head office contacts with safe actionable links and map',()=>{
   assert.match(contacts,/yandex\.ru\/map-widget\/v1\/-\/CCUo5UHeGC/);
   assert.doesNotMatch(contacts,/promeco73\.ru/);
 });
+test('migrates all leadership records without portrait files',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  for(const name of ['Мельников Сергей Евгеньевич','Дабакаров Игорь Амнерович','Захарьяев Герман Рашбилович','Борода Александр Моисеевич','Голухов Георгий Натанович','Гольдин Марк Эльевич','Оштрах Михаил Иосифович','Энгель Виктория Михайловна','Кацнельсон Геннадий Борисович','Юсфин Елена Леонидовна','Вейсман Ирина Зиновьевна','Литвак Игорь Маркович','Типикин Павел Николаевич','Шальмиев Ерухом Илизирович']) assert.match(leadership,new RegExp(name));
+  assert.match(leadership,/Президент/);
+  assert.match(leadership,/Исполнительный Вице-президент/);
+  assert.equal((leadership.match(/class="leadership-card"/g)||[]).length,14);
+  assert.doesNotMatch(leadership,/wp-content\/uploads/);
+});
