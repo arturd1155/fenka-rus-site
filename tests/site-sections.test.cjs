@@ -105,3 +105,11 @@ test('leadership hero omits the generic placeholder description',()=>{
   assert.doesNotMatch(leadership,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
   assert.match(contacts,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
 });
+test('leadership page has one harmonious title and a dedicated compact hero',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  assert.equal((leadership.match(/Руководство и Совет ФЕНКА/g)||[]).length,1);
+  assert.match(leadership,/<section class="section-hero section-hero--leadership">/);
+  assert.match(leadership,/<h1>Руководство и Совет ФЕНКА<\/h1>/);
+  assert.doesNotMatch(leadership,/<h1>Руководство<\/h1>/);
+  assert.doesNotMatch(leadership,/class="leadership-intro"/);
+});
