@@ -99,3 +99,9 @@ test('migrates all leadership records without portrait files',()=>{
   assert.equal((leadership.match(/class="leadership-card"/g)||[]).length,14);
   assert.doesNotMatch(leadership,/wp-content\/uploads/);
 });
+test('leadership hero omits the generic placeholder description',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  const contacts=fs.readFileSync('dist/contacts/index.html','utf8');
+  assert.doesNotMatch(leadership,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
+  assert.match(contacts,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
+});
