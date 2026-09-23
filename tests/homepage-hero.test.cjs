@@ -18,3 +18,12 @@ test('hero has a usable no-script and screen-reader structure',()=>{
   assert.match(html,/<noscript>[\s\S]*ФЕНКА объединяет/);
   assert.match(html,/id="aboutFenka"/);
 });
+
+test('styles define all scenes and accessibility fallbacks',()=>{
+  const sceneCss=fs.readFileSync('style.css','utf8');
+  assert.match(sceneCss,/data-scene="network"/);
+  assert.match(sceneCss,/data-scene="culture"/);
+  assert.match(sceneCss,/data-scene="official"/);
+  assert.match(sceneCss,/prefers-reduced-motion:\s*reduce/);
+  assert.match(sceneCss,/@media\s*\(max-width:\s*720px\)/);
+});
