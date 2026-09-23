@@ -81,3 +81,11 @@ test('homepage does not duplicate the regions map and both headers use canonical
     assert.match(regionsSource,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`regions missing ${route}`);
   }
 });
+
+test('regions page keeps navigation available on narrow screens',()=>{
+  const regionsSource=fs.readFileSync('regions-interactive.html','utf8');
+  assert.match(regionsSource,/class="regions-menu-button"/);
+  assert.match(regionsSource,/aria-controls="regionsNav"/);
+  assert.match(regionsSource,/id="regionsNav"/);
+  assert.match(regionsSource,/classList\.toggle\('open'/);
+});
