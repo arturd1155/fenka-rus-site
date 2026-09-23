@@ -10,7 +10,7 @@ test('hero exposes the agreed narrative and one primary action',()=>{
   assert.match(html,/id="heroStatement"/);
   assert.match(html,/ФЕНКА объединяет регионы, людей и проекты в единое культурное пространство\./);
   assert.equal((html.match(/class="[^"]*hero-primary[^"]*"/g)||[]).length,1);
-  assert.match(html,/href="#aboutFenka"[^>]*>\s*Узнать о ФЕНКА/);
+  assert.match(html,/href="\/#aboutFenka"[^>]*>\s*Узнать о ФЕНКА/);
 });
 
 test('hero has a usable no-script and screen-reader structure',()=>{
@@ -69,4 +69,15 @@ test('published homepage has no local-only prototype asset links',()=>{
   const builtCss=fs.readFileSync('dist/style.css','utf8');
   assert.doesNotMatch(builtHtml,/\.\.\/test\//);
   assert.doesNotMatch(builtCss,/\.\.\/test\//);
+});
+
+test('homepage does not duplicate the regions map and both headers use canonical routes',()=>{
+  const regionsSource=fs.readFileSync('regions-interactive.html','utf8');
+  assert.doesNotMatch(html,/<section class="map-section/);
+  assert.doesNotMatch(fs.readFileSync('app.js','utf8'),/regionSearch/);
+  const routes=['/#aboutFenka','/regions/','/#projects','/#events','/#media','/#news'];
+  for(const route of routes){
+    assert.match(html,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`home missing ${route}`);
+    assert.match(regionsSource,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`regions missing ${route}`);
+  }
 });
