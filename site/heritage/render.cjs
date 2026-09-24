@@ -22,6 +22,7 @@ function renderHeritageBody(){
     <section class="heritage-about heritage-shell" id="heritage-about"><p class="heritage-kicker">О проекте</p><h2>Сохраняем память.<br>Передаём дальше.</h2><p>«Наследие ФЕНКА» — образовательная медиабиблиотека, созданная для сохранения и передачи еврейского культурного наследия.</p></section>
     <div class="heritage-dialog" data-video-dialog role="dialog" aria-modal="true" aria-labelledby="videoModalTitle" hidden><button type="button" data-dialog-close aria-label="Закрыть окно">×</button><div class="heritage-dialog__player" data-video-player></div><div><h2 id="videoModalTitle" data-video-title></h2><p data-video-description></p></div></div>
     <div class="heritage-dialog" data-photo-dialog role="dialog" aria-modal="true" aria-labelledby="photoModalTitle" hidden><button type="button" data-dialog-close aria-label="Закрыть окно">×</button><img data-photo-image alt=""><div><h2 id="photoModalTitle" data-photo-title></h2><p data-photo-location></p><p data-photo-description></p></div></div>
+    <template id="heritageCardFallback"><span class="heritage-card__fallback" data-image-fallback aria-hidden="true">ФЕНКА</span></template>
     <div class="heritage-dialog-backdrop" data-dialog-backdrop hidden></div>
   </main>`;
 }

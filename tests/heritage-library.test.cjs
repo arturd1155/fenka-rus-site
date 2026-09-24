@@ -35,3 +35,17 @@ test('build emits the heritage library inside the shared FENKA shell',()=>{
   assert.match(html,/class="global-footer"/);
   assert.doesNotMatch(html,/bootstrap/i);
 });
+
+test('heritage styling is local, responsive, and exposes accessible controls',()=>{
+  const html=fs.readFileSync('dist/media/heritage/index.html','utf8');
+  const css=fs.readFileSync('dist/media/heritage/heritage.css','utf8');
+  assert.match(html,/href="\/media\/heritage\/heritage\.css"/);
+  assert.match(html,/role="dialog"/);
+  assert.match(html,/aria-modal="true"/);
+  assert.match(html,/data-image-fallback/);
+  assert.match(html,/Материалы не найдены/);
+  assert.match(css,/\.heritage-page/);
+  assert.match(css,/@media\s*\(max-width:\s*480px\)/);
+  assert.match(css,/:focus-visible/);
+  assert.doesNotMatch(css,/(^|})\s*body\s*\{/m);
+});
