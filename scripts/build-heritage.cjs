@@ -15,5 +15,6 @@ function buildHeritage({root,dist,W,header,footer}){
   const source=path.join(root,'site','heritage'),target=path.join(dist,'media','heritage');
   for(const item of ['data','thumbnails']) copyTree(path.join(source,item),path.join(target,item));
   for(const item of ['heritage.css','heritage.js']){const from=path.join(source,item);if(fs.existsSync(from))fs.copyFileSync(from,path.join(target,item))}
+  W(path.join(dist,'CNAME'),'www.fenka-rus.ru\n');
 }
 module.exports={buildHeritage};

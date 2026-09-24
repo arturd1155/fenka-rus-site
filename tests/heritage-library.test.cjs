@@ -73,3 +73,8 @@ test('heritage browser data references only copied local thumbnails',()=>{
   const data=raw.replace(/^\s*\/\/.*$/gm,'');
   for(const [,relative] of data.matchAll(/(?:thumbnail|photo):\s*["']thumbnails\/([^"']+)["']/g)) assert.equal(fs.existsSync('dist/media/heritage/thumbnails/'+relative),true,relative);
 });
+
+test('build preserves the GitHub Pages custom domain',()=>{
+  assert.equal(fs.existsSync('dist/CNAME'),true);
+  assert.equal(fs.readFileSync('dist/CNAME','utf8').trim(),'www.fenka-rus.ru');
+});
