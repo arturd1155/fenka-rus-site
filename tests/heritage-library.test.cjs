@@ -15,3 +15,23 @@ test('heritage source data and thumbnails are present locally',()=>{
   assert.equal(fs.existsSync('site/heritage/thumbnails/nasledie-cover.jpg'),true);
   assert.equal(fs.existsSync('site/heritage/thumbnails/sinagogi-cover.jpg'),true);
 });
+
+test('build emits a media landing page with an internal heritage entry point',()=>{
+  const html=fs.readFileSync('dist/media/index.html','utf8');
+  assert.match(html,/Медиатека ФЕНКА/);
+  assert.match(html,/href="\/media\/heritage\/"/);
+  assert.match(html,/Наследие ФЕНКА/);
+  assert.doesNotMatch(html,/arturd1155\.github\.io\/nasledie-fenka/);
+});
+
+test('build emits the heritage library inside the shared FENKA shell',()=>{
+  assert.equal(fs.existsSync('dist/media/heritage/index.html'),true);
+  const html=fs.readFileSync('dist/media/heritage/index.html','utf8');
+  assert.match(html,/class="global-header"/);
+  assert.match(html,/Главная/);
+  assert.match(html,/Медиатека/);
+  assert.match(html,/Наследие ФЕНКА/);
+  for(const title of ['Евреи, изменившие мир','Наследие. Великие истории человечества','Синагоги мира']) assert.match(html,new RegExp(title));
+  assert.match(html,/class="global-footer"/);
+  assert.doesNotMatch(html,/bootstrap/i);
+});
