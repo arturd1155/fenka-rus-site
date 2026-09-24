@@ -3,9 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 
 test('heritage source data and thumbnails are present locally',()=>{
-  for(const file of ['site/heritage/data/videos.js','site/heritage/data/sinagogi.js']){
-    assert.equal(fs.existsSync(file),true,`${file} must exist`);
-  }
+  for(const file of ['site/heritage/data/videos.js','site/heritage/data/sinagogi.js']) assert.equal(fs.existsSync(file),true,`${file} must exist`);
   const videos=fs.readFileSync('site/heritage/data/videos.js','utf8');
   const synagogues=fs.readFileSync('site/heritage/data/sinagogi.js','utf8');
   assert.match(videos,/const videos\s*=\s*\[/);
@@ -48,4 +46,29 @@ test('heritage styling is local, responsive, and exposes accessible controls',()
   assert.match(css,/@media\s*\(max-width:\s*480px\)/);
   assert.match(css,/:focus-visible/);
   assert.doesNotMatch(css,/(^|})\s*body\s*\{/m);
+});
+
+test('heritage client script implements normalized search and modal cleanup',()=>{
+  const js=fs.readFileSync('dist/media/heritage/heritage.js','utf8');
+  assert.match(js,/function normalizeQuery/);
+  assert.match(js,/\.trim\(\)\.toLocaleLowerCase\(['"]ru['"]\)/);
+  assert.match(js,/function openVideoModal/);
+  assert.match(js,/function closeVideoModal/);
+  assert.match(js,/replaceChildren\(\)/);
+  assert.match(js,/event\.key\s*===\s*['"]Escape['"]/);
+  assert.match(js,/addEventListener\(['"]error['"]/);
+});
+
+test('heritage page loads local data and behavior in dependency order',()=>{
+  const html=fs.readFileSync('dist/media/heritage/index.html','utf8');
+  const order=['/media/heritage/data/videos.js','/media/heritage/data/sinagogi.js','/media/heritage/heritage.js'];
+  assert.ok(order.every(src=>html.includes(src)));
+  assert.ok(html.indexOf(order[0]) < html.indexOf(order[2]));
+  assert.ok(html.indexOf(order[1]) < html.indexOf(order[2]));
+});
+
+test('heritage browser data references only copied local thumbnails',()=>{
+  const raw=fs.readFileSync('site/heritage/data/videos.js','utf8')+fs.readFileSync('site/heritage/data/sinagogi.js','utf8');
+  const data=raw.replace(/^\s*\/\/.*$/gm,'');
+  for(const [,relative] of data.matchAll(/(?:thumbnail|photo):\s*["']thumbnails\/([^"']+)["']/g)) assert.equal(fs.existsSync('dist/media/heritage/thumbnails/'+relative),true,relative);
 });
