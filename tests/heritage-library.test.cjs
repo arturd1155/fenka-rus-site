@@ -17,6 +17,7 @@ test('heritage source data and thumbnails are present locally',()=>{
 test('build emits a media landing page with an internal heritage entry point',()=>{
   const html=fs.readFileSync('dist/media/index.html','utf8');
   assert.match(html,/Медиатека ФЕНКА/);
+  assert.match(html,/href="\/media\/heritage\/heritage\.css"/);
   assert.match(html,/href="\/media\/heritage\/"/);
   assert.match(html,/Наследие ФЕНКА/);
   assert.doesNotMatch(html,/arturd1155\.github\.io\/nasledie-fenka/);
