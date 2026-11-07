@@ -144,3 +144,15 @@ test('about page has a responsive federal-modern presentation',()=>{
   assert.match(css,/\.about-task-grid,\.about-directions,\.about-links\{grid-template-columns:1fr\}/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });
+
+test('published pages contain no links that jump to the top as placeholders',()=>{
+  const pages=['dist/index.html','dist/regions/index.html'];
+  for(const page of pages){
+    const html=fs.readFileSync(page,'utf8');
+    assert.doesNotMatch(html,/href=["']#["']/i,`${page} must not contain href="#"`);
+  }
+  const home=fs.readFileSync('dist/index.html','utf8');
+  assert.match(home,/href="\/leadership\/">Руководство/);
+  assert.match(home,/href="\/documents\/">Документы/);
+  assert.match(home,/href="\/reports\/">Отчётность/);
+});
