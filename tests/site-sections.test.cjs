@@ -111,6 +111,13 @@ test('migrates all leadership records and approved council portraits',()=>{
     assert.match(leadership,new RegExp(`leadership-photos/${file}[\\s\\S]{0,900}${name}`));
     assert.equal(fs.existsSync(`dist/leadership-photos/${file}`),true);
   }
+  for(const name of ['Захарьяев Герман Рашбилович','Борода Александр Моисеевич','Голухов Георгий Натанович']){
+    assert.match(leadership,new RegExp(`Вице-президент[\\s\\S]{0,160}${name}`));
+  }
+  const council=leadership.match(/<section class="leadership-grid"[\s\S]*?<\/section>/)?.[0]||'';
+  for(const card of council.match(/<article class="leadership-card">[\s\S]*?<\/article>/g)||[]){
+    assert.match(card,/leadership-card__contacts/);
+  }
 });
 test('leadership hero omits the generic placeholder description',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');

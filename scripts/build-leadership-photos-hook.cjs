@@ -17,6 +17,14 @@ process.nextTick(() => {
   const page = path.join(root, 'dist', 'leadership', 'index.html');
   let html = fs.readFileSync(page, 'utf8').replace('</head>', '<link rel="stylesheet" href="/shared/leadership-photos.css"></head>');
   html = html.replace(/<p class="leadership-source">[\s\S]*?<\/p>/, '');
+  for (const name of ['Захарьяев Герман Рашбилович', 'Борода Александр Моисеевич', 'Голухов Георгий Натанович']) {
+    html = html.replace(`<p class="leadership-card__role">Член Совета</p><h3>${name}</h3>`, `<p class="leadership-card__role">Вице-президент</p><h3>${name}</h3>`);
+  }
+
+  html = html.replace(/(<section class="leadership-grid"[\s\S]*?<\/section>)/, section => section.replace(/<article class="leadership-card">[\s\S]*?<\/article>/g, card => {
+    if (card.includes('leadership-card__contacts')) return card;
+    return card.replace('</div></article>', '<div class="leadership-card__contacts"><a href="mailto:info@fenkar.ru">info@fenkar.ru</a></div></div></article>');
+  }));
 
   for (const [initials, file, name, slug] of portraits) {
     fs.copyFileSync(path.join(root, 'leadership-photos', file), path.join(output, file));
