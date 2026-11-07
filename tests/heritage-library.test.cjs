@@ -78,3 +78,17 @@ test('build preserves the GitHub Pages custom domain',()=>{
   assert.equal(fs.existsSync('dist/CNAME'),true);
   assert.equal(fs.readFileSync('dist/CNAME','utf8').trim(),'www.fenka-rus.ru');
 });
+
+test('homepage previews real heritage collections with working library links',()=>{
+  const html=fs.readFileSync('dist/index.html','utf8');
+  const expected=[
+    ['/media/heritage/#evrei','/media/heritage/thumbnails/evrei-cover.jpg'],
+    ['/media/heritage/#istorii','/media/heritage/thumbnails/nasledie-cover.jpg'],
+    ['/media/heritage/#sinagogi','/media/heritage/thumbnails/sinagogi-cover.jpg']
+  ];
+  for(const [href,src] of expected){
+    assert.match(html,new RegExp(`href="${href}"`));
+    assert.match(html,new RegExp(`src="${src}"`));
+  }
+  assert.match(html,/href="\/media\/heritage\/"[^>]*>Открыть всю библиотеку/);
+});
