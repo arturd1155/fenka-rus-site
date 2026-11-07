@@ -1,0 +1,49 @@
+.leadership-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.leadership-grid .leadership-card {
+  grid-template-columns: 136px minmax(0, 1fr);
+  min-height: 224px;
+}
+
+.leadership-card__portrait,
+.leadership-grid .leadership-card__portrait {
+  min-height: 224px;
+}
+
+.leadership-card__portrait img {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.leadership-card__portrait--boroda img {
+  object-position: center 14%;
+}
+
+.leadership-card__portrait--golukhov img {
+  object-position: center 20%;
+}
+
+@media (max-width: 900px) {
+  .leadership-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .leadership-grid .leadership-card {
+    grid-template-columns: 104px minmax(0, 1fr);
+    min-height: 210px;
+  }
+
+  .leadership-card__portrait,
+  .leadership-grid .leadership-card__portrait {
+    min-height: 210px;
+  }
+}

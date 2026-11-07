@@ -93,13 +93,23 @@ test('migrates head office contacts with safe actionable links and map',()=>{
   assert.match(contacts,/yandex\.ru\/map-widget\/v1\/-\/CCUo5UHeGC/);
   assert.doesNotMatch(contacts,/promeco73\.ru/);
 });
-test('migrates all leadership records without portrait files',()=>{
+test('migrates all leadership records and approved council portraits',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
   for(const name of ['Мельников Сергей Евгеньевич','Дабакаров Игорь Амнерович','Захарьяев Герман Рашбилович','Борода Александр Моисеевич','Голухов Георгий Натанович','Гольдин Марк Эльевич','Оштрах Михаил Иосифович','Энгель Виктория Михайловна','Кацнельсон Геннадий Борисович','Юсфин Елена Леонидовна','Вейсман Ирина Зиновьевна','Литвак Игорь Маркович','Типикин Павел Николаевич','Шальмиев Ерухом Илизирович']) assert.match(leadership,new RegExp(name));
   assert.match(leadership,/Президент/);
   assert.match(leadership,/Исполнительный Вице-президент/);
   assert.equal((leadership.match(/class="leadership-card"/g)||[]).length,14);
   assert.doesNotMatch(leadership,/wp-content\/uploads/);
+  const portraits={
+    'sergey-melnikov.png':'Мельников Сергей Евгеньевич',
+    'german-zakharyaev.png':'Захарьяев Герман Рашбилович',
+    'alexander-boroda.png':'Борода Александр Моисеевич',
+    'georgy-golukhov.png':'Голухов Георгий Натанович'
+  };
+  for(const [file,name] of Object.entries(portraits)){
+    assert.match(leadership,new RegExp(`leadership-photos/${file}[\\s\\S]{0,900}${name}`));
+    assert.equal(fs.existsSync(`dist/leadership-photos/${file}`),true);
+  }
 });
 test('leadership hero omits the generic placeholder description',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
