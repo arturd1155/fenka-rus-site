@@ -2,7 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const portraits = [
-  ['СМ', 'sergey-melnikov.png', 'Мельников Сергей Евгеньевич', 'melnikov'],
+  ['СМ', 'sergey-melnikov.jpg', 'Мельников Сергей Евгеньевич', 'melnikov'],
+  ['ДИ', 'igor-dabakarov.jpg', 'Дабакаров Игорь Амнерович', 'dabakarov'],
   ['ЗГ', 'german-zakharyaev.png', 'Захарьяев Герман Рашбилович', 'zakharyaev'],
   ['БА', 'alexander-boroda.png', 'Борода Александр Моисеевич', 'boroda'],
   ['ГГ', 'georgy-golukhov.png', 'Голухов Георгий Натанович', 'golukhov'],

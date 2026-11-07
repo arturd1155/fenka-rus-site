@@ -102,7 +102,8 @@ test('migrates all leadership records and approved council portraits',()=>{
   assert.doesNotMatch(leadership,/wp-content\/uploads/);
   assert.doesNotMatch(leadership,/Состав перенесён со страницы/);
   const portraits={
-    'sergey-melnikov.png':'Мельников Сергей Евгеньевич',
+    'sergey-melnikov.jpg':'Мельников Сергей Евгеньевич',
+    'igor-dabakarov.jpg':'Дабакаров Игорь Амнерович',
     'german-zakharyaev.png':'Захарьяев Герман Рашбилович',
     'alexander-boroda.png':'Борода Александр Моисеевич',
     'georgy-golukhov.png':'Голухов Георгий Натанович',

@@ -30,6 +30,10 @@
   object-position: center 20%;
 }
 
+.leadership-card__portrait--dabakarov img {
+  object-position: center 12%;
+}
+
 .leadership-card__portrait--goldin img {
   object-position: 72% 18%;
 }
