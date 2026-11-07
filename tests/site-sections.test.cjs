@@ -60,12 +60,13 @@ test('published regions build keeps district data before attaching tabs',()=>{
   assert.match(html,/const districts=/);
   assert.ok(html.indexOf('const districts=')<html.indexOf('function showAllRegions('));
 });
-test('migrates legacy documents and financial reports with source links',()=>{
+test('migrates documents and financial reports without legacy source captions',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');
   const reports=fs.readFileSync('dist/reports/index.html','utf8');
   assert.match(documents,/Ustav-ot-29\.01\.2023g\.\.pdf/);
   assert.match(documents,/RegistracijaRENKA\.rar/);
   assert.match(documents,/fz-o-naccult-avtonomii\.rtf/);
+  assert.doesNotMatch(documents,/Источник: старый сайт ФЕНКА/);
   for(const id of ['ZABS_y82JjFctw','bbUazqvc18eTxg','FmTywswvMQrgxQ']) assert.match(reports,new RegExp(id));
   assert.match(reports,/2022/);
   assert.match(reports,/2021/);
