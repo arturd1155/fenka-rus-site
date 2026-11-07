@@ -5,7 +5,15 @@ const portraits = [
   ['СМ', 'sergey-melnikov.png', 'Мельников Сергей Евгеньевич', 'melnikov'],
   ['ЗГ', 'german-zakharyaev.png', 'Захарьяев Герман Рашбилович', 'zakharyaev'],
   ['БА', 'alexander-boroda.png', 'Борода Александр Моисеевич', 'boroda'],
-  ['ГГ', 'georgy-golukhov.png', 'Голухов Георгий Натанович', 'golukhov']
+  ['ГГ', 'georgy-golukhov.png', 'Голухов Георгий Натанович', 'golukhov'],
+  ['ГМ', 'mark-goldin.png', 'Гольдин Марк Эльевич', 'goldin'],
+  ['ОМ', 'mikhail-oshtrakh.png', 'Оштрах Михаил Иосифович', 'oshtrakh'],
+  ['КГ', 'gennady-katsnelson.png', 'Кацнельсон Геннадий Борисович', 'katsnelson'],
+  ['ЮЕ', 'elena-yusfin.png', 'Юсфин Елена Леонидовна', 'yusfin'],
+  ['ВИ', 'irina-veysman.png', 'Вейсман Ирина Зиновьевна', 'veysman'],
+  ['ЛИ', 'igor-litvak.png', 'Литвак Игорь Маркович', 'litvak'],
+  ['ТП', 'pavel-tipikin.png', 'Типикин Павел Николаевич', 'tipikin'],
+  ['ШЕ', 'erukhom-shalmiev.png', 'Шальмиев Ерухом Илизирович', 'shalmiev']
 ];
 
 process.nextTick(() => {

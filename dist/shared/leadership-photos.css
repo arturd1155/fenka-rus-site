@@ -30,6 +30,14 @@
   object-position: center 20%;
 }
 
+.leadership-card__portrait--goldin img {
+  object-position: 72% 18%;
+}
+
+.leadership-card__portrait--oshtrakh img {
+  object-position: center 22%;
+}
+
 @media (max-width: 900px) {
   .leadership-grid {
     grid-template-columns: 1fr;

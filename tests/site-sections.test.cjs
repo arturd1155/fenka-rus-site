@@ -105,7 +105,15 @@ test('migrates all leadership records and approved council portraits',()=>{
     'sergey-melnikov.png':'Мельников Сергей Евгеньевич',
     'german-zakharyaev.png':'Захарьяев Герман Рашбилович',
     'alexander-boroda.png':'Борода Александр Моисеевич',
-    'georgy-golukhov.png':'Голухов Георгий Натанович'
+    'georgy-golukhov.png':'Голухов Георгий Натанович',
+    'mark-goldin.png':'Гольдин Марк Эльевич',
+    'mikhail-oshtrakh.png':'Оштрах Михаил Иосифович',
+    'gennady-katsnelson.png':'Кацнельсон Геннадий Борисович',
+    'elena-yusfin.png':'Юсфин Елена Леонидовна',
+    'irina-veysman.png':'Вейсман Ирина Зиновьевна',
+    'igor-litvak.png':'Литвак Игорь Маркович',
+    'pavel-tipikin.png':'Типикин Павел Николаевич',
+    'erukhom-shalmiev.png':'Шальмиев Ерухом Илизирович'
   };
   for(const [file,name] of Object.entries(portraits)){
     assert.match(leadership,new RegExp(`leadership-photos/${file}[\\s\\S]{0,900}${name}`));
