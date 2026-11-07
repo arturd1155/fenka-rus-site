@@ -55,6 +55,15 @@ test('all about links target the implemented section and branding is official',(
   assert.equal((html.match(/src="fenka-logo-official\.png"/g)||[]).length,2);
 });
 
+test('homepage shows the approved FENKA president portrait and address',()=>{
+  const html=fs.readFileSync('dist/index.html','utf8');
+  assert.match(html,/src="\/sergey-melnikov-president\.png"/);
+  assert.match(html,/Мельников Сергей Евгеньевич/);
+  assert.match(html,/Сохраняя многовековые традиции еврейского народа/);
+  assert.doesNotMatch(html,/Имя и текст обращения требуют официального подтверждения/);
+  assert.equal(fs.existsSync('dist/sergey-melnikov-president.png'),true);
+});
+
 test('distribution uses homepage at root and regions as a site section',()=>{
   const home=fs.readFileSync('dist/index.html','utf8');
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
