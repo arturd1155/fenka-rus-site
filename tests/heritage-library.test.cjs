@@ -92,3 +92,12 @@ test('homepage previews real heritage collections with working library links',()
   }
   assert.match(html,/href="\/media\/heritage\/"[^>]*>Открыть всю библиотеку/);
 });
+
+test('homepage flagship initiatives are distinct from the media library',()=>{
+  const html=fs.readFileSync('dist/index.html','utf8');
+  const block=html.match(/<section class="section projects"[\s\S]*?<\/section>/)?.[0]||'';
+  for(const title of ['Культурный отдел ФЕНКА','Новые горизонты','Фестиваль еврейской музыки в Казани']){
+    assert.match(block,new RegExp(title));
+  }
+  assert.doesNotMatch(block,/Синагоги мира|Наследие ФЕНКА/);
+});
