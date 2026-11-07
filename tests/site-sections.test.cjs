@@ -33,7 +33,8 @@ test('shared shell is responsive, keyboard accessible and has official social li
   assert.match(js,/event\.key\s*===\s*'Escape'/);
   assert.match(js,/aria-expanded/);
   for(const href of ['https://vk.ru/fenkarus?ysclid=mue1bx5o93573807833','https://t.me/fenkarus','https://max.ru/join/t1856SKfg2tv8TdYnIjARxurVWQK_ATuRZmt5hLfPoo']) assert.match(footer,new RegExp(href.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-  assert.equal((footer.match(/rel="noopener noreferrer"/g)||[]).length,3);
+  const socialBlock=footer.match(/<div class="global-footer__social">([\s\S]*?)<\/div>/)?.[1]||'';
+  assert.equal((socialBlock.match(/rel="noopener noreferrer"/g)||[]).length,3);
 });
 
 test('homepage and regions use permanent routes without duplicate homepage map',()=>{
@@ -119,4 +120,27 @@ test('youth department is a working media-free section ready for approved conten
   for(const title of ['О департаменте','Направления работы','Команда','Проекты','Новости']) assert.match(youth,new RegExp(title));
   assert.match(youth,/href="\/youth\/" aria-current="page">МолДеп<\/a>/);
   assert.doesNotMatch(youth,/<img[^>]+class="youth/);
+});
+test('migrates the complete official about content into a structured page',()=>{
+  execFileSync(process.execPath,['scripts/build-site.cjs']);
+  const about=fs.readFileSync('dist/about/index.html','utf8');
+  assert.match(about,/Миссия ОО «ФЕНКА»/);
+  assert.match(about,/содействие формированию толерантности и гражданского общества в России/i);
+  assert.match(about,/сохранение национальной самобытности, развитие еврейского языка, образования, национальной культуры/);
+  for(const title of ['Сохранение национальной культуры','Национальное образование','Национальные традиции','Доступ к культурному наследию','Поддержка еврейской общины','Культурная жизнь','Диалог с государством','Межнациональное сотрудничество']) assert.ok(about.includes(title));
+  assert.equal((about.match(/class="about-direction"/g)||[]).length,8);
+  assert.match(about,/Как ФЕНКА реализует свои задачи/);
+  assert.match(about,/создаёт библиотеки, клубы, музеи и мемориалы/);
+  for(const phrase of ['на основе исторического опыта жизни еврейской общины','органами государственной власти и местного самоуправления','свидетельства очевидцев','различных форм образования детей и взрослых','за счёт средств ОО «ФЕНКА»','увековечиванию памяти евреев — жителей России','специальных пилотных проектов ОО «ФЕНКА»','лидеров (профессионалов и добровольцев)']) assert.ok(about.includes(phrase));
+  assert.match(about,/Восемь перспективных направлений/);
+  assert.doesNotMatch(about,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации/);
+  assert.doesNotMatch(about,/Раздел наполняется|Структура раздела/);
+});
+test('about page has a responsive federal-modern presentation',()=>{
+  const css=fs.readFileSync('shared/about.css','utf8');
+  for(const selector of ['.section-hero--about','.about-mission','.about-task-grid','.about-methods','.about-directions','.about-links']) assert.match(css,new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  assert.match(css,/\.about-task-grid\{[^}]*grid-template-columns:repeat\(2/);
+  assert.match(css,/@media\(max-width:760px\)/);
+  assert.match(css,/\.about-task-grid,\.about-directions,\.about-links\{grid-template-columns:1fr\}/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });
