@@ -123,6 +123,8 @@ test('migrates all leadership records and approved council portraits',()=>{
     assert.match(leadership,new RegExp(`Вице-президент[\\s\\S]{0,160}${name}`));
   }
   const council=leadership.match(/<section class="leadership-grid"[\s\S]*?<\/section>/)?.[0]||'';
+  const vicePresidents=['Борода Александр Моисеевич','Голухов Георгий Натанович','Захарьяев Герман Рашбилович'];
+  assert.ok(vicePresidents.every((name,index)=>index===0||council.indexOf(vicePresidents[index-1])<council.indexOf(name)));
   for(const card of council.match(/<article class="leadership-card">[\s\S]*?<\/article>/g)||[]){
     assert.match(card,/leadership-card__contacts/);
   }

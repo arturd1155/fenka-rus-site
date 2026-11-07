@@ -34,6 +34,14 @@ process.nextTick(() => {
     return card.replace('</div></article>', '<div class="leadership-card__contacts"><a href="mailto:info@fenkar.ru">info@fenkar.ru</a></div></div></article>');
   }));
 
+  html = html.replace(/<section class="leadership-grid"([^>]*)>([\s\S]*?)<\/section>/, (section, attributes, content) => {
+    const cards = content.match(/<article class="leadership-card">[\s\S]*?<\/article>/g) || [];
+    const vicePresidents = cards.filter(card => card.includes('leadership-card__role">Вице-президент'));
+    const members = cards.filter(card => !card.includes('leadership-card__role">Вице-президент'));
+    vicePresidents.sort((left, right) => left.match(/<h3>([^<]+)/)[1].localeCompare(right.match(/<h3>([^<]+)/)[1], 'ru'));
+    return `<section class="leadership-grid"${attributes}>${vicePresidents.join('')}${members.join('')}</section>`;
+  });
+
   for (const [initials, file, name, slug] of portraits) {
     fs.copyFileSync(path.join(root, 'leadership-photos', file), path.join(output, file));
     const placeholder = `<div class="leadership-card__portrait" aria-hidden="true"><span>${initials}</span></div>`;
