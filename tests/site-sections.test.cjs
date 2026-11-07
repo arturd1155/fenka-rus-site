@@ -100,6 +100,7 @@ test('migrates all leadership records and approved council portraits',()=>{
   assert.match(leadership,/Исполнительный Вице-президент/);
   assert.equal((leadership.match(/class="leadership-card"/g)||[]).length,14);
   assert.doesNotMatch(leadership,/wp-content\/uploads/);
+  assert.doesNotMatch(leadership,/Состав перенесён со страницы/);
   const portraits={
     'sergey-melnikov.png':'Мельников Сергей Евгеньевич',
     'german-zakharyaev.png':'Захарьяев Герман Рашбилович',

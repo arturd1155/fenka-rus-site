@@ -16,6 +16,7 @@ process.nextTick(() => {
 
   const page = path.join(root, 'dist', 'leadership', 'index.html');
   let html = fs.readFileSync(page, 'utf8').replace('</head>', '<link rel="stylesheet" href="/shared/leadership-photos.css"></head>');
+  html = html.replace(/<p class="leadership-source">[\s\S]*?<\/p>/, '');
 
   for (const [initials, file, name, slug] of portraits) {
     fs.copyFileSync(path.join(root, 'leadership-photos', file), path.join(output, file));
