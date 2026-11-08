@@ -78,6 +78,7 @@ test('regional chair portraits are published and used in cards and the detail di
   assert.match(regions,/id="detailLeaderPhoto"/);
   assert.match(regions,/region\.localPortrait\?'Фотография руководителя'/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
+  assert.match(regions,/found\.map\(r=>`[\s\S]*?\$\{portrait\(r,'small'\)\}/);
 });
 test('published regions build keeps district data before attaching tabs',()=>{
   const html=fs.readFileSync('dist/regions/index.html','utf8');
