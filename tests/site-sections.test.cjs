@@ -282,3 +282,17 @@ test('projects archive is fully migrated into internal catalogue and detail page
   assert.match(memory,/ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ/);
   assert.match(memory,/КУЛЬТУРНО-ПРОСВЕТИТЕЛЬСКИЙ ДИСКУРС/);
 });
+
+test('every project card and detail page uses its locally hosted cover',()=>{
+  const projects=require('../site/projects-data.cjs');
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
+  for(const project of projects){
+    const cover=`/assets/projects/${project.slug}.webp`;
+    assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
+    assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));
+    const detail=fs.readFileSync(`dist/projects/${project.slug}/index.html`,'utf8');
+    assert.match(detail,new RegExp(cover.replaceAll('/','\\/')));
+    assert.match(detail,/class="project-detail__cover"/);
+  }
+});
