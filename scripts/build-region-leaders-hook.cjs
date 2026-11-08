@@ -29,7 +29,15 @@ const corrections={
   'город Дзержинск':{leader:'Нефедова Вера Александровна',role:'Руководитель'},
   'Пермский край':{leader:'Закарян Елена Викторовна',role:'Руководитель'},
   'Республика Татарстан':{leader:'Плискин Аркадий Дмитриевич',role:'Руководитель'},
-  'Тюменская область':{leader:'Варкин Игорь Евгеньевич',role:'Руководитель'}
+  'Тюменская область':{leader:'Варкин Игорь Евгеньевич',role:'Руководитель'},
+  'Воронежская область':{leader:'Виктор Дмитриевич Конищев',role:'Председатель автономии'},
+  'Ярославская область':{leader:'Захаров Вячеслав Владимирович',role:'Председатель Совета'},
+  'Севастополь':{leader:'Олег Владимирович Янковский',role:'Руководитель'},
+  'Республика Мордовия':{leader:'Александр Иванович Дробин',role:'Президент'},
+  'Республика Хакасия':{leader:'Григорий Давидович Пехотник',role:'Председатель'},
+  'Иркутская область':{leader:'Игорь Эдуардович Пикерский',role:'Президент',phone:'Тел.: (3952) 20-91-22, 20-91-23'},
+  'Еврейская автономная область':{leader:'Наум Беньаминович Ливант',role:'Руководитель'},
+  'Приморский край':{leader:'',role:''}
 };
 
 function replaceRequired(source,needle,replacement){
@@ -67,15 +75,14 @@ process.nextTick(()=>{
   </style>`;
   html=replaceRequired(html,'</head>',css+'</head>');
   html=replaceRequired(html,'<section class="leadership-preview"><div class="photo-placeholder photo-placeholder--large" aria-hidden="true"><span class="photo-placeholder__mark">Ф</span></div>','<section class="leadership-preview"><div id="detailLeaderPhoto"><div class="photo-placeholder photo-placeholder--large" aria-hidden="true"><span class="photo-placeholder__mark">Ф</span></div></div>');
-  html=replaceRequired(html,'<small>Фотография будет добавлена после согласования</small>','<small id="detailPhotoNote">Фотография будет добавлена после согласования</small>');
+  html=replaceRequired(html,'<small>Фотография будет добавлена после согласования</small>','');
   html=replaceRequired(html,'function regionCard(r){return ',`const regionalPortraits=${JSON.stringify(portraits)};districts.forEach(d=>d.regions.forEach(r=>{if(regionalPortraits[r.name])r.localPortrait='/region-leaders/'+regionalPortraits[r.name]}));function portrait(r,size){return r.localPortrait?'<img class="region-leader-photo region-leader-photo--'+size+'" src="'+r.localPortrait+'" alt="'+(r.leader||'Руководитель '+r.name).replace(/"/g,'&quot;')+'" loading="lazy">':'<div class="photo-placeholder photo-placeholder--'+size+'"><span class="photo-placeholder__mark">Ф</span></div>'}function regionCard(r){return `);
   const smallPlaceholder='<div class="photo-placeholder photo-placeholder--small"><span class="photo-placeholder__mark">Ф</span></div><div><span>';
   html=replaceRequired(html,smallPlaceholder,"'+portrait(r,'small')+'<div><span>");
   html=replaceRequired(html,smallPlaceholder,"${portrait(r,'small')}<div><span>");
   const photoNote='<span class="region-card__photo-note">Место для фотографии</span>';
-  html=replaceRequired(html,photoNote,"<span class=\"region-card__photo-note\">'+(r.localPortrait?'Фотография руководителя':'Место для фотографии')+'</span>");
-  html=replaceRequired(html,photoNote,"<span class=\"region-card__photo-note\">${r.localPortrait?'Фотография руководителя':'Место для фотографии'}</span>");
+  html=replaceRequired(html,photoNote,'');
+  html=replaceRequired(html,photoNote,'');
   html=replaceRequired(html,"document.querySelector('#detailRole').textContent=region.role||'Руководитель регионального отделения';const fields=",`document.querySelector('#detailRole').textContent=region.role||'Руководитель регионального отделения';document.querySelector('#detailLeaderPhoto').innerHTML=portrait(region,'large');const fields=`);
-  html=replaceRequired(html,"document.querySelector('#detailLeaderPhoto').innerHTML=portrait(region,'large');const fields=",`document.querySelector('#detailLeaderPhoto').innerHTML=portrait(region,'large');document.querySelector('#detailPhotoNote').textContent=region.localPortrait?'Фотография руководителя':'Фотография будет добавлена после согласования';const fields=`);
   fs.writeFileSync(page,html);
 });

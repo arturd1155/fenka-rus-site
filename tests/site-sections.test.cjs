@@ -76,7 +76,6 @@ test('regional chair portraits are published and used in cards and the detail di
   }
   assert.match(regions,/class="region-leader-photo region-leader-photo--'\+size\+'"/);
   assert.match(regions,/id="detailLeaderPhoto"/);
-  assert.match(regions,/region\.localPortrait\?'Фотография руководителя'/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
   assert.match(regions,/found\.map\(r=>`[\s\S]*?\$\{portrait\(r,'small'\)\}/);
 });
@@ -101,6 +100,30 @@ test('regional directory applies approved removals, leaders and council portrait
     assert.match(regions,new RegExp(`"${region}":"${file}"`));
     assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
   }
+});
+
+test('regional leader names contain no photo captions, glued titles or broken spacing',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  assert.doesNotMatch(regions,/Место для фотографии|Фотография руководителя|Фотография будет добавлена после согласования/);
+  const start=regions.indexOf('[',regions.indexOf('const districts='));
+  const end=regions.indexOf('];',start)+1;
+  const districts=JSON.parse(regions.slice(start,end));
+  const byName=Object.fromEntries(districts.flatMap(d=>d.regions).map(r=>[r.name,r]));
+  const expected={
+    'Воронежская область':['Виктор Дмитриевич Конищев','Председатель автономии'],
+    'Ярославская область':['Захаров Вячеслав Владимирович','Председатель Совета'],
+    'Севастополь':['Олег Владимирович Янковский','Руководитель'],
+    'Республика Мордовия':['Александр Иванович Дробин','Президент'],
+    'Республика Хакасия':['Григорий Давидович Пехотник','Председатель'],
+    'Иркутская область':['Игорь Эдуардович Пикерский','Президент'],
+    'Еврейская автономная область':['Наум Беньаминович Ливант','Руководитель']
+  };
+  for(const [region,[leader,role]] of Object.entries(expected)){
+    assert.equal(byName[region].leader,leader);
+    assert.equal(byName[region].role,role);
+  }
+  assert.equal(byName['Приморский край'].leader,'');
+  for(const region of Object.values(byName))assert.doesNotMatch(region.leader||'',/Председател|Президент|Руководител|Тел\.|E-mail|https?:\/\//);
 });
 test('published regions build keeps district data before attaching tabs',()=>{
   const html=fs.readFileSync('dist/regions/index.html','utf8');
