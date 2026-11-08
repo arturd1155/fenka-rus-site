@@ -270,6 +270,7 @@ test('projects archive is fully migrated into internal catalogue and detail page
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card"/g)||[]).length,25);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
+  assert.doesNotMatch(catalogue,/Архив объединяет 25 программ ФЕНКА|class="projects-intro"/);
   for(const title of ['Память и Будущее','Фестиваль еврейской музыки','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));
   for(const slug of ['pamyat-i-budushhee','festival-evrejskoj-muzyki','kulturnyj-otdel','shkola-liderov-fenka','strana-geroev']){
     const file=`dist/projects/${slug}/index.html`;
