@@ -296,3 +296,11 @@ test('every project card and detail page uses its locally hosted cover',()=>{
     assert.match(detail,/class="project-detail__cover"/);
   }
 });
+
+test('every project detail page has a prominent support action',()=>{
+  const projects=require('../site/projects-data.cjs');
+  for(const project of projects){
+    const detail=fs.readFileSync(`dist/projects/${project.slug}/index.html`,'utf8');
+    assert.match(detail,/<a class="project-support" href="\/support\/">Поддержать проект <span aria-hidden="true">→<\/span><\/a>/);
+  }
+});
