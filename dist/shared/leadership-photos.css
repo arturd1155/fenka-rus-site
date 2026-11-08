@@ -49,13 +49,25 @@
 }
 
 @media (max-width: 600px) {
+  .leadership-card,
   .leadership-grid .leadership-card {
-    grid-template-columns: 104px minmax(0, 1fr);
-    min-height: 210px;
+    grid-template-columns: 1fr;
+    min-height: 0;
   }
 
   .leadership-card__portrait,
   .leadership-grid .leadership-card__portrait {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .leadership-card__portrait img {
+    object-fit: cover;
+    image-rendering: auto;
+  }
+
+  .leadership-card__content {
     min-height: 210px;
   }
 }

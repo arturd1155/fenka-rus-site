@@ -144,6 +144,15 @@ test('leadership page has one harmonious title and a dedicated compact hero',()=
   assert.doesNotMatch(leadership,/<h1>Руководство<\/h1>/);
   assert.doesNotMatch(leadership,/class="leadership-intro"/);
 });
+
+test('leadership portraits use a full-width mobile crop instead of a narrow strip',()=>{
+  const css=fs.readFileSync('dist/shared/leadership-photos.css','utf8');
+  const mobile=css.match(/@media \(max-width: 600px\) \{[\s\S]*\}\s*$/)?.[0]||'';
+  assert.match(mobile,/grid-template-columns:\s*1fr/);
+  assert.match(mobile,/aspect-ratio:\s*4\s*\/\s*3/);
+  assert.match(mobile,/object-fit:\s*cover/);
+  assert.doesNotMatch(mobile,/104px/);
+});
 test('youth department is a working media-free section ready for approved content',()=>{
   const youth=fs.readFileSync('dist/youth/index.html','utf8');
   assert.match(youth,/<h1>Молодёжный департамент ФЕНКА<\/h1>/);
