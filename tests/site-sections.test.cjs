@@ -55,6 +55,30 @@ test('regions tabs switch between district map and complete region list',()=>{
   assert.match(html,/function showAllRegions\(/);
   assert.match(html,/viewButtons\.forEach/);
 });
+
+test('regional chair portraits are published and used in cards and the detail dialog',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  const portraits={
+    'vladimir-savelyeva.png':'Владимирская область',
+    'voronezh-konishchev.png':'Воронежская область',
+    'kostroma-ganin.png':'Костромская область',
+    'kursk-diner.png':'Курская область',
+    'moscow-oblast-ivanova.png':'Московская область',
+    'moscow-yakushev.png':'город Москва',
+    'oryol-kamenskaya.png':'Орловская область',
+    'ryazan-reznikov.png':'Рязанская область',
+    'smolensk-levant.png':'Смоленская область',
+    'yaroslavl-zakharov.png':'Ярославская область'
+  };
+  for(const [file,name] of Object.entries(portraits)){
+    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true,`${file} was not published`);
+    assert.match(regions,new RegExp(`"${name.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')}":"${file}"`));
+  }
+  assert.match(regions,/class="region-leader-photo region-leader-photo--'\+size\+'"/);
+  assert.match(regions,/id="detailLeaderPhoto"/);
+  assert.match(regions,/region\.localPortrait\?'Фотография руководителя'/);
+  assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
+});
 test('published regions build keeps district data before attaching tabs',()=>{
   const html=fs.readFileSync('dist/regions/index.html','utf8');
   assert.match(html,/const districts=/);
