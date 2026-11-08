@@ -80,6 +80,28 @@ test('regional chair portraits are published and used in cards and the detail di
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
   assert.match(regions,/found\.map\(r=>`[\s\S]*?\$\{portrait\(r,'small'\)\}/);
 });
+
+test('regional directory applies approved removals, leaders and council portraits',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  for(const removed of ['Калининградская область','BANDIT4D'])assert.doesNotMatch(regions,new RegExp(removed));
+  assert.match(regions,/<strong>52<\/strong><span>региональных/);
+  for(const leader of [
+    'Черняк Ирина Иосифовна','Армер Владимир Александрович','Пинхасов Игорь Юшваевич',
+    'Лановая Виктория Михайловна','Татьяна Семеновна Назарова','Стрельцин Яков Саввич',
+    'Нефедова Вера Александровна','Закарян Елена Викторовна','Плискин Аркадий Дмитриевич',
+    'Варкин Игорь Евгеньевич'
+  ])assert.match(regions,new RegExp(leader));
+  const councilPortraits={
+    'Ульяновская область':'igor-dabakarov.jpg',
+    'Ивановская область':'elena-yusfin.png',
+    'Удмуртская Республика':'mark-goldin.png',
+    'Свердловская область':'mikhail-oshtrakh.png'
+  };
+  for(const [region,file] of Object.entries(councilPortraits)){
+    assert.match(regions,new RegExp(`"${region}":"${file}"`));
+    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
+  }
+});
 test('published regions build keeps district data before attaching tabs',()=>{
   const html=fs.readFileSync('dist/regions/index.html','utf8');
   assert.match(html,/const districts=/);

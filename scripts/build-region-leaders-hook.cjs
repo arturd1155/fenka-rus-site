@@ -12,7 +12,24 @@ const portraits={
   'Орловская область':'oryol-kamenskaya.png',
   'Рязанская область':'ryazan-reznikov.png',
   'Смоленская область':'smolensk-levant.png',
-  'Ярославская область':'yaroslavl-zakharov.png'
+  'Ярославская область':'yaroslavl-zakharov.png',
+  'Ульяновская область':'igor-dabakarov.jpg',
+  'Ивановская область':'elena-yusfin.png',
+  'Удмуртская Республика':'mark-goldin.png',
+  'Свердловская область':'mikhail-oshtrakh.png'
+};
+
+const corrections={
+  'Брянская область':{leader:'Михаил Семенович Тительман; Черняк Ирина Иосифовна',role:'Руководство'},
+  'Краснодарский край':{leader:'Армер Владимир Александрович',role:'Руководитель'},
+  'Республика Дагестан':{leader:'Пинхасов Игорь Юшваевич',role:'Руководитель'},
+  'город Кисловодск':{leader:'Лановая Виктория Михайловна',role:'Руководитель'},
+  'Республика Северная Осетия-Алания':{leader:'Татьяна Семеновна Назарова',role:'Руководитель'},
+  'Саратовская область':{leader:'Стрельцин Яков Саввич',role:'Председатель'},
+  'город Дзержинск':{leader:'Нефедова Вера Александровна',role:'Руководитель'},
+  'Пермский край':{leader:'Закарян Елена Викторовна',role:'Руководитель'},
+  'Республика Татарстан':{leader:'Плискин Аркадий Дмитриевич',role:'Руководитель'},
+  'Тюменская область':{leader:'Варкин Игорь Евгеньевич',role:'Руководитель'}
 };
 
 function replaceRequired(source,needle,replacement){
@@ -24,10 +41,24 @@ process.nextTick(()=>{
   const sourceDir=path.join(root,'region-leaders');
   const outputDir=path.join(root,'dist','region-leaders');
   fs.mkdirSync(outputDir,{recursive:true});
-  for(const file of Object.values(portraits))fs.copyFileSync(path.join(sourceDir,file),path.join(outputDir,file));
+  for(const file of Object.values(portraits)){
+    const regionalSource=path.join(sourceDir,file);
+    const councilSource=path.join(root,'leadership-photos',file);
+    fs.copyFileSync(fs.existsSync(regionalSource)?regionalSource:councilSource,path.join(outputDir,file));
+  }
 
   const page=path.join(root,'dist','regions','index.html');
   let html=fs.readFileSync(page,'utf8');
+  const dataStart=html.indexOf('[',html.indexOf('const districts='));
+  const dataEnd=html.indexOf('];',dataStart)+1;
+  if(dataStart<0||dataEnd<1)throw new Error('Regions portrait hook could not locate district data');
+  const districts=JSON.parse(html.slice(dataStart,dataEnd));
+  for(const district of districts){
+    district.regions=district.regions.filter(region=>region.name!=='Калининградская область'&&!region.name.startsWith('BANDIT4D'));
+    for(const region of district.regions)if(corrections[region.name])Object.assign(region,corrections[region.name]);
+  }
+  html=html.slice(0,dataStart)+JSON.stringify(districts)+html.slice(dataEnd);
+  html=replaceRequired(html,'<strong>54</strong><span>региональных','<strong>52</strong><span>региональных');
   const css=`<style>
   .region-leader-photo{display:block;object-fit:cover;object-position:center 22%;background:#edf4f8;border:1px solid rgba(18,63,112,.14)}
   .region-leader-photo--small{width:58px;height:68px;border-radius:10px}
