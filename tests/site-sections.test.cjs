@@ -265,3 +265,20 @@ test('published pages contain no links that jump to the top as placeholders',()=
   assert.match(home,/href="\/documents\/">Документы/);
   assert.match(home,/href="\/reports\/">Отчётность/);
 });
+
+test('projects archive is fully migrated into internal catalogue and detail pages',()=>{
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  assert.equal((catalogue.match(/class="project-card"/g)||[]).length,25);
+  assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
+  for(const title of ['Память и Будущее','Фестиваль еврейской музыки','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));
+  for(const slug of ['pamyat-i-budushhee','festival-evrejskoj-muzyki','kulturnyj-otdel','shkola-liderov-fenka','strana-geroev']){
+    const file=`dist/projects/${slug}/index.html`;
+    assert.equal(fs.existsSync(file),true,`${file} is missing`);
+    const detail=fs.readFileSync(file,'utf8');
+    assert.match(detail,/href="\/projects\/"/);
+    assert.doesNotMatch(detail,/fenka\.online\/project\//);
+  }
+  const memory=fs.readFileSync('dist/projects/pamyat-i-budushhee/index.html','utf8');
+  assert.match(memory,/ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ/);
+  assert.match(memory,/КУЛЬТУРНО-ПРОСВЕТИТЕЛЬСКИЙ ДИСКУРС/);
+});
