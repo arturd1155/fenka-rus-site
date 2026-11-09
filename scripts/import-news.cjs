@@ -47,7 +47,9 @@ async function fetchText(url,attempt=1){
     return {type:'html',text:await response.text()};
   }catch(error){
     if(attempt<4){await new Promise(r=>setTimeout(r,attempt*1800));return fetchText(url,attempt+1)}
-    throw error;
+    const mirror=await fetch('https://r.jina.ai/http://'+url.replace(/^https?:\/\//,''),{headers:{accept:'text/plain'},signal:AbortSignal.timeout(45000)});
+    if(!mirror.ok)throw error;
+    return {type:'markdown',text:await mirror.text()};
   }
 }
 

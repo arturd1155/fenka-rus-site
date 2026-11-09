@@ -20,6 +20,8 @@ process.nextTick(()=>{
   const items=metas.map(meta=>{
     const file=path.join(root,'site','news-items',meta.slug+'.json');
     const item=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{...meta,title:titleFromSlug(meta.slug),excerpt:'Материал из архива новостей ФЕНКА.',body:'Материал переносится из архива прежней версии сайта.',image:''};
+    if(!item.title||/^-?\s*ОО ФЕНКА\s*$/i.test(item.title))item.title=/^\d+$/.test(item.slug)?'Новость из архива ФЕНКА':titleFromSlug(item.slug);
+    if(!item.body||item.body.trim().length<20)item.body=item.excerpt;
     return {...item,displayDate:formatDate(item.date)};
   });
   const featured=items[0];

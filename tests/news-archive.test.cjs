@@ -53,5 +53,8 @@ test('news build produces a readable internal catalogue and detail pages',()=>{
   assert.doesNotMatch(catalogue,/Раздел наполняется/);
   assert.match(css,/@media\s*\(max-width:\s*640px\)/);
   assert.match(css,/object-fit:\s*cover/);
+  const legacy=fs.readFileSync('dist/news/12844/index.html','utf8');
+  assert.doesNotMatch(legacy,/<h1>- ОО ФЕНКА<\/h1>/);
+  assert.match(legacy,/<div class="news-article__body"><p>[^<]{10,}/);
 });
 
