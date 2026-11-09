@@ -51,6 +51,10 @@ test('news build produces a readable internal catalogue and detail pages',()=>{
   assert.match(catalogue,/id="news-year"/);
   assert.match(catalogue,/Показать ещё/);
   assert.doesNotMatch(catalogue,/Раздел наполняется/);
+  assert.ok(Buffer.byteLength(catalogue)<500_000,'news catalogue must not embed the complete multi-megabyte archive');
+  assert.equal(fs.existsSync('dist/news/data/2026.json'),true);
+  assert.equal(fs.existsSync('dist/news/data/2018.json'),true);
+  assert.ok(JSON.parse(fs.readFileSync('dist/news/data/2026.json','utf8')).every(item=>item.date&&item.internalUrl));
   assert.match(css,/@media\s*\(max-width:\s*640px\)/);
   assert.match(css,/object-fit:\s*cover/);
   const legacy=fs.readFileSync('dist/news/12844/index.html','utf8');
