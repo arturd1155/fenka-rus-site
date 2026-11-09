@@ -41,7 +41,14 @@ const portraits={
   'Республика Коми':'komi-korotaev.jpg',
   'Республика Карелия':'karelia-tsvibel.jpg',
   'Вологодская область':'vologda-viktorov.jpg',
-  'Тюменская область':'tyumen-varkin.jpg'
+  'Тюменская область':'tyumen-varkin.jpg',
+  'Приморский край':'primorye-klebanov.jpg',
+  'Еврейская автономная область':'eao-livant.jpg',
+  'Томская область':'tomsk-zelvensky.jpg',
+  'Пермский край':'perm-zakaryan.jpg',
+  'город Донецк':'donetsk-karnaukh.jpg',
+  'Севастополь':'sevastopol-yankovsky.jpg',
+  'Липецкая область':'lipetsk-aseev.jpg'
 };
 const peoplePortraitFiles=['bryansk-titelman.jpg','bryansk-chernyak.jpg'];
 
