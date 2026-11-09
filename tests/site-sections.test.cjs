@@ -102,7 +102,7 @@ test('regional chair portraits are published and used in cards and the detail di
   assert.match(regions,/class="region-leader-photo region-leader-photo--'\+size\+'"/);
   assert.match(regions,/id="detailLeaderPhoto"/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
-  assert.match(regions,/found\.map\(r=>`[\s\S]*?\$\{portrait\(r,'small'\)\}/);
+  assert.match(regions,/function leadershipCompact\(r\)[\s\S]*?portrait\(r,'small'\)/);
 });
 
 test('regional directory applies approved removals, leaders and council portraits',()=>{
@@ -179,6 +179,21 @@ test('publishes the approved regional leaders and new Donetsk and Mariupol branc
   const southern=districts.find(d=>d.name==='Южный федеральный округ');
   assert.ok(southern.regions.some(r=>r.name==='город Донецк'));
   assert.ok(southern.regions.some(r=>r.name==='город Мариуполь'));
+});
+test('Bryansk leadership is presented as two separate people cards',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  const start=regions.indexOf('[',regions.indexOf('const districts='));
+  const end=regions.indexOf('];',start)+1;
+  const districts=JSON.parse(regions.slice(start,end));
+  const bryansk=districts.flatMap(d=>d.regions).find(r=>r.name==='Брянская область');
+  assert.deepEqual(bryansk.leaders,[
+    {name:'Михаил Семенович Тительман',role:'Председатель Совета'},
+    {name:'Черняк Ирина Иосифовна',role:''}
+  ]);
+  assert.match(regions,/function leadersFor\(r\)/);
+  assert.match(regions,/class="region-card__leaders"/);
+  assert.match(regions,/class="leadership-preview__people"/);
+  assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview__people/);
 });
 test('migrates documents and financial reports without legacy source captions',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');
