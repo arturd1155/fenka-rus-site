@@ -99,7 +99,7 @@ test('regional chair portraits are published and used in cards and the detail di
     assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true,`${file} was not published`);
     assert.match(regions,new RegExp(`"${name.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')}":"${file}"`));
   }
-  assert.match(regions,/class="region-leader-photo region-leader-photo--'\+size\+'"/);
+  assert.match(regions,/class="region-leader-photo region-leader-photo--'\+size\+relaxed\+'"/);
   assert.match(regions,/id="detailLeaderPhoto"/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
   assert.match(regions,/function leadershipCompact\(r\)[\s\S]*?portrait\(r,'small'\)/);
@@ -230,6 +230,12 @@ test('publishes all newly approved regional portraits',()=>{
     assert.match(regions,new RegExp(`"${region}":"${file}"`));
     assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
   }
+});
+test('uses relaxed portrait framing for Aseev, Pikersky and Abramzon',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  assert.match(regions,/const relaxedPortraitRegions=\["Липецкая область","Иркутская область","Ленинградская область"\]/);
+  assert.match(regions,/r\.name==='Ленинградская область'\?r\.image:''/);
+  assert.match(regions,/region-leader-photo--relaxed/);
 });
 test('migrates documents and financial reports without legacy source captions',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');
