@@ -68,7 +68,32 @@ test('regional chair portraits are published and used in cards and the detail di
     'oryol-kamenskaya.png':'Орловская область',
     'ryazan-reznikov.png':'Рязанская область',
     'smolensk-levant.png':'Смоленская область',
-    'yaroslavl-zakharov.png':'Ярославская область'
+    'yaroslavl-zakharov.png':'Ярославская область',
+    'novosibirsk-gorbunov.jpg':'Новосибирская область',
+    'omsk-birlyant.jpg':'Омская область',
+    'crimea-gendin.jpg':'Республика Крым',
+    'pyatigorsk-shalumova.jpg':'город Пятигорск',
+    'dagestan-pinkhasov.jpg':'Республика Дагестан',
+    'kislovodsk-lanovaya.jpg':'город Кисловодск',
+    'krasnodar-armer.jpg':'Краснодарский край',
+    'rostov-potapov.jpg':'Ростовская область',
+    'north-ossetia-nazarova.jpg':'Республика Северная Осетия-Алания',
+    'orenburg-suntsova.jpg':'Оренбургская область',
+    'saratov-streltsin.jpg':'Саратовская область',
+    'volgograd-motornaya.jpg':'Волгоградская область',
+    'dzerzhinsk-nefedova.jpg':'город Дзержинск',
+    'mari-el-basin.jpg':'Республика Марий Эл',
+    'nizhny-novgorod-turaeva.jpg':'Нижегородская область',
+    'penza-zheltova.jpg':'Пензенская область',
+    'mordovia-drobin.jpg':'Республика Мордовия',
+    'samara-kogan.jpg':'Самарская область',
+    'tatarstan-pliskin.jpg':'Республика Татарстан',
+    'astrakhan-kalinina.jpg':'Астрахань',
+    'st-petersburg-lvova.jpg':'город Санкт-Петербург',
+    'komi-korotaev.jpg':'Республика Коми',
+    'karelia-tsvibel.jpg':'Республика Карелия',
+    'vologda-viktorov.jpg':'Вологодская область',
+    'tyumen-varkin.jpg':'Тюменская область'
   };
   for(const [file,name] of Object.entries(portraits)){
     assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true,`${file} was not published`);

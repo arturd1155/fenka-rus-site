@@ -16,7 +16,32 @@ const portraits={
   'Ульяновская область':'igor-dabakarov.jpg',
   'Ивановская область':'elena-yusfin.png',
   'Удмуртская Республика':'mark-goldin.png',
-  'Свердловская область':'mikhail-oshtrakh.png'
+  'Свердловская область':'mikhail-oshtrakh.png',
+  'Новосибирская область':'novosibirsk-gorbunov.jpg',
+  'Омская область':'omsk-birlyant.jpg',
+  'Республика Крым':'crimea-gendin.jpg',
+  'город Пятигорск':'pyatigorsk-shalumova.jpg',
+  'Республика Дагестан':'dagestan-pinkhasov.jpg',
+  'город Кисловодск':'kislovodsk-lanovaya.jpg',
+  'Краснодарский край':'krasnodar-armer.jpg',
+  'Ростовская область':'rostov-potapov.jpg',
+  'Республика Северная Осетия-Алания':'north-ossetia-nazarova.jpg',
+  'Оренбургская область':'orenburg-suntsova.jpg',
+  'Саратовская область':'saratov-streltsin.jpg',
+  'Волгоградская область':'volgograd-motornaya.jpg',
+  'город Дзержинск':'dzerzhinsk-nefedova.jpg',
+  'Республика Марий Эл':'mari-el-basin.jpg',
+  'Нижегородская область':'nizhny-novgorod-turaeva.jpg',
+  'Пензенская область':'penza-zheltova.jpg',
+  'Республика Мордовия':'mordovia-drobin.jpg',
+  'Самарская область':'samara-kogan.jpg',
+  'Республика Татарстан':'tatarstan-pliskin.jpg',
+  'Астрахань':'astrakhan-kalinina.jpg',
+  'город Санкт-Петербург':'st-petersburg-lvova.jpg',
+  'Республика Коми':'komi-korotaev.jpg',
+  'Республика Карелия':'karelia-tsvibel.jpg',
+  'Вологодская область':'vologda-viktorov.jpg',
+  'Тюменская область':'tyumen-varkin.jpg'
 };
 
 const corrections={
