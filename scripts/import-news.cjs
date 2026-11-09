@@ -7,6 +7,7 @@ const entities=s=>String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').r
 function parseLegacyNews(source,meta){
   const titleLine=source.match(/^Title:\s*(.+)$/m)?.[1]||meta.slug.replace(/-/g,' ');
   const title=clean(titleLine.replace(/\s+-\s+ОО ФЕНКА\s*$/i,''));
+  if(/(?:503 Service Unavailable|502 Bad Gateway|429 Too Many Requests)/i.test(title))throw new Error('Temporary server response');
   const markdown=source.split(/Markdown Content:\s*/i)[1]||source;
   const heading=`# ${title}`;
   let article=markdown.includes(heading)?markdown.slice(markdown.indexOf(heading)+heading.length):markdown;
@@ -27,6 +28,7 @@ function parseLegacyNews(source,meta){
 function parseLegacyHtml(html,meta){
   const metaValue=property=>entities(html.match(new RegExp(`<meta[^>]+property=["']${property}["'][^>]+content=["']([^"']*)["']`,'i'))?.[1]||html.match(new RegExp(`<meta[^>]+content=["']([^"']*)["'][^>]+property=["']${property}["']`,'i'))?.[1]||'');
   const title=clean(metaValue('og:title').replace(/\s+-\s+ОО ФЕНКА\s*$/i,''))||meta.slug.replace(/-/g,' ');
+  if(/(?:503 Service Unavailable|502 Bad Gateway|429 Too Many Requests)/i.test(title))throw new Error('Temporary server response');
   const excerpt=clean(metaValue('og:description').replace(/\s*\[…\]\s*$/,''));
   const image=metaValue('og:image');
   const start=html.search(/<div[^>]+class=["'][^"']*\bcontent\b[^"']*["'][^>]*>/i);

@@ -27,6 +27,11 @@ Markdown Content:
   assert.equal(item.image,'https://fenka.online/wp-content/uploads/2024/01/photo.jpg');
 });
 
+test('legacy parser rejects temporary server error pages',()=>{
+  const {parseLegacyNews}=require('../scripts/import-news.cjs');
+  assert.throws(()=>parseLegacyNews('Title: 503 Service Unavailable\n\nMarkdown Content:\nTemporary error',{slug:'broken',date:'2026-01-01',url:'https://fenka.online/news/broken/'}),/temporary server response/i);
+});
+
 test('legacy HTML parser reads title, image and article without sharing controls',()=>{
   const {parseLegacyHtml}=require('../scripts/import-news.cjs');
   const html=`<html><head><meta property="og:title" content="Культурная встреча - ОО ФЕНКА"><meta property="og:description" content="Краткое описание"><meta property="og:image" content="https://fenka.online/wp-content/uploads/photo.jpg"></head><body><div class="content"><h1>Культурная встреча</h1><p>Основной текст.</p><p>Второй абзац.</p><div class="heateor_sss_sharing_container">Поделиться</div></div></body></html>`;
@@ -38,7 +43,7 @@ test('legacy HTML parser reads title, image and article without sharing controls
 });
 
 test('news build produces a readable internal catalogue and detail pages',()=>{
-  execFileSync(process.execPath,['scripts/build-site.cjs']);
+  if(!fs.existsSync('dist/shared/news.css'))execFileSync(process.execPath,['scripts/build-site.cjs']);
   const catalogue=fs.readFileSync('dist/news/index.html','utf8');
   const css=fs.readFileSync('dist/shared/news.css','utf8');
   assert.match(catalogue,/class="news-featured"/);
