@@ -213,7 +213,7 @@ test('Bryansk people cards publish and display both approved portraits',()=>{
   assert.match(regions,/personPortrait\(p,'small',i\)/);
   assert.match(regions,/personPortrait\(p,'large',i\)/);
 });
-test('publishes the seven newly approved regional portraits',()=>{
+test('publishes all newly approved regional portraits',()=>{
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
   const expected={
     'Приморский край':'primorye-klebanov.jpg',
@@ -222,7 +222,9 @@ test('publishes the seven newly approved regional portraits',()=>{
     'Пермский край':'perm-zakaryan.jpg',
     'город Донецк':'donetsk-karnaukh.jpg',
     'Севастополь':'sevastopol-yankovsky.jpg',
-    'Липецкая область':'lipetsk-aseev.jpg'
+    'Липецкая область':'lipetsk-aseev.jpg',
+    'Республика Хакасия':'khakassia-pekhotnik.png',
+    'Иркутская область':'irkutsk-pikersky.png'
   };
   for(const [region,file] of Object.entries(expected)){
     assert.match(regions,new RegExp(`"${region}":"${file}"`));

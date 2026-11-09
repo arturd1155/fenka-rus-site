@@ -48,7 +48,9 @@ const portraits={
   'Пермский край':'perm-zakaryan.jpg',
   'город Донецк':'donetsk-karnaukh.jpg',
   'Севастополь':'sevastopol-yankovsky.jpg',
-  'Липецкая область':'lipetsk-aseev.jpg'
+  'Липецкая область':'lipetsk-aseev.jpg',
+  'Республика Хакасия':'khakassia-pekhotnik.png',
+  'Иркутская область':'irkutsk-pikersky.png'
 };
 const peoplePortraitFiles=['bryansk-titelman.jpg','bryansk-chernyak.jpg'];
 
