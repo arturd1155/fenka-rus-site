@@ -186,7 +186,7 @@ test('Bryansk leadership is presented as two separate people cards',()=>{
   const end=regions.indexOf('];',start)+1;
   const districts=JSON.parse(regions.slice(start,end));
   const bryansk=districts.flatMap(d=>d.regions).find(r=>r.name==='Брянская область');
-  assert.deepEqual(bryansk.leaders,[
+  assert.deepEqual(bryansk.leaders.map(({name,role})=>({name,role})),[
     {name:'Михаил Семенович Тительман',role:'Председатель Совета'},
     {name:'Черняк Ирина Иосифовна',role:''}
   ]);
@@ -194,6 +194,24 @@ test('Bryansk leadership is presented as two separate people cards',()=>{
   assert.match(regions,/class="region-card__leaders"/);
   assert.match(regions,/class="leadership-preview__people"/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview__people/);
+});
+test('Bryansk people cards publish and display both approved portraits',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  const start=regions.indexOf('[',regions.indexOf('const districts='));
+  const end=regions.indexOf('];',start)+1;
+  const districts=JSON.parse(regions.slice(start,end));
+  const bryansk=districts.flatMap(d=>d.regions).find(r=>r.name==='Брянская область');
+  assert.deepEqual(bryansk.leaders.map(person=>person.image),[
+    '/region-leaders/bryansk-titelman.jpg',
+    '/region-leaders/bryansk-chernyak.jpg'
+  ]);
+  for(const file of ['bryansk-titelman.jpg','bryansk-chernyak.jpg']){
+    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
+    assert.match(regions,new RegExp(file));
+  }
+  assert.match(regions,/class="region-person-photo region-person-photo--'\+size\+'"/);
+  assert.match(regions,/personPortrait\(p,'small',i\)/);
+  assert.match(regions,/personPortrait\(p,'large',i\)/);
 });
 test('migrates documents and financial reports without legacy source captions',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');
