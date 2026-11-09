@@ -108,7 +108,7 @@ test('regional chair portraits are published and used in cards and the detail di
 test('regional directory applies approved removals, leaders and council portraits',()=>{
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
   for(const removed of ['Калининградская область','BANDIT4D'])assert.doesNotMatch(regions,new RegExp(removed));
-  assert.match(regions,/<strong>52<\/strong><span>региональных/);
+  assert.match(regions,/<strong>54<\/strong><span>региональных/);
   for(const leader of [
     'Черняк Ирина Иосифовна','Армер Владимир Александрович','Пинхасов Игорь Юшваевич',
     'Лановая Виктория Михайловна','Татьяна Семеновна Назарова','Стрельцин Яков Саввич',
@@ -147,13 +147,38 @@ test('regional leader names contain no photo captions, glued titles or broken sp
     assert.equal(byName[region].leader,leader);
     assert.equal(byName[region].role,role);
   }
-  assert.equal(byName['Приморский край'].leader,'');
+  assert.equal(byName['Приморский край'].leader,'Клебанов Григорий Вениаминович');
   for(const region of Object.values(byName))assert.doesNotMatch(region.leader||'',/Председател|Президент|Руководител|Тел\.|E-mail|https?:\/\//);
 });
 test('published regions build keeps district data before attaching tabs',()=>{
   const html=fs.readFileSync('dist/regions/index.html','utf8');
   assert.match(html,/const districts=/);
   assert.ok(html.indexOf('const districts=')<html.indexOf('function showAllRegions('));
+});
+test('publishes the approved regional leaders and new Donetsk and Mariupol branches',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  const start=regions.indexOf('[',regions.indexOf('const districts='));
+  const end=regions.indexOf('];',start)+1;
+  const districts=JSON.parse(regions.slice(start,end));
+  const byName=Object.fromEntries(districts.flatMap(d=>d.regions).map(r=>[r.name,r]));
+  const leaders={
+    'Ивановская область':'Юсфин Елена Леонидовна',
+    'Калужская область':'Денисов Борис Михайлович',
+    'Липецкая область':'Асеев Олег Владимирович',
+    'Тверская область':'Ротенфельд Александр Евсеевич',
+    'Архангельская область':'Лобанова Дарья Михайловна',
+    'Приморский край':'Клебанов Григорий Вениаминович',
+    'город Донецк':'Карнаух Дмитрий Викторович',
+    'город Мариуполь':'Головин Юрий Всеволодович'
+  };
+  for(const [region,leader] of Object.entries(leaders))assert.equal(byName[region]?.leader,leader);
+  assert.equal(byName['город Донецк'].organization,'Общественная организация местная национально-культурная автономия евреев города Донецка');
+  assert.equal(byName['город Донецк'].registration,'26.02.2026');
+  assert.equal(byName['город Мариуполь'].organization,'Общественная организация местная национально-культурная автономия евреев города Мариуполя');
+  assert.equal(byName['город Мариуполь'].registration,'27.02.2026');
+  const southern=districts.find(d=>d.name==='Южный федеральный округ');
+  assert.ok(southern.regions.some(r=>r.name==='город Донецк'));
+  assert.ok(southern.regions.some(r=>r.name==='город Мариуполь'));
 });
 test('migrates documents and financial reports without legacy source captions',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');

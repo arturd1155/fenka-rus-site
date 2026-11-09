@@ -62,8 +62,30 @@ const corrections={
   'Республика Хакасия':{leader:'Григорий Давидович Пехотник',role:'Председатель'},
   'Иркутская область':{leader:'Игорь Эдуардович Пикерский',role:'Президент',phone:'Тел.: (3952) 20-91-22, 20-91-23'},
   'Еврейская автономная область':{leader:'Наум Беньаминович Ливант',role:'Руководитель'},
-  'Приморский край':{leader:'',role:''}
+  'Ивановская область':{leader:'Юсфин Елена Леонидовна',role:'Председатель'},
+  'Калужская область':{leader:'Денисов Борис Михайлович',role:'Председатель'},
+  'Липецкая область':{leader:'Асеев Олег Владимирович',role:'Председатель'},
+  'Тверская область':{leader:'Ротенфельд Александр Евсеевич',role:'Председатель'},
+  'Архангельская область':{leader:'Лобанова Дарья Михайловна',role:'Председатель'},
+  'Приморский край':{leader:'Клебанов Григорий Вениаминович',role:'Председатель'}
 };
+
+const newBranches=[
+  {
+    name:'город Донецк',
+    organization:'Общественная организация местная национально-культурная автономия евреев города Донецка',
+    registration:'26.02.2026',
+    leader:'Карнаух Дмитрий Викторович',
+    role:'Председатель',phone:'',email:'',image:'',description:'',source:''
+  },
+  {
+    name:'город Мариуполь',
+    organization:'Общественная организация местная национально-культурная автономия евреев города Мариуполя',
+    registration:'27.02.2026',
+    leader:'Головин Юрий Всеволодович',
+    role:'Председатель',phone:'',email:'',image:'',description:'',source:''
+  }
+];
 
 function replaceRequired(source,needle,replacement){
   if(!source.includes(needle))throw new Error(`Regions portrait hook could not find: ${needle.slice(0,80)}`);
@@ -89,9 +111,11 @@ process.nextTick(()=>{
   for(const district of districts){
     district.regions=district.regions.filter(region=>region.name!=='Калининградская область'&&!region.name.startsWith('BANDIT4D'));
     for(const region of district.regions)if(corrections[region.name])Object.assign(region,corrections[region.name]);
+    if(district.name==='Южный федеральный округ')for(const branch of newBranches){
+      if(!district.regions.some(region=>region.name===branch.name))district.regions.push(branch);
+    }
   }
   html=html.slice(0,dataStart)+JSON.stringify(districts)+html.slice(dataEnd);
-  html=replaceRequired(html,'<strong>54</strong><span>региональных','<strong>52</strong><span>региональных');
   const css=`<style>
   .region-leader-photo{display:block;object-fit:cover;object-position:center 22%;background:#edf4f8;border:1px solid rgba(18,63,112,.14)}
   .region-leader-photo--small{width:58px;height:68px;border-radius:10px}
