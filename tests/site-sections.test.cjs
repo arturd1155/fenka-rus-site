@@ -403,7 +403,11 @@ test('publishes the Code of Heritage flagship project from the approved brief',(
   assert.match(detail,/href="mailto:info@fenkar\.ru\?subject=/);
   assert.match(detail,/href="\/support\/"/);
   assert.match(detail,/class="heritage-support"/);
-  assert.equal(fs.existsSync('dist/assets/projects/kod-naslediya.webp'),true);
+  assert.match(detail,/class="heritage-banner"/);
+  assert.match(detail,/class="heritage-action-grid"/);
+  assert.match(detail,/Код наследия — цифровая медиатека еврейской жизни России/);
+  assert.doesNotMatch(detail,/class="heritage-hero__grid"/);
+  assert.equal(fs.existsSync('dist/assets/projects/kod-naslediya.jpg'),true);
 });
 
 test('every project card and detail page uses its locally hosted cover',()=>{
@@ -411,7 +415,7 @@ test('every project card and detail page uses its locally hosted cover',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
   for(const project of projects){
-    const cover=`/assets/projects/${project.slug}.webp`;
+    const cover=`/assets/projects/${project.slug}${project.slug==='kod-naslediya'?'.jpg':'.webp'}`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
     assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));
     const detail=fs.readFileSync(`dist/projects/${project.slug}/index.html`,'utf8');
