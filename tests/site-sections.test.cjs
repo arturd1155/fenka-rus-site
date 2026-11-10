@@ -375,7 +375,9 @@ test('published pages contain no links that jump to the top as placeholders',()=
 
 test('projects archive is fully migrated into internal catalogue and detail pages',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
-  assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,26);
+  assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,25);
+  assert.doesNotMatch(catalogue,/Видеоролики на канале ФЕНКА/);
+  assert.equal(fs.existsSync('dist/projects/videoroliki-na-kanale-fenka/index.html'),false);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
   assert.doesNotMatch(catalogue,/Архив объединяет 25 программ ФЕНКА|class="projects-intro"/);
   for(const title of ['Память и будущее','Международный фестиваль еврейской музыки в Казани','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));

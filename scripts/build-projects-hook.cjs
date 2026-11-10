@@ -10,6 +10,8 @@ const jpgCovers=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii',
 const coverFile=project=>project.slug+(jpgCovers.has(project.slug)?'.jpg':'.webp');
 
 process.nextTick(()=>{
+  fs.rmSync(path.join(dist,'projects','videoroliki-na-kanale-fenka'),{recursive:true,force:true});
+  fs.rmSync(path.join(dist,'assets','projects','videoroliki-na-kanale-fenka.webp'),{force:true});
   fs.copyFileSync(path.join(root,'shared','projects.css'),path.join(dist,'shared','projects.css'));
   fs.copyFileSync(path.join(root,'shared','heritage-project.css'),path.join(dist,'shared','heritage-project.css'));
   const coversDir=path.join(dist,'assets','projects');
