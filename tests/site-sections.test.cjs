@@ -398,15 +398,20 @@ test('publishes the Code of Heritage flagship project from the approved brief',(
   assert.match(homepage,/href="\/projects\/kod-naslediya\/"/);
   assert.match(catalogue,/Цифровая память еврейской жизни России/);
   assert.match(catalogue,/href="\/projects\/kod-naslediya\/"/);
+  const heritageCard=catalogue.match(/<a class="project-card[^>]*href="\/projects\/kod-naslediya\/">[\s\S]*?<\/a>/)?.[0]||'';
+  assert.doesNotMatch(heritageCard,/project-card__number/);
   for(const text of ['У каждого народа есть история','Помогите сохранить историю','Исследовать медиатеку','Пополнить коллекцию','Стать частью наследия'])assert.match(detail,new RegExp(text));
   assert.match(detail,/href="\/media\/heritage\/"/);
   assert.match(detail,/href="mailto:info@fenkar\.ru\?subject=/);
   assert.match(detail,/href="\/support\/"/);
   assert.match(detail,/class="heritage-support"/);
+  const heritageCss=fs.readFileSync('dist/shared/heritage-project.css','utf8');
+  assert.match(heritageCss,/\.heritage-support h2\{[^}]*color:#fff/);
   assert.match(detail,/class="heritage-banner"/);
   assert.match(detail,/class="heritage-action-grid"/);
   assert.match(detail,/Код наследия — цифровая медиатека еврейской жизни России/);
   assert.doesNotMatch(detail,/class="heritage-hero__grid"/);
+  assert.doesNotMatch(detail,/<small>0[123]<\/small>/);
   assert.equal(fs.existsSync('dist/assets/projects/kod-naslediya.jpg'),true);
 });
 
