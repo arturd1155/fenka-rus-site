@@ -375,7 +375,7 @@ test('published pages contain no links that jump to the top as placeholders',()=
 
 test('projects archive is fully migrated into internal catalogue and detail pages',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
-  assert.equal((catalogue.match(/class="project-card"/g)||[]).length,25);
+  assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,26);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
   assert.doesNotMatch(catalogue,/Архив объединяет 25 программ ФЕНКА|class="projects-intro"/);
   for(const title of ['Память и Будущее','Фестиваль еврейской музыки','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));
@@ -389,6 +389,21 @@ test('projects archive is fully migrated into internal catalogue and detail page
   const memory=fs.readFileSync('dist/projects/pamyat-i-budushhee/index.html','utf8');
   assert.match(memory,/ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ/);
   assert.match(memory,/КУЛЬТУРНО-ПРОСВЕТИТЕЛЬСКИЙ ДИСКУРС/);
+});
+test('publishes the Code of Heritage flagship project from the approved brief',()=>{
+  const homepage=fs.readFileSync('dist/index.html','utf8');
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  const detail=fs.readFileSync('dist/projects/kod-naslediya/index.html','utf8');
+  assert.match(homepage,/Код наследия/);
+  assert.match(homepage,/href="\/projects\/kod-naslediya\/"/);
+  assert.match(catalogue,/Цифровая память еврейской жизни России/);
+  assert.match(catalogue,/href="\/projects\/kod-naslediya\/"/);
+  for(const text of ['У каждого народа есть история','Помогите сохранить историю','Исследовать медиатеку','Пополнить коллекцию','Стать частью наследия'])assert.match(detail,new RegExp(text));
+  assert.match(detail,/href="\/media\/heritage\/"/);
+  assert.match(detail,/href="mailto:info@fenkar\.ru\?subject=/);
+  assert.match(detail,/href="\/support\/"/);
+  assert.match(detail,/class="heritage-support"/);
+  assert.equal(fs.existsSync('dist/assets/projects/kod-naslediya.webp'),true);
 });
 
 test('every project card and detail page uses its locally hosted cover',()=>{
@@ -409,7 +424,8 @@ test('every project detail page has a prominent support action',()=>{
   const projects=require('../site/projects-data.cjs');
   for(const project of projects){
     const detail=fs.readFileSync(`dist/projects/${project.slug}/index.html`,'utf8');
-    assert.match(detail,/<a class="project-support" href="\/support\/"><span class="project-support__copy"><small>Ваша помощь важна<\/small><b>Поддержать проект<\/b><\/span><span class="project-support__icon" aria-hidden="true">→<\/span><\/a>/);
+    assert.match(detail,/<a class="project-support" href="\/support\/">/);
+    assert.match(detail,/Поддержать проект|Стать частью наследия/);
     assert.doesNotMatch(detail,/Связаться с ФЕНКА/);
   }
 });
