@@ -378,7 +378,7 @@ test('projects archive is fully migrated into internal catalogue and detail page
   assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,26);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
   assert.doesNotMatch(catalogue,/Архив объединяет 25 программ ФЕНКА|class="projects-intro"/);
-  for(const title of ['Память и Будущее','Фестиваль еврейской музыки','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));
+  for(const title of ['Память и будущее','Международный фестиваль еврейской музыки в Казани','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));
   for(const slug of ['pamyat-i-budushhee','festival-evrejskoj-muzyki','kulturnyj-otdel','shkola-liderov-fenka','strana-geroev']){
     const file=`dist/projects/${slug}/index.html`;
     assert.equal(fs.existsSync(file),true,`${file} is missing`);
@@ -387,8 +387,8 @@ test('projects archive is fully migrated into internal catalogue and detail page
     assert.doesNotMatch(detail,/fenka\.online\/project\//);
   }
   const memory=fs.readFileSync('dist/projects/pamyat-i-budushhee/index.html','utf8');
-  assert.match(memory,/ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ/);
-  assert.match(memory,/КУЛЬТУРНО-ПРОСВЕТИТЕЛЬСКИЙ ДИСКУРС/);
+  assert.match(memory,/основы проектной деятельности/);
+  assert.match(memory,/форматы культурно-просветительских мероприятий/);
 });
 test('publishes the Code of Heritage flagship project from the approved brief',()=>{
   const homepage=fs.readFileSync('dist/index.html','utf8');
@@ -415,12 +415,44 @@ test('publishes the Code of Heritage flagship project from the approved brief',(
   assert.equal(fs.existsSync('dist/assets/projects/kod-naslediya.jpg'),true);
 });
 
+test('publishes all eight projects from the approved project brief in the flagship layout',()=>{
+  const projects=[
+    ['kinoklub-fenka-v-dome-narodov-rossii','Больше, чем кино. Пространство, которое объединяет.','Иногда один фильм способен рассказать больше, чем сотни книг.','Афиша кинопоказов'],
+    ['shalom-rossiya','Открывай историю. Находи пары. Сохраняй память.','Можно ли познакомиться с историей целого народа, просто играя?','Познакомиться с игрой'],
+    ['sinagogi-mira','У каждого здания — своя история. У каждой истории — своя душа.','Меняются города и поколения, но архитектура продолжает хранить удивительные истории.','Исследовать синагоги мира'],
+    ['onko-stop','Поддерживаем науку. Даём открытиям шанс.','Научное открытие может изменить тысячи жизней. Но сначала кто-то должен дать ему шанс.','Узнать о программе'],
+    ['zabota-o-svoih','Мы рядом с теми, кто всегда рядом с другими.','Те, кто каждый день заботится о других, тоже нуждаются в заботе.','Подать заявку'],
+    ['fishki-ot-ilezera-i-mishki','Готовим вместе. Сохраняем традиции. Становимся ближе.','У каждой семьи есть особенные рецепты. Но самый главный — когда все собираются вместе.','Посмотреть рецепты'],
+    ['festival-evrejskoj-muzyki','Разные культуры. Разные поколения. Одна музыка, которая объединяет.','У музыки нет национальности. Но у каждого народа есть мелодии, в которых живёт его история.','О фестивале'],
+    ['pamyat-i-budushhee','Помним прошлое. Сохраняем будущее.','Мы не можем изменить прошлое. Но можем сделать всё, чтобы его трагедии не повторились.','Стать участником']
+  ];
+  for(const [slug,slogan,intro,action] of projects){
+    const detail=fs.readFileSync(`dist/projects/${slug}/index.html`,'utf8');
+    for(const text of [slogan,intro,action]) assert.ok(detail.includes(text),`${slug} must include: ${text}`);
+    assert.match(detail,/class="heritage-banner"/);
+    assert.match(detail,/class="heritage-action-grid"/);
+    assert.match(detail,/class="heritage-support"/);
+  }
+});
+
+test('uses the six supplied project covers without numbering their catalogue cards',()=>{
+  const slugs=['kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki'];
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  for(const slug of slugs){
+    assert.equal(fs.existsSync(`dist/assets/projects/${slug}.jpg`),true,`${slug}.jpg is missing`);
+    const card=catalogue.match(new RegExp(`<a class="project-card[^>]*href="/projects/${slug}/">[\\s\\S]*?</a>`))?.[0]||'';
+    assert.match(card,new RegExp(`/assets/projects/${slug}\\.jpg`));
+    assert.doesNotMatch(card,/project-card__number/);
+  }
+});
+
 test('every project card and detail page uses its locally hosted cover',()=>{
   const projects=require('../site/projects-data.cjs');
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
   for(const project of projects){
-    const cover=`/assets/projects/${project.slug}${project.slug==='kod-naslediya'?'.jpg':'.webp'}`;
+    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki']);
+    const cover=`/assets/projects/${project.slug}${jpgSlugs.has(project.slug)?'.jpg':'.webp'}`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
     assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));
     const detail=fs.readFileSync(`dist/projects/${project.slug}/index.html`,'utf8');
