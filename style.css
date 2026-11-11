@@ -34,3 +34,4 @@
 .hero-map__visual{width:max(100vw,178.9vh);height:max(100vh,55.9vw)}
 @media(max-width:720px){.hero-map__visual{width:max(100vw,178.9vh);height:max(100vh,55.9vw)}}
 .story-hero[data-scene="culture"] .hero-map{opacity:.72;transform:scale(1.03);filter:brightness(.62) saturate(.95)}
+@media(max-width:720px){.hero-map__visual{left:50%;top:42%;width:100vw;height:55.9vw}.hero-map__visual>img{object-fit:contain;object-position:center center}.hero-network__connection:nth-child(n+9){display:none}.hero-network__pulse{display:none}.hero-network__line{animation:none;stroke-dashoffset:0}.hero-region-marker{width:24px;height:24px}.hero-region-marker:before{inset:7px;animation:none;filter:none}}
