@@ -13,8 +13,39 @@ test('hero exposes the agreed narrative and one primary action',()=>{
   assert.match(html,/href="\/#aboutFenka"[^>]*>\s*Узнать о ФЕНКА/);
 });
 
+test('homepage hero uses the approved standalone map and an accessible marker layer',()=>{
+  assert.match(html,/src="homepage-regions-map\.png"/);
+  assert.doesNotMatch(html,/class="hero-connections"/);
+  assert.match(html,/id="heroRegionMarkers"/);
+  assert.doesNotMatch(html,/id="heroMap"[^>]*aria-hidden="true"/);
+  assert.match(html,/aria-label="Региональные отделения ФЕНКА на карте России"/);
+});
+
+test('homepage marker data renders named links to the unchanged regions section',()=>{
+  const js=fs.readFileSync('app.js','utf8');
+  const markerRecords=js.match(/\{name:'[^']+',x:\d+(?:\.\d+)?,y:\d+(?:\.\d+)?\}/g)||[];
+  assert.ok(markerRecords.length>=40,`expected at least 40 regional markers, got ${markerRecords.length}`);
+  assert.match(js,/heroRegionMarkers/);
+  assert.match(js,/href="\/regions\/"/);
+  assert.match(js,/aria-label/);
+  assert.match(js,/--x/);
+  assert.match(js,/--y/);
+  const regionsSource=fs.readFileSync('regions-interactive.html','utf8');
+  assert.match(regionsSource,/src="fenka-regions-visual-clean\.png"/);
+  assert.doesNotMatch(regionsSource,/homepage-regions-map\.png/);
+});
+
+test('homepage map markers remain usable on keyboard and mobile',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(css,/\.hero-region-marker\{/);
+  assert.match(css,/\.hero-region-marker:focus-visible/);
+  assert.match(css,/\.hero-region-marker__label/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker/);
+});
+
 test('hero has a usable no-script and screen-reader structure',()=>{
-  assert.match(html,/id="heroMap"[^>]*aria-hidden="true"/);
+  assert.doesNotMatch(html,/id="heroMap"[^>]*aria-hidden="true"/);
+  assert.match(html,/id="heroCollage"[^>]*aria-hidden="true"/);
   assert.match(html,/<noscript>[\s\S]*ФЕНКА объединяет/);
   assert.match(html,/id="aboutFenka"/);
 });
@@ -45,7 +76,7 @@ test('about section combines manifesto and history',()=>{
 });
 
 test('distribution contains every homepage dependency',()=>{
-  for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png']){
+  for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png','homepage-regions-map.png']){
     assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
   }
 });

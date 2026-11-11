@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="homepage-regions-map.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,9 +34,9 @@
 
   <main id="main">
     <section class="story-hero" id="homeHero" data-scene="network">
-      <div class="hero-stage" aria-hidden="true">
-        <div class="hero-atmosphere"></div>
-        <div class="hero-map" id="heroMap" aria-hidden="true"><img src="fenka-regions-visual-clean.png" alt=""><div class="hero-connections"></div></div>
+      <div class="hero-stage">
+        <div class="hero-atmosphere" aria-hidden="true"></div>
+        <div class="hero-map" id="heroMap"><div class="hero-map__visual"><img src="homepage-regions-map.png" width="1680" height="939" alt="Карта России с региональными отделениями ФЕНКА"><nav class="hero-region-markers" id="heroRegionMarkers" aria-label="Региональные отделения ФЕНКА на карте России"></nav></div></div>
         <div class="hero-collage" id="heroCollage" aria-hidden="true"><div class="culture-frame culture-frame--one"></div><div class="culture-frame culture-frame--two"></div><div class="culture-frame culture-frame--three"></div></div>
       </div>
       <div class="shell hero-statement" id="heroStatement">
