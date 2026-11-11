@@ -55,6 +55,12 @@ test('homepage map fills the sticky viewport without illustration gutters',()=>{
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__visual>img\{[^}]*object-position:/);
 });
 
+test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
+  assert.match(html,/href="style\.css\?v=20261111-mobile2"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261111-mobile2"/);
+  assert.match(html,/src="app\.js\?v=20261111-mobile2"/);
+});
+
 test('homepage renders a decorative animated network behind clickable markers',()=>{
   const js=fs.readFileSync('app.js','utf8');
   const css=fs.readFileSync('style.css','utf8');
@@ -97,7 +103,7 @@ test('styles define all scenes and accessibility fallbacks',()=>{
 
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js"><\/script>[\s\S]*<script src="app\.js"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261111-mobile2"><\/script>[\s\S]*<script src="app\.js\?v=20261111-mobile2"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
