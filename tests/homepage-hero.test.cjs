@@ -70,6 +70,15 @@ test('homepage renders a decorative animated network behind clickable markers',(
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.hero-region-markers\{display:block/);
 });
 
+test('mobile hero shows the whole map and disables expensive continuous effects',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(css,/@media\(max-width:720px\)\{[^}]*\.hero-map__visual\{[^}]*left:50%[^}]*width:100vw[^}]*height:55\.9vw/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__pulse\{display:none/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line\{animation:none;stroke-dashoffset:0/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker:before\{animation:none/);
+});
+
 test('hero has a usable no-script and screen-reader structure',()=>{
   assert.doesNotMatch(html,/id="heroMap"[^>]*aria-hidden="true"/);
   assert.match(html,/id="heroCollage"[^>]*aria-hidden="true"/);
