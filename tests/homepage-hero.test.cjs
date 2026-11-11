@@ -43,6 +43,33 @@ test('homepage map markers remain usable on keyboard and mobile',()=>{
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker/);
 });
 
+test('homepage map fills the sticky viewport without illustration gutters',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(css,/\.hero-map\{[^}]*inset:0/);
+  assert.match(css,/\.hero-map__visual\{[^}]*width:max\([^}]*height:max\(/);
+  assert.match(css,/width:max\(100vw,178\.9vh\)/);
+  assert.match(css,/height:max\(100vh,55\.9vw\)/);
+  assert.match(css,/data-scene="culture"\] \.hero-map\{opacity:\.72;[^}]*filter:brightness/);
+  assert.match(css,/\.hero-map__visual>img\{[^}]*object-fit:cover/);
+  assert.match(css,/\.hero-map__visual>img\{[^}]*object-position:center center/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__visual>img\{[^}]*object-position:/);
+});
+
+test('homepage renders a decorative animated network behind clickable markers',()=>{
+  const js=fs.readFileSync('app.js','utf8');
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(html,/id="heroNetwork"[^>]*aria-hidden="true"/);
+  assert.match(js,/heroNetwork/);
+  assert.match(js,/hero-network__line/);
+  assert.match(js,/pathLength="1"/);
+  assert.match(js,/hero-network__pulse/);
+  assert.match(css,/@keyframes networkLineDraw/);
+  assert.match(css,/@keyframes networkPulseTravel/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+\d+\)/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.hero-network/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.hero-region-markers\{display:block/);
+});
+
 test('hero has a usable no-script and screen-reader structure',()=>{
   assert.doesNotMatch(html,/id="heroMap"[^>]*aria-hidden="true"/);
   assert.match(html,/id="heroCollage"[^>]*aria-hidden="true"/);

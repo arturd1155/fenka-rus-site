@@ -14,6 +14,9 @@ const homepageRegions=[
 function initHomepageRegionMarkers(){const layer=document.querySelector('#heroRegionMarkers');if(!layer)return;layer.innerHTML=homepageRegions.map(region=>`<a class="hero-region-marker" href="/regions/" aria-label="${region.name} — открыть раздел регионов" style="--x:${region.x}%;--y:${region.y}%"><span class="hero-region-marker__label">${region.name}</span></a>`).join('')}
 initHomepageRegionMarkers();
 
+function initHomepageNetwork(){const network=document.querySelector('#heroNetwork');if(!network)return;const connections=[[0,9],[9,14],[9,20],[20,26],[14,33],[33,39],[39,45],[45,47],[47,48],[48,49],[49,51],[51,52],[52,53],[26,30],[30,32],[32,41],[41,42],[42,45],[3,4],[4,45],[39,42],[45,49]];network.innerHTML=connections.map(([from,to],index)=>{const a=homepageRegions[from],b=homepageRegions[to],curve=Math.max(2,Math.abs(b.x-a.x)*.13),cx=(a.x+b.x)/2,cy=Math.min(a.y,b.y)-curve,id=`hero-route-${index}`;return `<g class="hero-network__connection" style="--delay:${(index%8)*.34}s"><path id="${id}" pathLength="1" class="hero-network__line hero-network__line--glow" d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"/><path pathLength="1" class="hero-network__line hero-network__line--core" d="M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}"/><circle class="hero-network__pulse" r=".32"><animateMotion dur="${5.2+(index%5)*.45}s" begin="${(index%7)*-.7}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle></g>`}).join('')}
+initHomepageNetwork();
+
 function initHomepageHero(){
   const hero=document.querySelector('#homeHero');
   if(!hero||!window.FenkaHero)return;
