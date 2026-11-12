@@ -46,6 +46,9 @@ test('homepage map markers remain usable on keyboard and mobile',()=>{
 test('homepage map fills the sticky viewport without illustration gutters',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(css,/\.hero-map\{[^}]*inset:0/);
+  assert.match(css,/\.story-hero\[data-scene="network"\] \.hero-map\{[^}]*transform:none/);
+  assert.match(css,/\.hero-map__visual\{[^}]*inset:0[^}]*width:100%[^}]*height:100%[^}]*transform:none/);
+  assert.match(css,/\.hero-map__visual:after\{[^}]*linear-gradient\(180deg[^}]*linear-gradient\(90deg/);
   assert.match(css,/\.hero-map__visual\{[^}]*width:max\([^}]*height:max\(/);
   assert.match(css,/width:max\(100vw,178\.9vh\)/);
   assert.match(css,/height:max\(100vh,55\.9vw\)/);
@@ -56,9 +59,9 @@ test('homepage map fills the sticky viewport without illustration gutters',()=>{
 });
 
 test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
-  assert.match(html,/href="style\.css\?v=20261112-mobile4"/);
-  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile4"/);
-  assert.match(html,/src="app\.js\?v=20261112-mobile4"/);
+  assert.match(html,/href="style\.css\?v=20261112-mobile5"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile5"/);
+  assert.match(html,/src="app\.js\?v=20261112-mobile5"/);
 });
 
 test('homepage renders a decorative animated network behind clickable markers',()=>{
@@ -126,7 +129,7 @@ test('styles define all scenes and accessibility fallbacks',()=>{
 
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile4"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile4"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile5"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile5"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
