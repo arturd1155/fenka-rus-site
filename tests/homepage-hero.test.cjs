@@ -62,14 +62,15 @@ test('final hero statement stays readable over the animated map',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(css,/\.story-hero\[data-scene="official"\]\{[^}]*background:#031427[^}]*color:#fff/);
   assert.match(css,/\.story-hero\[data-scene="official"\] \.hero-stage:after\{[^}]*opacity:1/);
+  assert.match(css,/\.hero-stage:after\{[^}]*radial-gradient\(ellipse at 55% 58%/);
   assert.match(css,/\.story-hero\[data-scene="official"\] \.hero-map\{[^}]*filter:brightness\(\.4\d\)/);
   assert.match(css,/\.story-hero\[data-scene="official"\] \.hero-statement h1\{[^}]*text-shadow:/);
 });
 
 test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
-  assert.match(html,/href="style\.css\?v=20261112-mobile6"/);
-  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile6"/);
-  assert.match(html,/src="app\.js\?v=20261112-mobile6"/);
+  assert.match(html,/href="style\.css\?v=20261112-mobile7"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile7"/);
+  assert.match(html,/src="app\.js\?v=20261112-mobile7"/);
 });
 
 test('homepage renders a decorative animated network behind clickable markers',()=>{
@@ -137,7 +138,7 @@ test('styles define all scenes and accessibility fallbacks',()=>{
 
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile6"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile6"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile7"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile7"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
