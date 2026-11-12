@@ -192,6 +192,7 @@ test('homepage initiatives use a responsive full-card editorial mosaic',()=>{
   assert.match(css,/@media\(hover:hover\)[\s\S]*\.initiative-card:hover \.initiative-art\{[^}]*transform:scale/);
   assert.match(css,/@media\(max-width:900px\)[\s\S]*\.initiative-grid\{[^}]*grid-template-columns:repeat\(2,1fr\)/);
   assert.match(css,/@media\(max-width:640px\)[\s\S]*\.initiative-grid\{[^}]*grid-template-columns:1fr/);
+  assert.match(css,/@media\(max-width:640px\)[\s\S]*\.initiative-card--lead,[^\{]*\.initiative-card--festival\{[^}]*aspect-ratio:16\/10[^}]*min-height:0/);
 });
 
 test('distribution uses homepage at root and regions as a site section',()=>{
