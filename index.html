@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="homepage-regions-map-v2.webp?v=20261112-concept2" type="image/webp" media="(min-width: 721px)">
   <link rel="preload" as="image" href="homepage-regions-mobile.webp?v=20261112-concept2" type="image/webp" media="(max-width: 720px)">
-  <link rel="stylesheet" href="style.css?v=20261112-mobile8">
+  <link rel="stylesheet" href="style.css?v=20261112-mobile9">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -78,13 +78,28 @@
       </div>
     </section>
 
-    <section class="section projects" id="projects">
-      <div class="shell section-heading"><div><p class="eyebrow red">Флагманские проекты</p><h2>Инициативы ФЕНКА</h2></div><a class="text-link dark" href="/projects/">Все проекты <span>→</span></a></div>
-      <div class="shell project-grid">
-        <article class="project-card project-large"><div class="project-image image-heritage-code"></div><div class="project-copy"><p>Цифровое наследие</p><h3>Код наследия</h3><span>Цифровая память еврейской жизни России</span><a href="/projects/kod-naslediya/" aria-label="Подробнее о проекте Код наследия">→</a></div></article>
-        <article class="project-card"><div class="project-image image-cultural-department"></div><div class="project-copy"><p>Культура и наследие</p><h3>Культурный отдел ФЕНКА</h3><span>Федеральные культурные программы, творческие инициативы и сохранение традиций</span><a href="/projects/kulturnyj-otdel/" aria-label="Подробнее о Культурном отделе ФЕНКА">→</a></div></article>
-        <article class="project-card"><div class="project-image image-new-horizons"></div><div class="project-copy"><p>Развитие</p><h3>Новые горизонты</h3><span>Проект, объединяющий новые идеи, участников и возможности для развития</span><a href="/projects/" aria-label="Подробнее о проекте Новые горизонты">→</a></div></article>
-        <article class="project-card"><div class="project-image image-kazan-festival"></div><div class="project-copy"><p>Музыка и традиции</p><h3>Фестиваль еврейской музыки в Казани</h3><span>Культурное событие, раскрывающее еврейское музыкальное наследие</span><a href="/projects/" aria-label="Подробнее о фестивале еврейской музыки в Казани">→</a></div></article>
+    <section class="section projects initiatives" id="projects">
+      <div class="shell section-heading initiatives-heading">
+        <div><p class="eyebrow red">Флагманские проекты</p><h2>Инициативы ФЕНКА</h2></div>
+        <a class="text-link dark" href="/projects/">Все проекты <span>→</span></a>
+      </div>
+      <div class="shell initiative-grid">
+        <a href="/projects/kod-naslediya/" class="initiative-card initiative-card--lead" aria-label="О проекте Код наследия">
+          <span class="initiative-art initiative-art--heritage" aria-hidden="true"></span><span class="initiative-shade" aria-hidden="true"></span>
+          <span class="initiative-content"><span class="initiative-topline"><span class="initiative-meta">Цифровое наследие</span><span class="initiative-index">Флагманский проект</span></span><h3>Код наследия</h3><span class="initiative-summary">Цифровая память еврейской жизни России</span><span class="initiative-arrow" aria-hidden="true">↗</span></span>
+        </a>
+        <a href="/projects/kulturnyj-otdel/" class="initiative-card initiative-card--culture" aria-label="О Культурном отделе ФЕНКА">
+          <span class="initiative-art initiative-art--culture" aria-hidden="true"></span><span class="initiative-shade" aria-hidden="true"></span>
+          <span class="initiative-content"><span class="initiative-topline"><span class="initiative-meta">Культура и наследие</span><span class="initiative-index">Федеральная программа</span></span><h3>Культурный отдел ФЕНКА</h3><span class="initiative-summary">Творческие инициативы и сохранение традиций</span><span class="initiative-arrow" aria-hidden="true">↗</span></span>
+        </a>
+        <a href="/projects/" class="initiative-card initiative-card--horizons" aria-label="О проекте Новые горизонты">
+          <span class="initiative-art initiative-art--horizons" aria-hidden="true"></span><span class="initiative-shade" aria-hidden="true"></span>
+          <span class="initiative-content"><span class="initiative-topline"><span class="initiative-meta">Развитие</span><span class="initiative-index">Новые возможности</span></span><h3>Новые горизонты</h3><span class="initiative-summary">Идеи, участники и возможности для развития</span><span class="initiative-arrow" aria-hidden="true">↗</span></span>
+        </a>
+        <a href="/projects/festival-evrejskoj-muzyki/" class="initiative-card initiative-card--festival" aria-label="О фестивале еврейской музыки в Казани">
+          <span class="initiative-art initiative-art--festival" aria-hidden="true"></span><span class="initiative-shade" aria-hidden="true"></span>
+          <span class="initiative-content"><span class="initiative-topline"><span class="initiative-meta">Музыка и традиции</span><span class="initiative-index">Казань</span></span><h3>Фестиваль еврейской музыки</h3><span class="initiative-summary">Культурное событие, раскрывающее музыкальное наследие</span><span class="initiative-arrow" aria-hidden="true">↗</span></span>
+        </a>
       </div>
     </section>
 
@@ -117,6 +132,6 @@
   </main>
 
   <footer><div class="shell footer-grid"><div><a class="brand footer-brand" href="#" aria-label="ФЕНКА — главная"><img src="fenka-logo-official.png" width="1311" height="343" alt="ФЕНКА — Федеральная еврейская национально-культурная автономия"></a><p>Москва · info@fenkar.ru<br>+7 495 309-00-11</p></div><div><h3>Организация</h3><a href="/#aboutFenka">О ФЕНКА</a><a href="#">Руководство</a><a href="#">Документы</a><a href="#">Отчётность</a></div><div><h3>Деятельность</h3><a href="/regions/">Регионы</a><a href="/#projects">Проекты</a><a href="/#events">События</a><a href="/media/">Медиатека</a></div><div><h3>Связаться</h3><a href="#">Контакты</a><a href="#">ВКонтакте</a><a href="#">Telegram</a><a href="/#join">Поддержать</a></div></div><div class="shell footer-bottom"><span>© 2026 ОО «ФЕНКА»</span><a href="#">Политика конфиденциальности</a><span>Прототип главной страницы</span></div></footer>
-  <script src="hero-controller.js?v=20261112-mobile8"></script><script src="app.js?v=20261112-mobile8"></script>
+  <script src="hero-controller.js?v=20261112-mobile9"></script><script src="app.js?v=20261112-mobile9"></script>
 </body>
 </html>

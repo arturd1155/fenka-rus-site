@@ -51,3 +51,35 @@
 /* Keep the symbolic handshake quiet while the exact Russia map stays above it. */
 .hero-map__art img{z-index:0}.hero-map__art:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 53% 59%,rgba(3,20,39,.78) 0,rgba(3,20,39,.68) 24%,rgba(3,20,39,.38) 43%,rgba(3,20,39,.12) 58%,transparent 72%)}
 @media(max-width:720px){.hero-map__art:after{background:radial-gradient(ellipse at 50% 57%,rgba(3,20,39,.82) 0,rgba(3,20,39,.72) 26%,rgba(3,20,39,.4) 45%,rgba(3,20,39,.12) 60%,transparent 74%)}}
+
+/* Modern homepage initiatives editorial mosaic */
+.projects.initiatives{position:relative;overflow:hidden;background:#edf3f7}
+.projects.initiatives:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.8),transparent 45%),radial-gradient(circle at 92% 12%,rgba(42,111,163,.11),transparent 28%)}
+.initiatives-heading{position:relative;z-index:1}
+.initiative-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(250px,1fr);gap:18px}
+.initiative-card{position:relative;isolation:isolate;min-height:300px;overflow:hidden;border:1px solid rgba(255,255,255,.28);border-radius:2px;background:#08243f;color:#fff;text-decoration:none;box-shadow:0 20px 48px rgba(20,50,75,.11);transition:box-shadow .35s ease,transform .35s ease}
+.initiative-card--lead{grid-column:span 7;grid-row:span 2;min-height:660px}
+.initiative-card--culture,.initiative-card--horizons,.initiative-card--festival{grid-column:span 5}
+.initiative-art,.initiative-shade{position:absolute;inset:0}
+.initiative-art{z-index:-2;background-position:center;background-size:cover;transition:transform .55s cubic-bezier(.2,.75,.25,1),filter .35s ease}
+.initiative-shade{z-index:-1;background:linear-gradient(180deg,rgba(4,22,39,.08) 8%,rgba(4,22,39,.12) 34%,rgba(4,22,39,.9) 100%);transition:background .35s ease}
+.initiative-art--heritage{background-image:url('/assets/projects/kod-naslediya.jpg');background-position:center}
+.initiative-art--culture{background-image:url('/assets/projects/kulturnyj-otdel.webp')}
+.initiative-art--festival{background-image:url('/assets/projects/festival-evrejskoj-muzyki.webp')}
+.initiative-art--horizons{background:radial-gradient(circle at 72% 31%,rgba(120,218,255,.9) 0 2px,transparent 3px),radial-gradient(circle at 31% 68%,rgba(255,107,120,.88) 0 3px,transparent 4px),radial-gradient(circle at 53% 46%,rgba(255,255,255,.9) 0 2px,transparent 3px),repeating-linear-gradient(118deg,transparent 0 58px,rgba(154,220,255,.12) 59px 60px),linear-gradient(135deg,#0c2d4e 0,#175581 54%,#091f39 100%)}
+.initiative-art--horizons:before,.initiative-art--horizons:after{content:"";position:absolute;border:1px solid rgba(170,225,255,.38);border-radius:50%;box-shadow:0 0 34px rgba(68,176,239,.18)}
+.initiative-art--horizons:before{width:72%;height:72%;left:14%;top:15%;transform:rotate(-18deg)}
+.initiative-art--horizons:after{width:44%;height:44%;right:-6%;bottom:-9%;border-color:rgba(255,115,128,.32)}
+.initiative-content{position:relative;display:flex;height:100%;min-height:inherit;padding:clamp(25px,3vw,42px);flex-direction:column;justify-content:flex-end}
+.initiative-topline{position:absolute;top:clamp(22px,2.5vw,34px);left:clamp(25px,3vw,42px);right:clamp(25px,3vw,42px);display:flex;justify-content:space-between;gap:16px;align-items:center}
+.initiative-meta,.initiative-index{font-size:9px;font-weight:700;line-height:1.4;letter-spacing:.12em;text-transform:uppercase}
+.initiative-meta{color:#ff808a}
+.initiative-index{color:rgba(255,255,255,.72);text-align:right}
+.initiative-content h3{max-width:640px;margin:0 70px 12px 0;color:#fff;font:400 clamp(27px,2.4vw,43px)/1.14 var(--serif);letter-spacing:-.025em;text-wrap:balance}
+.initiative-card--lead .initiative-content h3{font-size:clamp(38px,4.5vw,70px)}
+.initiative-summary{display:block;max-width:480px;color:rgba(255,255,255,.8);font-size:12px;line-height:1.6}
+.initiative-arrow{position:absolute;right:clamp(24px,3vw,40px);bottom:clamp(24px,3vw,38px);display:grid;width:48px;height:48px;place-items:center;border:1px solid rgba(255,255,255,.5);border-radius:50%;font-size:21px;transition:background .3s ease,color .3s ease,transform .3s ease}
+.initiative-card:focus-visible{outline:3px solid #c13745;outline-offset:4px}
+@media(hover:hover){.initiative-card:hover{transform:translateY(-3px);box-shadow:0 28px 62px rgba(20,50,75,.2)}.initiative-card:hover .initiative-art{transform:scale(1.045)}.initiative-card:hover .initiative-shade{background:linear-gradient(180deg,rgba(4,22,39,.04) 8%,rgba(4,22,39,.08) 34%,rgba(4,22,39,.82) 100%)}.initiative-card:hover .initiative-arrow{background:#fff;color:var(--deep);transform:rotate(45deg)}}
+@media(max-width:900px){.initiative-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto}.initiative-card--lead,.initiative-card--culture,.initiative-card--horizons,.initiative-card--festival{grid-column:span 1;grid-row:auto;min-height:390px}.initiative-card--lead{grid-column:1/-1;min-height:520px}}
+@media(max-width:640px){.projects.initiatives{padding:78px 0}.initiatives-heading{margin-bottom:30px;align-items:flex-start}.initiatives-heading .text-link{margin-top:8px}.initiative-grid{grid-template-columns:1fr;gap:14px}.initiative-card--lead,.initiative-card--culture,.initiative-card--horizons,.initiative-card--festival{grid-column:auto;min-height:350px}.initiative-card--lead{min-height:430px}.initiative-content{padding:25px}.initiative-topline{top:23px;left:25px;right:25px}.initiative-index{display:none}.initiative-content h3,.initiative-card--lead .initiative-content h3{margin-right:54px;font-size:clamp(29px,9vw,42px)}.initiative-summary{padding-right:52px}.initiative-arrow{right:24px;bottom:24px;width:43px;height:43px}}

@@ -75,9 +75,9 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
-  assert.match(html,/href="style\.css\?v=20261112-mobile8"/);
-  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile8"/);
-  assert.match(html,/src="app\.js\?v=20261112-mobile8"/);
+  assert.match(html,/href="style\.css\?v=20261112-mobile9"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile9"/);
+  assert.match(html,/src="app\.js\?v=20261112-mobile9"/);
 });
 
 test('homepage renders a decorative animated network behind clickable markers',()=>{
@@ -145,7 +145,7 @@ test('styles define all scenes and accessibility fallbacks',()=>{
 
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile8"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile8"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile9"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile9"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
@@ -177,6 +177,21 @@ test('homepage omits the president and online library promos',()=>{
   assert.doesNotMatch(html,/Онлайн-библиотека/i);
   assert.doesNotMatch(html,/href="\/#media"/);
   assert.ok((html.match(/href="\/media\/"/g)||[]).length>=2,'desktop and mobile media navigation must use /media/');
+});
+
+test('homepage initiatives use a responsive full-card editorial mosaic',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  const block=html.match(/<section class="section projects(?:\s[^"]*)?"[\s\S]*?<\/section>/)?.[0]||'';
+  assert.equal((block.match(/<a[^>]*class="initiative-card(?:\s|\")/g)||[]).length,4);
+  assert.equal((block.match(/initiative-card--lead/g)||[]).length,1);
+  assert.match(block,/href="\/projects\/kod-naslediya\/"[^>]*class="initiative-card initiative-card--lead"/);
+  assert.match(block,/initiative-art--horizons/);
+  for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.webp','festival-evrejskoj-muzyki.webp'])assert.match(css,new RegExp(cover.replace('.','\\.')));
+  assert.match(css,/\.initiative-grid\{[^}]*grid-template-columns:repeat\(12,1fr\)/);
+  assert.match(css,/\.initiative-card:focus-visible\{[^}]*outline:/);
+  assert.match(css,/@media\(hover:hover\)[\s\S]*\.initiative-card:hover \.initiative-art\{[^}]*transform:scale/);
+  assert.match(css,/@media\(max-width:900px\)[\s\S]*\.initiative-grid\{[^}]*grid-template-columns:repeat\(2,1fr\)/);
+  assert.match(css,/@media\(max-width:640px\)[\s\S]*\.initiative-grid\{[^}]*grid-template-columns:1fr/);
 });
 
 test('distribution uses homepage at root and regions as a site section',()=>{
