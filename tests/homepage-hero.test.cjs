@@ -170,13 +170,13 @@ test('all about links target the implemented section and branding is official',(
   assert.equal((html.match(/src="fenka-logo-official\.png"/g)||[]).length,2);
 });
 
-test('homepage shows the approved FENKA president portrait and address',()=>{
-  const html=fs.readFileSync('dist/index.html','utf8');
-  assert.match(html,/src="\/sergey-melnikov-president\.png"/);
-  assert.match(html,/Мельников Сергей Евгеньевич/);
-  assert.match(html,/Сохраняя многовековые традиции еврейского народа/);
-  assert.doesNotMatch(html,/Имя и текст обращения требуют официального подтверждения/);
-  assert.equal(fs.existsSync('dist/sergey-melnikov-president.png'),true);
+test('homepage omits the president and online library promos',()=>{
+  assert.doesNotMatch(html,/<section class="section media"/);
+  assert.doesNotMatch(html,/<section class="section official"/);
+  assert.doesNotMatch(html,/Слово президента ФЕНКА/i);
+  assert.doesNotMatch(html,/Онлайн-библиотека/i);
+  assert.doesNotMatch(html,/href="\/#media"/);
+  assert.ok((html.match(/href="\/media\/"/g)||[]).length>=2,'desktop and mobile media navigation must use /media/');
 });
 
 test('distribution uses homepage at root and regions as a site section',()=>{
@@ -199,7 +199,7 @@ test('homepage does not duplicate the regions map and both headers use canonical
   const regionsSource=fs.readFileSync('regions-interactive.html','utf8');
   assert.doesNotMatch(html,/<section class="map-section/);
   assert.doesNotMatch(fs.readFileSync('app.js','utf8'),/regionSearch/);
-  const routes=['/#aboutFenka','/regions/','/#projects','/#events','/#media','/#news'];
+  const routes=['/#aboutFenka','/regions/','/#projects','/#events','/media/','/#news'];
   for(const route of routes){
     assert.match(html,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`home missing ${route}`);
     assert.match(regionsSource,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`regions missing ${route}`);
