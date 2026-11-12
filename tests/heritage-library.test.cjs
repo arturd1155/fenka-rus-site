@@ -79,23 +79,16 @@ test('build preserves the GitHub Pages custom domain',()=>{
   assert.equal(fs.readFileSync('dist/CNAME','utf8').trim(),'www.fenka-rus.ru');
 });
 
-test('homepage previews real heritage collections with working library links',()=>{
+test('homepage keeps the heritage library out of the streamlined front page',()=>{
   const html=fs.readFileSync('dist/index.html','utf8');
-  const expected=[
-    ['/media/heritage/#evrei','/media/heritage/thumbnails/evrei-cover.jpg'],
-    ['/media/heritage/#istorii','/media/heritage/thumbnails/nasledie-cover.jpg'],
-    ['/media/heritage/#sinagogi','/media/heritage/thumbnails/sinagogi-cover.jpg']
-  ];
-  for(const [href,src] of expected){
-    assert.match(html,new RegExp(`href="${href}"`));
-    assert.match(html,new RegExp(`src="${src}"`));
-  }
-  assert.match(html,/href="\/media\/heritage\/"[^>]*>Открыть всю библиотеку/);
+  assert.doesNotMatch(html,/\/media\/heritage\/#/);
+  assert.doesNotMatch(html,/\/media\/heritage\/thumbnails\//);
+  assert.match(html,/href="\/media\/"/);
 });
 
 test('homepage flagship initiatives are distinct from the media library',()=>{
   const html=fs.readFileSync('dist/index.html','utf8');
-  const block=html.match(/<section class="section projects"[\s\S]*?<\/section>/)?.[0]||'';
+  const block=html.match(/<section class="section projects(?:\s[^"]*)?"[\s\S]*?<\/section>/)?.[0]||'';
   for(const title of ['Культурный отдел ФЕНКА','Новые горизонты','Фестиваль еврейской музыки в Казани']){
     assert.match(block,new RegExp(title));
   }
