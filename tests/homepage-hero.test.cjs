@@ -14,7 +14,7 @@ test('hero exposes the agreed narrative and one primary action',()=>{
 });
 
 test('homepage hero uses the approved standalone map and an accessible marker layer',()=>{
-  assert.match(html,/src="homepage-regions-map\.png"/);
+  assert.match(html,/src="homepage-regions-map-v2\.webp\?v=20261112-concept2"/);
   assert.doesNotMatch(html,/class="hero-connections"/);
   assert.match(html,/id="heroRegionMarkers"/);
   assert.doesNotMatch(html,/id="heroMap"[^>]*aria-hidden="true"/);
@@ -56,9 +56,9 @@ test('homepage map fills the sticky viewport without illustration gutters',()=>{
 });
 
 test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
-  assert.match(html,/href="style\.css\?v=20261112-mobile3"/);
-  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile3"/);
-  assert.match(html,/src="app\.js\?v=20261112-mobile3"/);
+  assert.match(html,/href="style\.css\?v=20261112-mobile4"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile4"/);
+  assert.match(html,/src="app\.js\?v=20261112-mobile4"/);
 });
 
 test('homepage renders a decorative animated network behind clickable markers',()=>{
@@ -78,15 +78,17 @@ test('homepage renders a decorative animated network behind clickable markers',(
 
 test('mobile hero shows the whole map and disables expensive continuous effects',()=>{
   const css=fs.readFileSync('style.css','utf8');
-  assert.match(html,/<source media="\(max-width: 720px\)" srcset="homepage-regions-mobile\.webp\?v=20261112" type="image\/webp">/);
-  assert.match(html,/class="hero-map__geography" src="homepage-russia-regions\.svg\?v=20261112"/);
+  assert.match(html,/<source media="\(max-width: 720px\)" srcset="homepage-regions-mobile\.webp\?v=20261112-concept2" type="image\/webp">/);
+  assert.match(html,/class="hero-map__geography" src="homepage-russia-overlay\.svg\?v=20261112-concept2"/);
+  assert.match(html,/src="homepage-regions-map-v2\.webp\?v=20261112-concept2"/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__visual\{[^}]*inset:0[^}]*width:100%[^}]*height:100%/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*object-fit:cover/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.story-hero\[data-scene="network"\] \.hero-map\{transform:none/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*max-height:none/);
   assert.match(css,/\.hero-map__art img\{[^}]*max-height:none[^}]*object-fit:cover/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*width:100%[^}]*max-height:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*width:96vw[^}]*aspect-ratio:1280\/650/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*top:19%[^}]*width:96vw[^}]*aspect-ratio:1280\/650/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*mix-blend-mode:screen/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__geography\{display:block/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__pulse\{display:none/);
@@ -97,11 +99,13 @@ test('mobile hero shows the whole map and disables expensive continuous effects'
 test('mobile hero assets and exact geography are included in the static build',()=>{
   const build=fs.readFileSync('scripts/build-site.cjs','utf8')+fs.readFileSync('scripts/copy-homepage-map-assets.cjs','utf8');
   assert.match(build,/homepage-regions-mobile\.webp/);
-  assert.match(build,/homepage-russia-regions\.svg/);
+  assert.match(build,/homepage-regions-map-v2\.webp/);
+  assert.match(build,/homepage-russia-overlay\.svg/);
   assert.equal(fs.existsSync('homepage-regions-mobile.webp'),true);
-  assert.equal(fs.existsSync('homepage-russia-regions.svg'),true);
+  assert.equal(fs.existsSync('homepage-regions-map-v2.webp'),true);
+  assert.equal(fs.existsSync('homepage-russia-overlay.svg'),true);
   assert.ok(fs.statSync('homepage-regions-mobile.webp').size<700_000,'mobile hero background must stay below 700 KB');
-  assert.ok(fs.statSync('homepage-russia-regions.svg').size<350_000,'mobile vector map must stay below 350 KB');
+  assert.ok(fs.statSync('homepage-russia-overlay.svg').size<350_000,'mobile vector map must stay below 350 KB');
 });
 
 test('hero has a usable no-script and screen-reader structure',()=>{
@@ -122,7 +126,7 @@ test('styles define all scenes and accessibility fallbacks',()=>{
 
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile3"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile3"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile4"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile4"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
@@ -137,7 +141,7 @@ test('about section combines manifesto and history',()=>{
 });
 
 test('distribution contains every homepage dependency',()=>{
-  for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png','homepage-regions-map.png','homepage-regions-mobile.webp','homepage-russia-regions.svg']){
+  for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png','homepage-regions-map-v2.webp','homepage-regions-mobile.webp','homepage-russia-overlay.svg']){
     assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
   }
 });
