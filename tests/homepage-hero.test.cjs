@@ -164,8 +164,11 @@ test('about FENKA section explains the federal system accessibly',()=>{
   assert.doesNotMatch(html,/manifesto-points|fenka-timeline|needs-verification/);
   assert.doesNotMatch(html,/Точная дата и архивная справка будут добавлены|Исторические этапы будут подтверждены/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*?\.fenka-system-map\{grid-template-columns:1fr;grid-template-areas:"core" "left" "right"/);
-  assert.match(css,/\.fenka-system-link:focus-visible\{/);
-  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*?\.fenka-system-node/);
+  assert.match(css,/@media\(max-width:420px\)\{\.fenka-system-column\{grid-template-columns:1fr\}/);
+  assert.match(css,/\.fenka-system-head>\*,\.fenka-system-column\{min-width:0\}/);
+  assert.match(css,/\.fenka-system-node\{[^}]*min-width:0/);
+  assert.match(css,/\.fenka-system-link:focus-visible\{outline:3px solid var\(--red\);outline-offset:6px\}/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.fenka-system-node,\.fenka-system-core,\.fenka-system-link span\{transition:none!important;transform:none!important\}\}/);
 });
 
 test('distribution contains every homepage dependency',()=>{
