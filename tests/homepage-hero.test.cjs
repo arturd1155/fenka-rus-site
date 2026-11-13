@@ -192,6 +192,7 @@ test('homepage directions use the approved federal panorama without changing des
   const cards=[...block.matchAll(/<a href="([^"]+)" class="direction-card">/g)];
   assert.equal(cards.length,6);
   assert.deepEqual(cards.map(match=>match[1]),['/projects/','/projects/','/regions/','/youth/','/support/','/about/']);
+  assert.doesNotMatch(block,/class="direction-index"/,'direction cards must not display numeric labels');
   assert.match(css,/\.direction-grid\{[^}]*grid-template-columns:repeat\(3,1fr\)/);
   assert.match(css,/@media\(max-width:900px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:repeat\(2,1fr\)/);
   assert.match(css,/@media\(max-width:560px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:1fr/);
