@@ -108,7 +108,7 @@ test('regional chair portraits are published and used in cards and the detail di
 test('regional directory applies approved removals, leaders and council portraits',()=>{
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
   for(const removed of ['Калининградская область','BANDIT4D'])assert.doesNotMatch(regions,new RegExp(removed));
-  assert.match(regions,/<strong>54<\/strong><span>региональных/);
+  assert.match(regions,/<strong data-count-to="54">54<\/strong><span>региональных/);
   for(const leader of [
     'Черняк Ирина Иосифовна','Армер Владимир Александрович','Пинхасов Игорь Юшваевич',
     'Лановая Виктория Михайловна','Татьяна Семеновна Назарова','Стрельцин Яков Саввич',

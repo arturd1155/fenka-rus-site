@@ -221,6 +221,13 @@ test('homepage omits the president and online library promos',()=>{
   assert.ok((html.match(/href="\/media\/"/g)||[]).length>=2,'desktop and mobile media navigation must use /media/');
 });
 
+test('homepage omits prototype copy and join card numbers',()=>{
+  assert.doesNotMatch(html,/Даты и названия в прототипе демонстрационные/);
+  const join=html.match(/<section class="section join"[\s\S]*?<\/section>/)?.[0]||'';
+  assert.equal((join.match(/<a\b/g)||[]).length,4);
+  assert.doesNotMatch(join,/<span>0[1-4]<\/span>/);
+});
+
 test('homepage initiatives use a responsive full-card editorial mosaic',()=>{
   const css=fs.readFileSync('style.css','utf8');
   const block=html.match(/<section class="section projects(?:\s[^"]*)?"[\s\S]*?<\/section>/)?.[0]||'';
