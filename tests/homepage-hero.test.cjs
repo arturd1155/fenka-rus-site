@@ -2,6 +2,7 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const html=fs.readFileSync('index.html','utf8');
+const css=fs.readFileSync('style.css','utf8');
 
 test('hero exposes the agreed narrative and one primary action',()=>{
   assert.match(html,/id="homeHero"/);
@@ -152,11 +153,19 @@ test('homepage initializes one interruptible hero controller',()=>{
   assert.match(js,/dataset\.scene/);
 });
 
-test('about section combines manifesto and history',()=>{
-  assert.match(html,/class="fenka-manifesto"/);
-  assert.equal((html.match(/class="manifesto-point"/g)||[]).length,3);
-  assert.match(html,/class="fenka-timeline"/);
-  assert.ok((html.match(/<time/g)||[]).length>=3);
+test('about FENKA section explains the federal system accessibly',()=>{
+  assert.equal((html.match(/class="shell fenka-system"/g)||[]).length,1);
+  assert.equal((html.match(/class="fenka-system-core"/g)||[]).length,1);
+  assert.equal((html.match(/class="fenka-system-node"/g)||[]).length,4);
+  for(const label of ['Автономии и общины','Лидеры и участники','Память и наследие','Проекты и инициативы']){
+    assert.match(html,new RegExp(label));
+  }
+  assert.match(html,/class="fenka-system-link" href="\/about\/"/);
+  assert.doesNotMatch(html,/manifesto-points|fenka-timeline|needs-verification/);
+  assert.doesNotMatch(html,/Точная дата и архивная справка будут добавлены|Исторические этапы будут подтверждены/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*?\.fenka-system-map\{grid-template-columns:1fr;grid-template-areas:"core" "left" "right"/);
+  assert.match(css,/\.fenka-system-link:focus-visible\{/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*?\.fenka-system-node/);
 });
 
 test('distribution contains every homepage dependency',()=>{
