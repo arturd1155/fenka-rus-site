@@ -186,6 +186,19 @@ test('about FENKA section explains the federal system accessibly',()=>{
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.fenka-system-node,\.fenka-system-core,\.fenka-system-link span\{transition:none!important;transform:none!important\}\}/);
 });
 
+test('homepage directions use the approved federal panorama without changing destinations',()=>{
+  const block=html.match(/<section class="section directions directions--federal"[\s\S]*?<\/section>/)?.[0]||'';
+  assert.match(block,/Сохраняем наследие[\s\S]*Создаём будущее/);
+  const cards=[...block.matchAll(/<a href="([^"]+)" class="direction-card">/g)];
+  assert.equal(cards.length,6);
+  assert.deepEqual(cards.map(match=>match[1]),['/projects/','/projects/','/regions/','/youth/','/support/','/about/']);
+  assert.match(css,/\.direction-grid\{[^}]*grid-template-columns:repeat\(3,1fr\)/);
+  assert.match(css,/@media\(max-width:900px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:repeat\(2,1fr\)/);
+  assert.match(css,/@media\(max-width:560px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:1fr/);
+  assert.match(css,/\.direction-card:focus-visible\{[^}]*outline:/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.direction-card\{[^}]*transition:none!important/);
+});
+
 test('distribution contains every homepage dependency',()=>{
   for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png','homepage-regions-map-v2.webp','homepage-regions-mobile.webp','homepage-russia-overlay.svg']){
     assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
