@@ -197,6 +197,7 @@ test('homepage directions use the approved federal panorama without changing des
   assert.match(css,/@media\(max-width:560px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:1fr/);
   assert.match(css,/\.direction-card:focus-visible\{[^}]*outline:/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.direction-card\{[^}]*transition:none!important/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.direction-card:before,\.direction-arrow\{transition:none!important;transform:none!important\}/);
 });
 
 test('distribution contains every homepage dependency',()=>{
