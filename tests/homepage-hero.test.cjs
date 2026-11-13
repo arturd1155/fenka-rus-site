@@ -96,6 +96,21 @@ test('homepage renders a decorative animated network behind clickable markers',(
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.hero-region-markers\{display:block/);
 });
 
+test('homepage map animation adds the approved contour sweep with safe fallbacks',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(css,/\.hero-map__data:before\{[^}]*homepage-russia-overlay\.svg[^}]*animation:fenkaContourBreath/);
+  assert.match(css,/\.hero-map__data:after\{[^}]*animation:fenkaMapSweep/);
+  assert.match(css,/\.hero-network__line--core\{[^}]*animation:fenkaRouteFlow/);
+  assert.match(css,/\.hero-region-marker:after\{[^}]*animation:fenkaMarkerRing/);
+  for(const name of ['fenkaContourBreath','fenkaMapSweep','fenkaRouteFlow','fenkaMarkerRing']){
+    assert.match(css,new RegExp(`@keyframes ${name}`));
+  }
+  assert.match(css,/@media\(max-width:720px\)\{\.hero-map__data:before\{animation:none/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data:after\{display:none/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core,\.hero-region-marker:after\{animation:none/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hero-map__data:before,\.hero-map__data:after,\.hero-network__line--core,\.hero-region-marker:after\{animation:none!important/);
+});
+
 test('mobile hero shows the whole map and disables expensive continuous effects',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(html,/<source media="\(max-width: 720px\)" srcset="homepage-regions-mobile\.webp\?v=20261112-concept2" type="image\/webp">/);
