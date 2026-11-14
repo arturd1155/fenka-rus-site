@@ -30,6 +30,13 @@ test('privacy page keeps the legal text but removes legacy source controls',()=>
   assert.doesNotMatch(html,/class="legal-document__source"/);
 });
 
+test('contacts page omits the legacy transfer note',()=>{
+  const html=read('contacts');
+  assert.doesNotMatch(html,/Контактные данные перенесены с/);
+  assert.doesNotMatch(html,/class="contacts-source"/);
+  assert.doesNotMatch(html,/fenka\.online\/kontakty/);
+});
+
 test('about page removes transfer notes, charter caption and decorative counters only',()=>{
   const html=read('about');
   assert.doesNotMatch(html,/Текст перенесён со страницы/);

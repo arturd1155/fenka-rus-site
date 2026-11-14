@@ -16,6 +16,7 @@ function buildContentPolish(){
       .replace('<link rel="stylesheet" href="/shared/site-shell.css">','<link rel="stylesheet" href="/shared/site-shell.css"><link rel="stylesheet" href="/shared/content-polish.css">')
       .replace('<body>',`<body class="page-${slug}${slug==='about'?'':' content-polished'}">`);
     if(slug==='privacy')html=html.replace(/<footer class="legal-document__source">[\s\S]*?<\/footer>/,'');
+    if(slug==='contacts')html=html.replace(/<p class="contacts-source">[\s\S]*?<\/p>/,'');
     fs.writeFileSync(pagePath,html);
   }
 }

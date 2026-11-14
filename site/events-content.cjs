@@ -99,7 +99,6 @@ function renderSchedule(schedule){
 
 function renderPoster(event){
   if(!event.poster)return `<div class="event-card__poster" aria-label="Место для афиши фильма «${escapeHtml(event.title)}»">
-      <span>Афиша будет добавлена</span>
       <strong>${event.posterTitle.split('\n').map(escapeHtml).join('<br>')}</strong>
       <i aria-hidden="true">ФЕНКА · Киноклуб</i>
     </div>`;

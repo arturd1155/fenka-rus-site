@@ -78,7 +78,7 @@ test('publishes the four supplied posters in full without replacing the remainin
     assert.ok(fs.existsSync(`dist${src}`),`${src} is copied to the published site`);
   }
   assert.equal((html.match(/class="event-card__poster-image"/g)||[]).length,4);
-  assert.equal((html.match(/Афиша будет добавлена/g)||[]).length,1);
+  assert.equal((html.match(/Афиша будет добавлена/g)||[]).length,0);
   const css=fs.readFileSync('dist/shared/events.css','utf8');
   assert.match(css,/\.event-card__poster-image\s*\{[^}]*object-fit:\s*contain/s);
 });
