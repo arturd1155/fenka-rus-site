@@ -19,12 +19,12 @@ const portraits = [
 
 process.nextTick(() => {
   const root = path.resolve(__dirname, '..');
-  const output = path.join(root, 'dist', 'leadership-photos');
+  const output = path.join(root, 'dist', 'leadership-photos', 'optimized');
   fs.mkdirSync(output, { recursive: true });
   fs.copyFileSync(path.join(root, 'shared', 'leadership-photos.css'), path.join(root, 'dist', 'shared', 'leadership-photos.css'));
 
   const page = path.join(root, 'dist', 'leadership', 'index.html');
-  let html = fs.readFileSync(page, 'utf8').replace('</head>', '<link rel="stylesheet" href="/shared/leadership-photos.css"></head>');
+  let html = fs.readFileSync(page, 'utf8').replace('</head>', '<link rel="stylesheet" href="/shared/leadership-photos.css?v=20261114-mobile1"></head>');
   html = html.replace(/<p class="leadership-source">[\s\S]*?<\/p>/, '');
   for (const name of ['Захарьяев Герман Рашбилович', 'Борода Александр Моисеевич', 'Голухов Георгий Натанович']) {
     html = html.replace(`<p class="leadership-card__role">Член Совета</p><h3>${name}</h3>`, `<p class="leadership-card__role">Вице-президент</p><h3>${name}</h3>`);
@@ -43,10 +43,12 @@ process.nextTick(() => {
     return `<section class="leadership-grid"${attributes}>${vicePresidents.join('')}${members.join('')}</section>`;
   });
 
-  for (const [initials, file, name, slug] of portraits) {
-    fs.copyFileSync(path.join(root, 'leadership-photos', file), path.join(output, file));
+  for (const [index, [initials, file, name, slug]] of portraits.entries()) {
+    const optimizedFile = file.replace(/\.(?:png|jpe?g)$/i, '.jpg');
+    fs.copyFileSync(path.join(root, 'leadership-photos', 'optimized', optimizedFile), path.join(output, optimizedFile));
     const placeholder = `<div class="leadership-card__portrait" aria-hidden="true"><span>${initials}</span></div>`;
-    const portrait = `<div class="leadership-card__portrait leadership-card__portrait--${slug}"><img src="/leadership-photos/${file}" alt="${name}"></div>`;
+    const loading = index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
+    const portrait = `<div class="leadership-card__portrait leadership-card__portrait--${slug}"><img src="/leadership-photos/optimized/${optimizedFile}" alt="${name}" width="720" height="900" ${loading} decoding="async"></div>`;
     if (!html.includes(placeholder)) throw new Error(`Leadership placeholder not found: ${name}`);
     html = html.replace(placeholder, portrait);
   }

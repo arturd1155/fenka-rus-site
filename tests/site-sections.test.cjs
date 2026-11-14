@@ -105,10 +105,12 @@ test('regional chair portraits are published and used in cards and the detail di
     'tyumen-varkin.jpg':'Тюменская область'
   };
   for(const [file,name] of Object.entries(portraits)){
-    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true,`${file} was not published`);
-    assert.match(regions,new RegExp(`"${name.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')}":"${file}"`));
+    const optimized=file.replace(/\.(?:png|jpe?g)$/i,'.jpg');
+    assert.equal(fs.existsSync(`dist/region-leaders/optimized/${optimized}`),true,`${optimized} was not published`);
+    assert.match(regions,new RegExp(`"${name.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')}":"${optimized}"`));
   }
   assert.match(regions,/class="region-leader-photo region-leader-photo--'\+size\+relaxed\+'"/);
+  assert.match(regions,/loading="lazy" decoding="async" width="720" height="900"/);
   assert.match(regions,/id="detailLeaderPhoto"/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview\{grid-template-columns:1fr/);
   assert.match(regions,/function leadershipCompact\(r\)[\s\S]*?portrait\(r,'small'\)/);
@@ -126,13 +128,13 @@ test('regional directory applies approved removals, leaders and council portrait
   ])assert.match(regions,new RegExp(leader));
   const councilPortraits={
     'Ульяновская область':'igor-dabakarov.jpg',
-    'Ивановская область':'elena-yusfin.png',
-    'Удмуртская Республика':'mark-goldin.png',
-    'Свердловская область':'mikhail-oshtrakh.png'
+    'Ивановская область':'elena-yusfin.jpg',
+    'Удмуртская Республика':'mark-goldin.jpg',
+    'Свердловская область':'mikhail-oshtrakh.jpg'
   };
   for(const [region,file] of Object.entries(councilPortraits)){
     assert.match(regions,new RegExp(`"${region}":"${file}"`));
-    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
+    assert.equal(fs.existsSync(`dist/region-leaders/optimized/${file}`),true);
   }
 });
 
@@ -211,11 +213,11 @@ test('Bryansk people cards publish and display both approved portraits',()=>{
   const districts=JSON.parse(regions.slice(start,end));
   const bryansk=districts.flatMap(d=>d.regions).find(r=>r.name==='Брянская область');
   assert.deepEqual(bryansk.leaders.map(person=>person.image),[
-    '/region-leaders/bryansk-titelman.jpg',
-    '/region-leaders/bryansk-chernyak.jpg'
+    '/region-leaders/optimized/bryansk-titelman.jpg',
+    '/region-leaders/optimized/bryansk-chernyak.jpg'
   ]);
   for(const file of ['bryansk-titelman.jpg','bryansk-chernyak.jpg']){
-    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
+    assert.equal(fs.existsSync(`dist/region-leaders/optimized/${file}`),true);
     assert.match(regions,new RegExp(file));
   }
   assert.match(regions,/class="region-person-photo region-person-photo--'\+size\+'"/);
@@ -232,12 +234,12 @@ test('publishes all newly approved regional portraits',()=>{
     'город Донецк':'donetsk-karnaukh.jpg',
     'Севастополь':'sevastopol-yankovsky.jpg',
     'Липецкая область':'lipetsk-aseev.jpg',
-    'Республика Хакасия':'khakassia-pekhotnik.png',
-    'Иркутская область':'irkutsk-pikersky.png'
+    'Республика Хакасия':'khakassia-pekhotnik.jpg',
+    'Иркутская область':'irkutsk-pikersky.jpg'
   };
   for(const [region,file] of Object.entries(expected)){
     assert.match(regions,new RegExp(`"${region}":"${file}"`));
-    assert.equal(fs.existsSync(`dist/region-leaders/${file}`),true);
+    assert.equal(fs.existsSync(`dist/region-leaders/optimized/${file}`),true);
   }
 });
 test('uses relaxed portrait framing for Aseev, Pikersky and Abramzon',()=>{
@@ -303,8 +305,9 @@ test('migrates all leadership records and approved council portraits',()=>{
     'erukhom-shalmiev.png':'Шальмиев Ерухом Илизирович'
   };
   for(const [file,name] of Object.entries(portraits)){
-    assert.match(leadership,new RegExp(`leadership-photos/${file}[\\s\\S]{0,900}${name}`));
-    assert.equal(fs.existsSync(`dist/leadership-photos/${file}`),true);
+    const optimized=file.replace(/\.(?:png|jpe?g)$/i,'.jpg');
+    assert.match(leadership,new RegExp(`leadership-photos/optimized/${optimized}[\\s\\S]{0,900}${name}`));
+    assert.equal(fs.existsSync(`dist/leadership-photos/optimized/${optimized}`),true);
   }
   for(const name of ['Захарьяев Герман Рашбилович','Борода Александр Моисеевич','Голухов Георгий Натанович']){
     assert.match(leadership,new RegExp(`Вице-президент[\\s\\S]{0,160}${name}`));
@@ -331,13 +334,24 @@ test('leadership page has one harmonious title and a dedicated compact hero',()=
   assert.doesNotMatch(leadership,/class="leadership-intro"/);
 });
 
-test('leadership portraits use a full-width mobile crop instead of a narrow strip',()=>{
+test('leadership portraits use lightweight stable 4:5 frames on mobile',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
   const css=fs.readFileSync('dist/shared/leadership-photos.css','utf8');
   const mobile=css.match(/@media \(max-width: 600px\) \{[\s\S]*\}\s*$/)?.[0]||'';
   assert.match(mobile,/grid-template-columns:\s*1fr/);
-  assert.match(mobile,/aspect-ratio:\s*4\s*\/\s*3/);
-  assert.match(mobile,/object-fit:\s*cover/);
+  assert.match(mobile,/aspect-ratio:\s*4\s*\/\s*5/);
+  assert.match(css,/object-fit:\s*contain/);
+  assert.match(leadership,/width="720" height="900" loading="lazy" decoding="async"/);
+  assert.match(leadership,/\/leadership-photos\/optimized\/[^"]+\.jpg/);
   assert.doesNotMatch(mobile,/104px/);
+});
+
+test('published portrait payload stays mobile friendly',()=>{
+  const folders=['dist/leadership-photos/optimized','dist/region-leaders/optimized'];
+  const files=folders.flatMap(folder=>fs.readdirSync(folder).map(name=>`${folder}/${name}`));
+  assert.ok(files.length>=50,'optimized portrait set is incomplete');
+  for(const file of files)assert.ok(fs.statSync(file).size<=180*1024,`${file} exceeds 180 KB`);
+  assert.ok(files.reduce((sum,file)=>sum+fs.statSync(file).size,0)<=7*1024*1024,'portrait payload exceeds 7 MB');
 });
 test('youth department is a working media-free section ready for approved content',()=>{
   const youth=fs.readFileSync('dist/youth/index.html','utf8');

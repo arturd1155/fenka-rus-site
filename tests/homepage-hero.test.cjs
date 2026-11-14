@@ -76,9 +76,9 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
-  assert.match(html,/href="style\.css\?v=20261112-mobile9"/);
-  assert.match(html,/src="hero-controller\.js\?v=20261112-mobile9"/);
-  assert.match(html,/src="app\.js\?v=20261112-mobile9"/);
+  assert.match(html,/href="style\.css\?v=20261114-mobile10"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261114-mobile10"/);
+  assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
 
 test('homepage renders a decorative animated network behind clickable markers',()=>{
@@ -122,7 +122,7 @@ test('mobile hero shows the whole map and disables expensive continuous effects'
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*max-height:none/);
   assert.match(css,/\.hero-map__art img\{[^}]*max-height:none[^}]*object-fit:cover/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*width:100%[^}]*max-height:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*top:19%[^}]*width:96vw[^}]*aspect-ratio:1280\/650/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*width:min\(92vw,1280px\)[^}]*max-width:calc\(100% - 24px\)[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\)/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*mix-blend-mode:screen/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__geography\{display:block/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
@@ -161,7 +161,7 @@ test('styles define all scenes and accessibility fallbacks',()=>{
 
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js\?v=20261112-mobile9"><\/script>[\s\S]*<script src="app\.js\?v=20261112-mobile9"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261114-mobile10"><\/script>[\s\S]*<script src="app\.js\?v=20261114-mobile10"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
