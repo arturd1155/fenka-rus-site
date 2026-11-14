@@ -23,6 +23,7 @@ const events=[
     category:'Документальный фильм',
     title:'Шенкман. Последний полёт',
     posterTitle:'Шенкман\nПоследний полёт',
+    poster:{src:'/assets/events/shenkman-posledniy-polet.webp',width:905,height:1280},
     lead:'Фильм-расследование Александра Мартиросова о выдающемся организаторе авиационного производства Матвее Шенкмане.',
     schedules:[{date:'2026-04-20',dateLabel:'20 апреля 2026',guestTime:'18:30',startTime:'19:00'}],
     location:'Москва',
@@ -38,6 +39,7 @@ const events=[
     category:'Военная драма',
     title:'Каруза',
     posterTitle:'Каруза',
+    poster:{src:'/assets/events/karuza.webp',width:987,height:1280},
     lead:'Военная драма, основанная на реальных событиях: история собаки, спасавшей людей от голода во время блокады Ленинграда.',
     schedules:[{date:'2026-02-25',dateLabel:'25 февраля 2026',guestTime:'17:30',startTime:'18:00'}],
     location:'Дом народов России',
@@ -52,6 +54,7 @@ const events=[
     category:'Докудрама',
     title:'Бимбат. Жизнь над землёй',
     posterTitle:'Бимбат\nЖизнь над землёй',
+    poster:{src:'/assets/events/bimbat-zhizn-nad-zemley.webp',width:1505,height:720},
     lead:'Документально-игровой фильм о Давиде Бимбате — инженере, изобретателе и мечтателе, посвятившем жизнь возрождению дирижаблестроения.',
     schedules:[{date:'2025-12-09',dateLabel:'9 декабря 2025',startTime:'18:00'}],
     location:'Дом народов России',
@@ -68,6 +71,7 @@ const events=[
     category:'Игровое кино',
     title:'Из ада в ад',
     posterTitle:'Из ада\nв ад',
+    poster:{src:'/assets/events/iz-ada-v-ad.webp',width:954,height:536},
     lead:'Показ фильма Дмитрия Астрахана с последующей встречей с режиссёром и обсуждением киноленты.',
     schedules:[{date:'2025-07-07',dateLabel:'7 июля 2025',guestTime:'15:00',startTime:'15:30'}],
     location:'Дом народов России',
@@ -93,13 +97,22 @@ function renderSchedule(schedule){
   </div>`;
 }
 
-function renderEvent(event){
-  return `<article class="event-card" data-event-slug="${event.slug}" aria-labelledby="event-${event.slug}">
-    <div class="event-card__poster" aria-label="Место для афиши фильма «${escapeHtml(event.title)}»">
+function renderPoster(event){
+  if(!event.poster)return `<div class="event-card__poster" aria-label="Место для афиши фильма «${escapeHtml(event.title)}»">
       <span>Афиша будет добавлена</span>
       <strong>${event.posterTitle.split('\n').map(escapeHtml).join('<br>')}</strong>
       <i aria-hidden="true">ФЕНКА · Киноклуб</i>
-    </div>
+    </div>`;
+  const alt=`Афиша фильма «${event.title}»`;
+  return `<div class="event-card__poster event-card__poster--image">
+      <img class="event-card__poster-backdrop" src="${event.poster.src}" alt="" aria-hidden="true" width="${event.poster.width}" height="${event.poster.height}" decoding="async">
+      <img class="event-card__poster-image" src="${event.poster.src}" alt="${escapeHtml(alt)}" width="${event.poster.width}" height="${event.poster.height}" decoding="async">
+    </div>`;
+}
+
+function renderEvent(event){
+  return `<article class="event-card" data-event-slug="${event.slug}" aria-labelledby="event-${event.slug}">
+    ${renderPoster(event)}
     <div class="event-card__body">
       <p class="event-card__category">${escapeHtml(event.category)}</p>
       <h3 id="event-${event.slug}">${escapeHtml(event.title)}</h3>

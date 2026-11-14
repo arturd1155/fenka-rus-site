@@ -64,11 +64,29 @@ test('preserves supplied dates, guest times, screening times and addresses witho
   assert.match(october,/1953–1991/);
 });
 
-test('uses semantic disclosures and replaceable 4:5 poster slots in the published page',()=>{
+test('publishes the four supplied posters in full without replacing the remaining poster slot',()=>{
+  const posters=[
+    ['shenkman-posledniy-polet','/assets/events/shenkman-posledniy-polet.webp','Афиша фильма «Шенкман. Последний полёт»'],
+    ['karuza','/assets/events/karuza.webp','Афиша фильма «Каруза»'],
+    ['bimbat-zhizn-nad-zemley','/assets/events/bimbat-zhizn-nad-zemley.webp','Афиша фильма «Бимбат. Жизнь над землёй»'],
+    ['iz-ada-v-ad','/assets/events/iz-ada-v-ad.webp','Афиша фильма «Из ада в ад»']
+  ];
+  for(const [slug,src,alt] of posters){
+    const event=eventSlice(slug);
+    assert.match(event,new RegExp(`<img[^>]+src="${src.replaceAll('/','\\/')}"[^>]+alt="${alt}"`));
+    assert.doesNotMatch(event,/loading="lazy"/,'event posters are ready when their cards enter view');
+    assert.ok(fs.existsSync(`dist${src}`),`${src} is copied to the published site`);
+  }
+  assert.equal((html.match(/class="event-card__poster-image"/g)||[]).length,4);
+  assert.equal((html.match(/Афиша будет добавлена/g)||[]).length,1);
+  const css=fs.readFileSync('dist/shared/events.css','utf8');
+  assert.match(css,/\.event-card__poster-image\s*\{[^}]*object-fit:\s*contain/s);
+});
+
+test('uses semantic disclosures and adaptive 4:5 poster frames in the published page',()=>{
   assert.match(html,/href="\/shared\/events\.css"/);
   assert.equal((html.match(/<details class="event-card__details">/g)||[]).length,5);
-  assert.equal((html.match(/class="event-card__poster"/g)||[]).length,5);
-  assert.equal((html.match(/Афиша будет добавлена/g)||[]).length,5);
+  assert.equal((html.match(/class="event-card__poster(?: event-card__poster--image)?"/g)||[]).length,5);
   const css=fs.readFileSync('dist/shared/events.css','utf8');
   assert.match(css,/aspect-ratio:\s*4\s*\/\s*5/);
   assert.match(css,/@media\s*\(max-width:\s*720px\)/);
