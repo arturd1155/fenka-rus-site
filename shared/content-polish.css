@@ -1,0 +1,26 @@
+.content-polished .section-hero{padding:clamp(48px,6vw,64px) 0 clamp(56px,7vw,72px)}
+.content-polished .section-hero .breadcrumbs{margin-bottom:24px}
+.content-polished .section-hero h1{max-width:100%;margin:0;overflow-wrap:anywhere}
+.content-polished .section-hero h1:after{content:"";display:block;width:80px;height:4px;margin-top:24px;background:var(--r)}
+.content-polished .section-hero+.section-content{padding:clamp(48px,6vw,64px) 0 clamp(64px,8vw,96px)}
+.page-documents .document-groups{gap:48px}
+.page-documents .document-group h2{margin:0 0 24px;line-height:1.15}
+.page-documents .document-row{min-width:0;padding:24px 0}
+.page-documents .document-row>*{min-width:0;overflow-wrap:anywhere}
+.page-reports .reports-grid{gap:24px;align-items:stretch}
+.page-reports .report-card,.page-contacts .contacts-card{min-width:0}
+.page-reports .report-card>*,.page-contacts .contacts-card>*{max-width:100%;overflow-wrap:anywhere}
+.page-reports .report-card{display:flex;flex-direction:column;min-height:320px;padding:32px}
+.page-reports .report-card h2{margin:24px 0 12px;line-height:1.18}
+.page-reports .report-card p{margin:0}
+.page-reports .report-card b{margin-top:auto;padding-top:32px}
+.page-privacy .legal-document{padding:clamp(32px,5vw,64px)}
+.page-privacy .legal-document__header{margin-bottom:32px;padding-bottom:32px}
+.page-privacy .legal-document>p{margin:0 0 20px}
+.page-privacy .legal-document h3{margin:40px 0 20px}
+.page-privacy .legal-document ol{margin:24px 0 0}
+.page-events .content-scaffold,.page-support .content-scaffold{gap:24px}
+.page-events .content-scaffold>*,.page-support .content-scaffold>*{padding:32px}
+.page-contacts .contacts-layout{gap:24px}
+.page-contacts .contacts-map{margin-top:24px}
+@media(max-width:760px){.content-polished .section-hero{padding:40px 0 48px}.content-polished .section-hero .breadcrumbs{margin-bottom:20px}.content-polished .section-hero h1:after{width:64px;margin-top:20px}.content-polished .section-hero+.section-content{padding:40px 0 64px}.page-documents .document-groups{gap:40px}.page-documents .document-group h2{margin-bottom:20px;font-size:32px}.page-reports .reports-grid{gap:16px}.page-reports .report-card{min-height:280px;padding:28px}.page-privacy .legal-document{padding:24px}.page-privacy .legal-document__header{margin-bottom:24px;padding-bottom:24px}.page-events .content-scaffold,.page-support .content-scaffold{grid-template-columns:1fr}.page-events .content-scaffold aside,.page-support .content-scaffold aside{grid-column:auto}.page-events .content-scaffold>*,.page-support .content-scaffold>*{min-width:0;padding:24px;overflow-wrap:anywhere}}
