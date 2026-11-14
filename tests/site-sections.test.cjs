@@ -340,6 +340,7 @@ test('migrates all leadership records and approved council portraits',()=>{
     'georgy-golukhov.png':'Голухов Георгий Натанович',
     'mark-goldin.png':'Гольдин Марк Эльевич',
     'mikhail-oshtrakh.png':'Оштрах Михаил Иосифович',
+    'victoria-engel.jpg':'Энгель Виктория Михайловна',
     'gennady-katsnelson.png':'Кацнельсон Геннадий Борисович',
     'elena-yusfin.png':'Юсфин Елена Леонидовна',
     'irina-veysman.png':'Вейсман Ирина Зиновьевна',

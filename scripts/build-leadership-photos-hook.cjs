@@ -9,6 +9,7 @@ const portraits = [
   ['ГГ', 'georgy-golukhov.png', 'Голухов Георгий Натанович', 'golukhov'],
   ['ГМ', 'mark-goldin.png', 'Гольдин Марк Эльевич', 'goldin'],
   ['ОМ', 'mikhail-oshtrakh.png', 'Оштрах Михаил Иосифович', 'oshtrakh'],
+  ['ЭВ', 'victoria-engel.jpg', 'Энгель Виктория Михайловна', 'engel'],
   ['КГ', 'gennady-katsnelson.png', 'Кацнельсон Геннадий Борисович', 'katsnelson'],
   ['ЮЕ', 'elena-yusfin.png', 'Юсфин Елена Леонидовна', 'yusfin'],
   ['ВИ', 'irina-veysman.png', 'Вейсман Ирина Зиновьевна', 'veysman'],
