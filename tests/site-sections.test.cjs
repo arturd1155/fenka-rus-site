@@ -5,6 +5,7 @@ const {execFileSync}=require('node:child_process');
 
 const routes=['regions','leadership','documents','reports','about','projects','youth','events','media','news','support','contacts','privacy'];
 const primary=['/about/','/regions/','/projects/','/youth/','/events/','/media/','/news/','/contacts/','/support/'];
+const publishingNote='Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации.';
 
 test('site structure defines every approved route in order',()=>{
   const {sections}=require('../site/site-structure.cjs');
@@ -21,6 +22,14 @@ test('build creates every approved route with shared navigation',()=>{
     for(const path of primary) assert.match(html,new RegExp(`href="${path.replaceAll('/','\\/')}"`));
     assert.equal((html.match(/aria-current="page"/g)||[]).length,slug==='privacy'?0:1);
   }
+  for(const slug of ['reports','privacy','events','support','documents','contacts']){
+    const html=fs.readFileSync(`dist/${slug}/index.html`,'utf8');
+    assert.doesNotMatch(html,new RegExp(publishingNote.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  }
+  const privacy=fs.readFileSync('dist/privacy/index.html','utf8');
+  assert.doesNotMatch(privacy,/Источник: прежняя версия сайта ФЕНКА|Открыть исходную страницу/);
+  const about=fs.readFileSync('dist/about/index.html','utf8');
+  assert.doesNotMatch(about,/Текст перенесён со страницы|Основание: Устав ОО «ФЕНКА»/);
 });
 
 test('shared shell is responsive, keyboard accessible and has official social links',()=>{
@@ -311,7 +320,7 @@ test('leadership hero omits the generic placeholder description',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
   const contacts=fs.readFileSync('dist/contacts/index.html','utf8');
   assert.doesNotMatch(leadership,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
-  assert.match(contacts,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
+  assert.doesNotMatch(contacts,/Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации\./);
 });
 test('leadership page has one harmonious title and a dedicated compact hero',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
