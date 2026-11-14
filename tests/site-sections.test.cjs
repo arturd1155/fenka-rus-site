@@ -1,6 +1,7 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
+const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 
 const routes=['regions','leadership','documents','reports','about','projects','youth','events','media','news','support','contacts','privacy'];
@@ -354,6 +355,42 @@ test('migrates all leadership records and approved council portraits',()=>{
   for(const card of council.match(/<article class="leadership-card">[\s\S]*?<\/article>/g)||[]){
     assert.match(card,/leadership-card__contacts/);
   }
+});
+test('uses the newly supplied portrait of president Sergey Melnikov',()=>{
+  const sourceHash=crypto.createHash('sha256').update(fs.readFileSync('leadership-photos/sergey-melnikov.jpg')).digest('hex');
+  assert.equal(sourceHash,'356269ba86793644095198bb0b52bc44d422ae6b2963396989db2a799ab3e779');
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  assert.match(leadership,/leadership-card__portrait--melnikov[\s\S]*?\/leadership-photos\/optimized\/sergey-melnikov\.jpg/);
+});
+
+test('every leadership card opens an accessible internal profile with official information',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  assert.equal(fs.existsSync('dist/shared/leadership-profiles.js'),true,'leadership profile behavior is not published');
+  const behavior=fs.readFileSync('dist/shared/leadership-profiles.js','utf8');
+  assert.equal((leadership.match(/data-leadership-id="[^"]+"/g)||[]).length,14);
+  assert.equal((leadership.match(/class="leadership-card__open"/g)||[]).length,14);
+  assert.match(leadership,/<dialog class="leadership-profile" id="leadershipProfileDialog"/);
+  assert.match(leadership,/aria-labelledby="leadershipProfileName"/);
+  assert.match(leadership,/type="application\/json" id="leadershipProfilesData"/);
+  for(const phrase of [
+    'Мельников Сергей Евгеньевич родился 22 августа 1959 года в г. Москве.',
+    'Родился 2 сентября 1975г. в г.Самарканде.',
+    'известный бизнесмен и меценат',
+    'Родился 24 июня 1960 года в городе Москва.',
+    'Президент ЕНКА Удмуртской Республики.',
+    'Президент ЕНКА Свердловской области',
+    'Крупный предприниматель, который руководит многопрофильным бизнесом'
+  ]) assert.ok(leadership.includes(phrase),phrase);
+  assert.match(behavior,/showModal\(\)/);
+  assert.match(behavior,/event\.key === 'Escape'/);
+  assert.match(behavior,/lastTrigger\.focus\(\)/);
+});
+
+test('president profile contains the approved Word of the President',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  const statement='Сохраняя многовековые традиции еврейского народа, мы не просто бережём прошлое — мы закладываем фундамент будущего. Наша миссия — объединять поколения, укреплять общины и создавать новые возможности для развития еврейской жизни в России. Ведь народ силён, пока жива его память, крепко его единство и есть кому продолжить его дело.';
+  assert.match(leadership,/Слово президента/);
+  assert.ok(leadership.includes(statement));
 });
 test('leadership hero omits the generic placeholder description',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
