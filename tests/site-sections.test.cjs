@@ -396,6 +396,15 @@ test('president profile contains the approved Word of the President',()=>{
   assert.match(leadership,/Слово президента/);
   assert.ok(leadership.includes(statement));
 });
+
+test('Dabakarov profile omits outdated public roles',()=>{
+  const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
+  assert.ok(leadership.includes('членом Совета по делам национальностей при Губернаторе Ульяновской области'));
+  assert.ok(leadership.includes('членом Общественной палаты Ульяновской области'));
+  assert.doesNotMatch(leadership,/членом Генеральной Ассамблеи Евроазиатского еврейского конгресса/);
+  assert.doesNotMatch(leadership,/депутатом Европейского еврейского парламента/);
+  assert.doesNotMatch(leadership,/членом Совета и Генеральным директором ФЕНКА/);
+});
 test('leadership hero omits the generic placeholder description',()=>{
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
   const contacts=fs.readFileSync('dist/contacts/index.html','utf8');
