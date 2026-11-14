@@ -359,8 +359,12 @@ test('migrates all leadership records and approved council portraits',()=>{
 test('uses the newly supplied portrait of president Sergey Melnikov',()=>{
   const sourceHash=crypto.createHash('sha256').update(fs.readFileSync('leadership-photos/sergey-melnikov.jpg')).digest('hex');
   assert.equal(sourceHash,'356269ba86793644095198bb0b52bc44d422ae6b2963396989db2a799ab3e779');
+  assert.equal(fs.existsSync('leadership-photos/sergey-melnikov.png'),false,'legacy PNG must not overwrite the approved JPG during optimization');
+  const optimizedHash=crypto.createHash('sha256').update(fs.readFileSync('leadership-photos/optimized/sergey-melnikov.jpg')).digest('hex');
+  const publishedHash=crypto.createHash('sha256').update(fs.readFileSync('dist/leadership-photos/optimized/sergey-melnikov.jpg')).digest('hex');
+  assert.equal(publishedHash,optimizedHash,'published portrait must match the newly optimized portrait');
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
-  assert.match(leadership,/leadership-card__portrait--melnikov[\s\S]*?\/leadership-photos\/optimized\/sergey-melnikov\.jpg/);
+  assert.match(leadership,/leadership-card__portrait--melnikov[\s\S]*?\/leadership-photos\/optimized\/sergey-melnikov\.jpg\?v=20261114-melnikov2/);
 });
 
 test('every leadership card opens an accessible internal profile with official information',()=>{

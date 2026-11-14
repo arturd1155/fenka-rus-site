@@ -109,7 +109,8 @@ process.nextTick(() => {
     fs.copyFileSync(path.join(root, 'leadership-photos', 'optimized', optimizedFile), path.join(output, optimizedFile));
     const placeholder = `<div class="leadership-card__portrait" aria-hidden="true"><span>${initials}</span></div>`;
     const loading = index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
-    const portrait = `<div class="leadership-card__portrait leadership-card__portrait--${slug}"><img src="/leadership-photos/optimized/${optimizedFile}" alt="${name}" width="720" height="900" ${loading} decoding="async"></div>`;
+    const portraitVersion = slug === 'melnikov' ? '?v=20261114-melnikov2' : '';
+    const portrait = `<div class="leadership-card__portrait leadership-card__portrait--${slug}"><img src="/leadership-photos/optimized/${optimizedFile}${portraitVersion}" alt="${name}" width="720" height="900" ${loading} decoding="async"></div>`;
     if (!html.includes(placeholder)) throw new Error(`Leadership placeholder not found: ${name}`);
     html = html.replace(placeholder, portrait);
   }
