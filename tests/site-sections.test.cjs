@@ -353,6 +353,20 @@ test('published portrait payload stays mobile friendly',()=>{
   for(const file of files)assert.ok(fs.statSync(file).size<=180*1024,`${file} exceeds 180 KB`);
   assert.ok(files.reduce((sum,file)=>sum+fs.statSync(file).size,0)<=7*1024*1024,'portrait payload exceeds 7 MB');
 });
+
+test('portrait normalization uses a plain white 4:5 canvas without cropping or tinted panels',()=>{
+  const optimizer=fs.readFileSync('scripts/optimize-portraits.ps1','utf8');
+  const leadershipCss=fs.readFileSync('shared/leadership-photos.css','utf8');
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  assert.match(optimizer,/graphics\.Clear\(\[System\.Drawing\.Color\]::White\)/);
+  assert.match(optimizer,/Get-ContainRectangle \$source\.Width \$source\.Height \$Width \$Height/);
+  assert.doesNotMatch(optimizer,/LinearGradientBrush|shadowBounds|DrawRectangle\(\$border/);
+  assert.match(leadershipCss,/\.leadership-card__portrait[^\{]*\{[^}]*background:\s*#fff/s);
+  assert.match(leadershipCss,/object-fit:\s*contain/);
+  assert.doesNotMatch(leadershipCss,/#edf4f8/);
+  assert.match(regions,/\.region-leader-photo\{[^}]*background:#fff/);
+  assert.match(regions,/\.region-person-photo\{[^}]*background:#fff/);
+});
 test('youth department is a working media-free section ready for approved content',()=>{
   const youth=fs.readFileSync('dist/youth/index.html','utf8');
   assert.match(youth,/<h1>Молодёжный департамент ФЕНКА<\/h1>/);

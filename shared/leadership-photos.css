@@ -10,6 +10,7 @@
 .leadership-card__portrait,
 .leadership-grid .leadership-card__portrait {
   min-height: 224px;
+  background: #fff;
 }
 
 .leadership-card__portrait img {
@@ -20,7 +21,12 @@
   height: 100%;
   object-fit: contain;
   object-position: center;
-  background: #edf4f8;
+  background: #fff;
+}
+
+.leadership-card__portrait:has(img)::before,
+.leadership-card__portrait:has(img)::after {
+  display: none;
 }
 
 .leadership-card__portrait--boroda img {

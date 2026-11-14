@@ -39,21 +39,9 @@ function Convert-Portrait([System.IO.FileInfo]$sourceFile, [string]$outputDirect
     $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
     $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
     $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
-    $background = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
-      [System.Drawing.Rectangle]::new(0, 0, $Width, $Height),
-      [System.Drawing.Color]::FromArgb(246, 249, 251),
-      [System.Drawing.Color]::FromArgb(220, 234, 244),
-      135
-    )
-    try { $graphics.FillRectangle($background, 0, 0, $Width, $Height) } finally { $background.Dispose() }
-    $photoBounds = Get-ContainRectangle $source.Width $source.Height ($Width - 56) ($Height - 56)
-    $photoBounds.Offset(28, 28)
-    $shadowBounds = [System.Drawing.Rectangle]::new($photoBounds.X, $photoBounds.Y + 8, $photoBounds.Width, $photoBounds.Height)
-    $shadow = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(45, 7, 28, 48))
-    try { $graphics.FillRectangle($shadow, $shadowBounds) } finally { $shadow.Dispose() }
+    $graphics.Clear([System.Drawing.Color]::White)
+    $photoBounds = Get-ContainRectangle $source.Width $source.Height $Width $Height
     $graphics.DrawImage($source, $photoBounds)
-    $border = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(112, 255, 255, 255)), 2
-    try { $graphics.DrawRectangle($border, $photoBounds) } finally { $border.Dispose() }
 
     $outputName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile.Name) + '.jpg'
     $outputPath = Join-Path $outputDirectory $outputName

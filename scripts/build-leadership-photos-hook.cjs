@@ -24,7 +24,7 @@ process.nextTick(() => {
   fs.copyFileSync(path.join(root, 'shared', 'leadership-photos.css'), path.join(root, 'dist', 'shared', 'leadership-photos.css'));
 
   const page = path.join(root, 'dist', 'leadership', 'index.html');
-  let html = fs.readFileSync(page, 'utf8').replace('</head>', '<link rel="stylesheet" href="/shared/leadership-photos.css?v=20261114-mobile1"></head>');
+  let html = fs.readFileSync(page, 'utf8').replace('</head>', '<link rel="stylesheet" href="/shared/leadership-photos.css?v=20261114-mobile2"></head>');
   html = html.replace(/<p class="leadership-source">[\s\S]*?<\/p>/, '');
   for (const name of ['Захарьяев Герман Рашбилович', 'Борода Александр Моисеевич', 'Голухов Георгий Натанович']) {
     html = html.replace(`<p class="leadership-card__role">Член Совета</p><h3>${name}</h3>`, `<p class="leadership-card__role">Вице-президент</p><h3>${name}</h3>`);
