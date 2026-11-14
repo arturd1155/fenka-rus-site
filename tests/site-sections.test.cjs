@@ -366,6 +366,8 @@ test('portrait normalization uses a plain white 4:5 canvas without cropping or t
   assert.doesNotMatch(leadershipCss,/#edf4f8/);
   assert.match(regions,/\.region-leader-photo\{[^}]*background:#fff/);
   assert.match(regions,/\.region-person-photo\{[^}]*background:#fff/);
+  assert.match(regions,/\.leadership-preview\{[^}]*background:#fff/);
+  assert.match(regions,/\.region-card__leader\{[^}]*background:#fff/);
 });
 test('youth department is a working media-free section ready for approved content',()=>{
   const youth=fs.readFileSync('dist/youth/index.html','utf8');
