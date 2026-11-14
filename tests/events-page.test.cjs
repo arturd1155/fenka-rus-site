@@ -40,6 +40,13 @@ test('publishes five unique normalized film events without the duplicated Shenkm
   assert.doesNotMatch(html,/Здесь будут размещены основные материалы|Раздел наполняется/);
 });
 
+test('presents the section as a general FENKA events listing without cinema-only introductions',()=>{
+  assert.match(html,/<h1>Афиша мероприятий ФЕНКА<\/h1>/);
+  assert.doesNotMatch(html,/Кино, которое помогает сохранять память|Показы игрового и документального кино/);
+  assert.doesNotMatch(html,/Кинопрограмма|Собрали программу в единую хронологию|Афиша и архив показов/);
+  assert.doesNotMatch(html,/class="events-intro"/);
+});
+
 test('preserves supplied dates, guest times, screening times and addresses without inventing missing facts',()=>{
   for(const datetime of [
     '2025-07-07T15:00','2025-07-07T15:30','2025-12-09T18:00',
