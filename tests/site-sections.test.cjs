@@ -175,7 +175,7 @@ test('publishes the approved regional leaders and new Donetsk and Mariupol branc
   const byName=Object.fromEntries(districts.flatMap(d=>d.regions).map(r=>[r.name,r]));
   const leaders={
     'Ивановская область':'Юсфин Елена Леонидовна',
-    'Калужская область':'Денисов Борис Михайлович',
+    'Калужская область':'Денисов Борис Владиславович',
     'Липецкая область':'Асеев Олег Владимирович',
     'Тверская область':'Ротенфельд Александр Евсеевич',
     'Архангельская область':'Лобанова Дарья Михайловна',
@@ -206,6 +206,9 @@ test('Bryansk leadership is presented as two separate people cards',()=>{
   assert.match(regions,/class="region-card__leaders"/);
   assert.match(regions,/class="leadership-preview__people"/);
   assert.match(regions,/@media\(max-width:600px\)[\s\S]*\.leadership-preview__people/);
+  assert.doesNotMatch(regions,/РУКОВОДИТЕЛЬ '\+\(i\+1\)/);
+  assert.match(regions,/<span>РУКОВОДИТЕЛЬ<\/span>/);
+  assert.match(regions,/\.leadership-person\{[^}]*display:grid[^}]*grid-template-columns:112px minmax\(0,1fr\)/);
 });
 test('Bryansk people cards publish and display both approved portraits',()=>{
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
@@ -234,7 +237,8 @@ test('publishes all newly approved regional portraits',()=>{
     'Пермский край':'perm-zakaryan.jpg',
     'город Донецк':'donetsk-karnaukh.jpg',
     'Севастополь':'sevastopol-yankovsky.jpg',
-    'Липецкая область':'lipetsk-aseev.jpg',
+    'Калужская область':'kaluga-denisov.jpg',
+    'Тверская область':'tver-rotenfeld.jpg',
     'Республика Хакасия':'khakassia-pekhotnik.jpg',
     'Иркутская область':'irkutsk-pikersky.jpg'
   };
@@ -243,11 +247,13 @@ test('publishes all newly approved regional portraits',()=>{
     assert.equal(fs.existsSync(`dist/region-leaders/optimized/${file}`),true);
   }
 });
-test('keeps close regional portraits readable without shrinking Aseev and Pikersky',()=>{
+test('uses a single local fallback for leaders without an approved portrait',()=>{
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
-  assert.match(regions,/const relaxedPortraitRegions=\["Ленинградская область"\]/);
-  assert.match(regions,/r\.name==='Ленинградская область'\?r\.image:''/);
-  assert.match(regions,/region-leader-photo--relaxed/);
+  assert.match(regions,/const defaultRegionalPortrait='\/region-leaders\/optimized\/no-photo\.jpg'/);
+  assert.doesNotMatch(regions,/r\.name==='Ленинградская область'\?r\.image:''/);
+  assert.doesNotMatch(regions,/"Липецкая область":"lipetsk-aseev\.jpg"/);
+  assert.equal(fs.existsSync('dist/region-leaders/optimized/no-photo.jpg'),true);
+  assert.match(regions,/region-leader-photo--placeholder/);
 });
 
 test('publishes every regional leader as surname name patronymic and adds the Karelia chair',()=>{
@@ -279,7 +285,7 @@ test('approved landscape portraits fill their white 4:5 frames at a readable sca
     const ratio=Number(execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File','tests/measure-portrait-content.ps1',portrait],{encoding:'utf8'}).trim());
     assert.ok(ratio>=0.68,`${file} remains too small in its frame (${ratio})`);
   }
-  for(const file of ['lipetsk-aseev.jpg','irkutsk-pikersky.jpg']){
+  for(const file of ['irkutsk-pikersky.jpg']){
     const portrait=`region-leaders/optimized/${file}`;
     const ratio=Number(execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File','tests/measure-portrait-content.ps1',portrait],{encoding:'utf8'}).trim());
     assert.ok(ratio>=0.58,`${file} remains too small in its frame (${ratio})`);

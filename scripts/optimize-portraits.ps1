@@ -88,7 +88,8 @@ $balancedRegionFiles = @(
   'penza-zheltova.jpg',
   'mordovia-drobin.jpg',
   'tatarstan-pliskin.jpg',
-  'samara-kogan.jpg'
+  'samara-kogan.jpg',
+  'kaluga-denisov.jpg'
 )
 
 $leadershipDirectory = Join-Path $workspaceRoot 'leadership-photos'

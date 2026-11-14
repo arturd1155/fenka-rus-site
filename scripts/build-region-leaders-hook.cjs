@@ -48,12 +48,13 @@ const portraits={
   'Пермский край':'perm-zakaryan.jpg',
   'город Донецк':'donetsk-karnaukh.jpg',
   'Севастополь':'sevastopol-yankovsky.jpg',
-  'Липецкая область':'lipetsk-aseev.jpg',
+  'Калужская область':'kaluga-denisov.jpg',
+  'Тверская область':'tver-rotenfeld.jpg',
   'Республика Хакасия':'khakassia-pekhotnik.png',
   'Иркутская область':'irkutsk-pikersky.png'
 };
 const peoplePortraitFiles=['bryansk-titelman.jpg','bryansk-chernyak.jpg'];
-const relaxedPortraitRegions=['Ленинградская область'];
+const sharedPortraitFiles=['no-photo.jpg'];
 
 function normalizeFullName(value){
   const parts=String(value||'').trim().split(/\s+/).filter(Boolean);
@@ -91,7 +92,7 @@ const corrections={
   'Республика Карелия':{leader:'Цвибель Дмитрий Григорьевич',role:'Председатель'},
   'Еврейская автономная область':{leader:'Наум Беньаминович Ливант',role:'Руководитель'},
   'Ивановская область':{leader:'Юсфин Елена Леонидовна',role:'Председатель'},
-  'Калужская область':{leader:'Денисов Борис Михайлович',role:'Председатель'},
+  'Калужская область':{leader:'Денисов Борис Владиславович',role:'Председатель'},
   'Липецкая область':{leader:'Асеев Олег Владимирович',role:'Председатель'},
   'Тверская область':{leader:'Ротенфельд Александр Евсеевич',role:'Председатель'},
   'Архангельская область':{leader:'Лобанова Дарья Михайловна',role:'Председатель'},
@@ -124,7 +125,7 @@ process.nextTick(()=>{
   const sourceDir=path.join(root,'region-leaders');
   const outputDir=path.join(root,'dist','region-leaders','optimized');
   fs.mkdirSync(outputDir,{recursive:true});
-  for(const file of [...Object.values(portraits),...peoplePortraitFiles]){
+  for(const file of [...Object.values(portraits),...peoplePortraitFiles,...sharedPortraitFiles]){
     const optimizedFile=file.replace(/\.(?:png|jpe?g)$/i,'.jpg');
     const regionalSource=path.join(sourceDir,'optimized',optimizedFile);
     const councilSource=path.join(root,'leadership-photos','optimized',optimizedFile);
@@ -153,18 +154,17 @@ process.nextTick(()=>{
   .region-leader-photo{display:block;object-fit:contain;object-position:center;background:#fff;border:1px solid rgba(18,63,112,.14)}
   .region-leader-photo--small{width:56px;height:70px;border-radius:10px}
   .region-leader-photo--large{width:132px;height:165px;border-radius:12px}
-  .region-leader-photo--relaxed{object-fit:contain;object-position:center;background:#fff;padding:8%}
-  .region-leader-photo--large.region-leader-photo--relaxed{padding:8%}
+  .region-leader-photo--placeholder{object-fit:contain;object-position:center;background:#fff}
   .leadership-preview{background:#fff}
   .photo-placeholder{background:#fff}
   .region-card__leaders{display:grid;gap:8px;margin:14px 0 4px;padding-top:14px;border-top:1px solid var(--line)}
   .region-card__leader{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px;background:#fff}
   .region-card__leader-index{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff!important;font-size:11px!important;font-weight:800}
   .region-card__leader strong{margin:0;font-size:13px;line-height:1.25}.region-card__leader div>span{display:block;margin-top:3px;font-size:11px;color:#697f92}
-  .leadership-preview.is-multiple{grid-template-columns:1fr}.leadership-preview__people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .region-person-photo{display:block;object-fit:contain;object-position:center;border:1px solid rgba(18,63,112,.12);background:#fff}.region-person-photo--small{width:44px;height:55px;border-radius:8px}.region-person-photo--large{width:100%;aspect-ratio:4/5;border-radius:10px}
-  .leadership-person{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.leadership-person__body{padding:12px 4px 4px}.leadership-person span{display:block;margin-bottom:7px;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.08em}.leadership-person strong{display:block;color:var(--blue);font:20px/1.18 Georgia,serif}.leadership-person small{display:block;margin-top:8px;color:#61778a}
-  @media(max-width:600px){.leadership-preview{grid-template-columns:1fr;align-items:start}.leadership-preview__people{grid-template-columns:1fr}.region-person-photo--large{aspect-ratio:4/5;object-position:center}.region-leader-photo--large{width:100%;height:auto;max-height:none;aspect-ratio:4/5;object-fit:contain;object-position:center;border-radius:12px}.leadership-preview h3{font-size:20px}}
+  .leadership-preview.is-multiple{grid-template-columns:1fr}.leadership-preview__people{display:grid;grid-template-columns:1fr;gap:12px}
+  .region-person-photo{display:block;object-fit:contain;object-position:center;border:1px solid rgba(18,63,112,.12);background:#fff}.region-person-photo--small{width:44px;height:55px;border-radius:8px}.region-person-photo--large{width:112px;height:140px;border-radius:10px}
+  .leadership-person{min-width:0;display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.leadership-person__body{padding:4px}.leadership-person span{display:block;margin-bottom:7px;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.08em}.leadership-person strong{display:block;color:var(--blue);font:20px/1.18 Georgia,serif}.leadership-person small{display:block;margin-top:8px;color:#61778a}
+  @media(max-width:600px){.leadership-preview{grid-template-columns:1fr;align-items:start}.leadership-preview__people{grid-template-columns:1fr}.leadership-person{grid-template-columns:88px minmax(0,1fr);gap:12px;padding:10px}.region-person-photo--large{width:88px;height:110px;object-position:center}.region-leader-photo--large{width:100%;height:auto;max-height:none;aspect-ratio:4/5;object-fit:contain;object-position:center;border-radius:12px}.leadership-person strong,.leadership-preview h3{font-size:18px}}
   </style>`;
   html=replaceRequired(html,'</head>',css+'</head>');
   html=replaceRequired(html,'<section class="leadership-preview"><div class="photo-placeholder photo-placeholder--large" aria-hidden="true"><span class="photo-placeholder__mark">Ф</span></div>','<section class="leadership-preview"><div id="detailLeaderPhoto"><div class="photo-placeholder photo-placeholder--large" aria-hidden="true"><span class="photo-placeholder__mark">Ф</span></div></div>');
@@ -172,7 +172,7 @@ process.nextTick(()=>{
   html=replaceRequired(html,'<small>Фотография будет добавлена после согласования</small>','');
   html=replaceRequired(html,'<div><div class="leadership-label">РУКОВОДСТВО</div><h3 id="detailLeader"></h3><p id="detailRole"></p></div>','<div><div class="leadership-label">РУКОВОДСТВО</div><div id="detailLeader" class="leadership-preview__people"></div></div>');
   const optimizedPortraits=Object.fromEntries(Object.entries(portraits).map(([region,file])=>[region,file.replace(/\.(?:png|jpe?g)$/i,'.jpg')]));
-  html=replaceRequired(html,'function regionCard(r){return ',`const regionalPortraits=${JSON.stringify(optimizedPortraits)};const relaxedPortraitRegions=${JSON.stringify(relaxedPortraitRegions)};districts.forEach(d=>d.regions.forEach(r=>{if(regionalPortraits[r.name])r.localPortrait='/region-leaders/optimized/'+regionalPortraits[r.name]}));function portrait(r,size){const src=r.localPortrait||(r.name==='Ленинградская область'?r.image:'');const relaxed=relaxedPortraitRegions.includes(r.name)?' region-leader-photo--relaxed':'';return src?'<img class="region-leader-photo region-leader-photo--'+size+relaxed+'" src="'+src+'" alt="'+(r.leader||'Руководитель '+r.name).replace(/"/g,'&quot;')+'" loading="lazy" decoding="async" width="720" height="900">':'<div class="photo-placeholder photo-placeholder--'+size+'"><span class="photo-placeholder__mark">Ф</span></div>'}function leadersFor(r){return Array.isArray(r.leaders)&&r.leaders.length?r.leaders:[{name:r.leader||'Данные руководителя уточняются',role:r.role||''}]}function personPortrait(p,size,index){return p.image?'<img class="region-person-photo region-person-photo--'+size+'" src="'+p.image+'" alt="'+p.name.replace(/"/g,'&quot;')+'" loading="lazy" decoding="async" width="720" height="900">':'<span class="region-card__leader-index">'+(index+1)+'</span>'}function regionSearchText(r){return [r.name,r.organization,...leadersFor(r).map(p=>p.name)].join(' ')}function leadershipCompact(r){if(!r.leaders)return '<div class="region-card__person">'+portrait(r,'small')+'<div><span>'+leadersFor(r)[0].name+'</span></div></div>';return '<div class="region-card__leaders" aria-label="Руководство">'+leadersFor(r).map((p,i)=>'<div class="region-card__leader">'+personPortrait(p,'small',i)+'<div><strong>'+p.name+'</strong>'+(p.role?'<span>'+p.role+'</span>':'')+'</div></div>').join('')+'</div>'}function leadershipDetail(r){return leadersFor(r).map((p,i)=>'<article class="leadership-person">'+(p.image?personPortrait(p,'large',i):'')+'<div class="leadership-person__body"><span>'+(leadersFor(r).length>1?'РУКОВОДИТЕЛЬ '+(i+1):'РУКОВОДИТЕЛЬ')+'</span><strong>'+p.name+'</strong>'+(p.role?'<small>'+p.role+'</small>':'')+'</div></article>').join('')}function regionCard(r){return `);
+  html=replaceRequired(html,'function regionCard(r){return ',`const regionalPortraits=${JSON.stringify(optimizedPortraits)};const defaultRegionalPortrait='/region-leaders/optimized/no-photo.jpg';districts.forEach(d=>d.regions.forEach(r=>{if(regionalPortraits[r.name])r.localPortrait='/region-leaders/optimized/'+regionalPortraits[r.name]}));function portrait(r,size){const placeholder=!r.localPortrait;const src=r.localPortrait||defaultRegionalPortrait;const alt=placeholder?'':(r.leader||'Руководитель '+r.name).replace(/"/g,'&quot;');return '<img class="region-leader-photo region-leader-photo--'+size+(placeholder?' region-leader-photo--placeholder':'')+'" src="'+src+'" alt="'+alt+'"'+(placeholder?' aria-hidden="true"':'')+' loading="lazy" decoding="async" width="720" height="900">'}function leadersFor(r){return Array.isArray(r.leaders)&&r.leaders.length?r.leaders:[{name:r.leader||'Данные руководителя уточняются',role:r.role||''}]}function personPortrait(p,size,index){return p.image?'<img class="region-person-photo region-person-photo--'+size+'" src="'+p.image+'" alt="'+p.name.replace(/"/g,'&quot;')+'" loading="lazy" decoding="async" width="720" height="900">':'<span class="region-card__leader-index">'+(index+1)+'</span>'}function regionSearchText(r){return [r.name,r.organization,...leadersFor(r).map(p=>p.name)].join(' ')}function leadershipCompact(r){if(!r.leaders)return '<div class="region-card__person">'+portrait(r,'small')+'<div><span>'+leadersFor(r)[0].name+'</span></div></div>';return '<div class="region-card__leaders" aria-label="Руководство">'+leadersFor(r).map((p,i)=>'<div class="region-card__leader">'+personPortrait(p,'small',i)+'<div><strong>'+p.name+'</strong>'+(p.role?'<span>'+p.role+'</span>':'')+'</div></div>').join('')+'</div>'}function leadershipDetail(r){return leadersFor(r).map((p,i)=>'<article class="leadership-person">'+(p.image?personPortrait(p,'large',i):'')+'<div class="leadership-person__body"><span>РУКОВОДИТЕЛЬ</span><strong>'+p.name+'</strong>'+(p.role?'<small>'+p.role+'</small>':'')+'</div></article>').join('')}function regionCard(r){return `);
   const smallPlaceholder='<div class="photo-placeholder photo-placeholder--small"><span class="photo-placeholder__mark">Ф</span></div><div><span>';
   html=replaceRequired(html,smallPlaceholder,"'+portrait(r,'small')+'<div><span>");
   html=replaceRequired(html,smallPlaceholder,"${portrait(r,'small')}<div><span>");
