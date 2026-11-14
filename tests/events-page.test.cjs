@@ -5,6 +5,16 @@ const {execFileSync}=require('node:child_process');
 
 let html='';
 
+function luminance(hex){
+  const channels=hex.slice(1).match(/../g).map(value=>parseInt(value,16)/255).map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4);
+  return .2126*channels[0]+.7152*channels[1]+.0722*channels[2];
+}
+
+function contrast(first,second){
+  const values=[luminance(first),luminance(second)].sort((a,b)=>b-a);
+  return (values[0]+.05)/(values[1]+.05);
+}
+
 test.before(()=>{
   execFileSync(process.execPath,['scripts/build-site.cjs']);
   html=fs.readFileSync('dist/events/index.html','utf8');
@@ -58,4 +68,8 @@ test('uses semantic disclosures and replaceable 4:5 poster slots in the publishe
   assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css,/:focus-visible/);
   assert.doesNotMatch(html,/[ \t]+$/m);
+  const redText=css.match(/--events-red-text:\s*(#[0-9a-f]{6})/i)?.[1];
+  assert.ok(redText,'events text red token is defined');
+  assert.ok(contrast(redText,'#ffffff')>=4.5,'small red labels meet WCAG AA on cards');
+  assert.ok(contrast(redText,'#f4f7fa')>=4.5,'small red labels meet WCAG AA on the page background');
 });

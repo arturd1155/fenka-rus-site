@@ -3,6 +3,7 @@
   --events-navy-2:#0b3155;
   --events-blue:#1267a8;
   --events-red:#d83c50;
+  --events-red-text:#c42f43;
   --events-ink:#11283d;
   --events-muted:#5d6d7d;
   --events-line:#dce6ef;
@@ -101,7 +102,7 @@
   margin-bottom:72px;
 }
 
-.page-events .events-intro>p{grid-column:1/-1;color:var(--events-red)}
+.page-events .events-intro>p{grid-column:1/-1;color:var(--events-red-text)}
 
 .page-events .events-intro h2{
   max-width:720px;
@@ -134,7 +135,7 @@
 
 .page-events .events-year__header p{
   margin:0;
-  color:var(--events-red);
+  color:var(--events-red-text);
   font-size:13px;
   font-weight:800;
   letter-spacing:.12em;
@@ -230,7 +231,7 @@
   padding:clamp(28px,4vw,52px);
 }
 
-.page-events .event-card__category{color:var(--events-red)}
+.page-events .event-card__category{color:var(--events-red-text)}
 
 .page-events .event-card h3{
   margin:12px 0 14px;
