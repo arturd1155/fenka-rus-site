@@ -186,6 +186,40 @@
   text-transform:uppercase;
 }
 
+.page-events .event-card__poster--image{
+  display:grid;
+  place-items:center;
+  padding:clamp(10px,1.4vw,16px);
+  background:#04182d;
+}
+
+.page-events .event-card__poster--image::before,
+.page-events .event-card__poster--image::after{content:none}
+
+.page-events .event-card__poster-backdrop{
+  position:absolute;
+  z-index:0;
+  inset:-10%;
+  width:120%;
+  height:120%;
+  object-fit:cover;
+  opacity:.78;
+  filter:blur(22px) saturate(.78) brightness(.55);
+  transform:scale(1.06);
+}
+
+.page-events .event-card__poster-image{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  border-radius:10px;
+  box-shadow:0 16px 42px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.16);
+}
+
 .page-events .event-card__body{
   display:flex;
   min-width:0;
@@ -365,6 +399,7 @@
   .page-events .events-year+.events-year{margin-top:72px}
   .page-events .event-card{grid-template-columns:1fr}
   .page-events .event-card__poster{width:100%;min-height:0;padding:28px}
+  .page-events .event-card__poster--image{padding:12px}
   .page-events .event-card__body{padding:28px 22px 30px}
   .page-events .event-card h3{font-size:clamp(31px,10vw,42px)}
   .page-events .event-schedule__times{justify-content:space-between}
