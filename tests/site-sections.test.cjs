@@ -146,13 +146,13 @@ test('regional leader names contain no photo captions, glued titles or broken sp
   const districts=JSON.parse(regions.slice(start,end));
   const byName=Object.fromEntries(districts.flatMap(d=>d.regions).map(r=>[r.name,r]));
   const expected={
-    'Воронежская область':['Виктор Дмитриевич Конищев','Председатель автономии'],
+    'Воронежская область':['Конищев Виктор Дмитриевич','Председатель автономии'],
     'Ярославская область':['Захаров Вячеслав Владимирович','Председатель Совета'],
-    'Севастополь':['Олег Владимирович Янковский','Руководитель'],
-    'Республика Мордовия':['Александр Иванович Дробин','Президент'],
-    'Республика Хакасия':['Григорий Давидович Пехотник','Председатель'],
-    'Иркутская область':['Игорь Эдуардович Пикерский','Президент'],
-    'Еврейская автономная область':['Наум Беньаминович Ливант','Руководитель']
+    'Севастополь':['Янковский Олег Владимирович','Руководитель'],
+    'Республика Мордовия':['Дробин Александр Иванович','Президент'],
+    'Республика Хакасия':['Пехотник Григорий Давидович','Председатель'],
+    'Иркутская область':['Пикерский Игорь Эдуардович','Президент'],
+    'Еврейская автономная область':['Ливант Наум Беньаминович','Руководитель']
   };
   for(const [region,[leader,role]] of Object.entries(expected)){
     assert.equal(byName[region].leader,leader);
@@ -198,7 +198,7 @@ test('Bryansk leadership is presented as two separate people cards',()=>{
   const districts=JSON.parse(regions.slice(start,end));
   const bryansk=districts.flatMap(d=>d.regions).find(r=>r.name==='Брянская область');
   assert.deepEqual(bryansk.leaders.map(({name,role})=>({name,role})),[
-    {name:'Михаил Семенович Тительман',role:'Председатель Совета'},
+    {name:'Тительман Михаил Семенович',role:'Председатель Совета'},
     {name:'Черняк Ирина Иосифовна',role:''}
   ]);
   assert.match(regions,/function leadersFor\(r\)/);
@@ -242,11 +242,47 @@ test('publishes all newly approved regional portraits',()=>{
     assert.equal(fs.existsSync(`dist/region-leaders/optimized/${file}`),true);
   }
 });
-test('uses relaxed portrait framing for Aseev, Pikersky and Abramzon',()=>{
+test('keeps close regional portraits readable without shrinking Aseev and Pikersky',()=>{
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
-  assert.match(regions,/const relaxedPortraitRegions=\["Липецкая область","Иркутская область","Ленинградская область"\]/);
+  assert.match(regions,/const relaxedPortraitRegions=\["Ленинградская область"\]/);
   assert.match(regions,/r\.name==='Ленинградская область'\?r\.image:''/);
   assert.match(regions,/region-leader-photo--relaxed/);
+});
+
+test('publishes every regional leader as surname name patronymic and adds the Karelia chair',()=>{
+  const regions=fs.readFileSync('dist/regions/index.html','utf8');
+  const start=regions.indexOf('[',regions.indexOf('const districts='));
+  const end=regions.indexOf('];',start)+1;
+  const districts=JSON.parse(regions.slice(start,end));
+  const byName=Object.fromEntries(districts.flatMap(d=>d.regions).map(r=>[r.name,r]));
+  assert.equal(byName['Республика Карелия'].leader,'Цвибель Дмитрий Григорьевич');
+  assert.equal(byName['Костромская область'].leader,'Ганин Павел');
+  const patronymic=/(?:ович|евич|ьевич|ич|овна|евна|ьевна|ична|инична)$/i;
+  for(const region of Object.values(byName)){
+    const people=region.leaders?.map(person=>person.name)||[region.leader];
+    for(const name of people.filter(Boolean)){
+      const parts=name.trim().split(/\s+/);
+      if(parts.length===3)assert.match(parts[2],patronymic,`${region.name}: ${name}`);
+    }
+  }
+});
+
+test('approved landscape portraits fill their white 4:5 frames at a readable scale',()=>{
+  const files=[
+    'bryansk-titelman.jpg','moscow-yakushev.jpg','vologda-viktorov.jpg',
+    'karelia-tsvibel.jpg','nizhny-novgorod-turaeva.jpg','penza-zheltova.jpg','mordovia-drobin.jpg',
+    'tatarstan-pliskin.jpg','samara-kogan.jpg','mark-goldin.jpg','mikhail-oshtrakh.jpg'
+  ];
+  for(const file of files){
+    const portrait=`region-leaders/optimized/${file}`;
+    const ratio=Number(execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File','tests/measure-portrait-content.ps1',portrait],{encoding:'utf8'}).trim());
+    assert.ok(ratio>=0.68,`${file} remains too small in its frame (${ratio})`);
+  }
+  for(const file of ['lipetsk-aseev.jpg','irkutsk-pikersky.jpg']){
+    const portrait=`region-leaders/optimized/${file}`;
+    const ratio=Number(execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File','tests/measure-portrait-content.ps1',portrait],{encoding:'utf8'}).trim());
+    assert.ok(ratio>=0.58,`${file} remains too small in its frame (${ratio})`);
+  }
 });
 test('migrates documents and financial reports without legacy source captions',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');

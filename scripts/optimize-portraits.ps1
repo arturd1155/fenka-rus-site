@@ -29,7 +29,17 @@ function Get-ContainRectangle([int]$sourceWidth, [int]$sourceHeight, [int]$targe
   )
 }
 
-function Convert-Portrait([System.IO.FileInfo]$sourceFile, [string]$outputDirectory) {
+function Get-CenteredSquare([int]$sourceWidth, [int]$sourceHeight) {
+  $side = [Math]::Min($sourceWidth, $sourceHeight)
+  return [System.Drawing.Rectangle]::new(
+    [int](($sourceWidth - $side) / 2),
+    [int](($sourceHeight - $side) / 2),
+    $side,
+    $side
+  )
+}
+
+function Convert-Portrait([System.IO.FileInfo]$sourceFile, [string]$outputDirectory, [bool]$balanced = $false) {
   $source = [System.Drawing.Image]::FromFile($sourceFile.FullName)
   $canvas = New-Object System.Drawing.Bitmap $Width, $Height
   $canvas.SetResolution(96, 96)
@@ -40,8 +50,23 @@ function Convert-Portrait([System.IO.FileInfo]$sourceFile, [string]$outputDirect
     $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
     $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
     $graphics.Clear([System.Drawing.Color]::White)
-    $photoBounds = Get-ContainRectangle $source.Width $source.Height $Width $Height
-    $graphics.DrawImage($source, $photoBounds)
+    if ($balanced) {
+      $sourceBounds = Get-CenteredSquare $source.Width $source.Height
+      $photoBounds = [System.Drawing.Rectangle]::new(20, 110, 680, 680)
+      $graphics.DrawImage(
+        $source,
+        $photoBounds,
+        $sourceBounds.X,
+        $sourceBounds.Y,
+        $sourceBounds.Width,
+        $sourceBounds.Height,
+        [System.Drawing.GraphicsUnit]::Pixel
+      )
+    }
+    else {
+      $photoBounds = Get-ContainRectangle $source.Width $source.Height $Width $Height
+      $graphics.DrawImage($source, $photoBounds)
+    }
 
     $outputName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile.Name) + '.jpg'
     $outputPath = Join-Path $outputDirectory $outputName
@@ -54,13 +79,34 @@ function Convert-Portrait([System.IO.FileInfo]$sourceFile, [string]$outputDirect
   }
 }
 
-foreach ($folderName in @('leadership-photos', 'region-leaders')) {
-  $sourceDirectory = Join-Path $workspaceRoot $folderName
-  $outputDirectory = Join-Path $sourceDirectory 'optimized'
-  [System.IO.Directory]::CreateDirectory($outputDirectory) | Out-Null
-  Get-ChildItem -LiteralPath $sourceDirectory -File |
-    Where-Object { $_.Extension -match '^\.(png|jpe?g)$' } |
-    ForEach-Object { Convert-Portrait $_ $outputDirectory }
+$balancedRegionFiles = @(
+  'bryansk-titelman.jpg',
+  'moscow-yakushev.png',
+  'vologda-viktorov.jpg',
+  'karelia-tsvibel.jpg',
+  'nizhny-novgorod-turaeva.jpg',
+  'penza-zheltova.jpg',
+  'mordovia-drobin.jpg',
+  'tatarstan-pliskin.jpg',
+  'samara-kogan.jpg'
+)
+
+$leadershipDirectory = Join-Path $workspaceRoot 'leadership-photos'
+$leadershipOutput = Join-Path $leadershipDirectory 'optimized'
+[System.IO.Directory]::CreateDirectory($leadershipOutput) | Out-Null
+Get-ChildItem -LiteralPath $leadershipDirectory -File |
+  Where-Object { $_.Extension -match '^\.(png|jpe?g)$' } |
+  ForEach-Object { Convert-Portrait $_ $leadershipOutput }
+
+$regionDirectory = Join-Path $workspaceRoot 'region-leaders'
+$regionOutput = Join-Path $regionDirectory 'optimized'
+[System.IO.Directory]::CreateDirectory($regionOutput) | Out-Null
+Get-ChildItem -LiteralPath $regionDirectory -File |
+  Where-Object { $_.Extension -match '^\.(png|jpe?g)$' } |
+  ForEach-Object { Convert-Portrait $_ $regionOutput ($balancedRegionFiles -contains $_.Name) }
+
+foreach ($sharedPortrait in @('mark-goldin.png', 'mikhail-oshtrakh.png')) {
+  Convert-Portrait (Get-Item -LiteralPath (Join-Path $leadershipDirectory $sharedPortrait)) $regionOutput $true
 }
 
 $qualityParameters.Dispose()

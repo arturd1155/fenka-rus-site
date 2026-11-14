@@ -53,7 +53,16 @@ const portraits={
   'Иркутская область':'irkutsk-pikersky.png'
 };
 const peoplePortraitFiles=['bryansk-titelman.jpg','bryansk-chernyak.jpg'];
-const relaxedPortraitRegions=['Липецкая область','Иркутская область','Ленинградская область'];
+const relaxedPortraitRegions=['Ленинградская область'];
+
+function normalizeFullName(value){
+  const parts=String(value||'').trim().split(/\s+/).filter(Boolean);
+  if(parts.length!==3)return parts.join(' ');
+  const patronymic=/(?:ович|евич|ьевич|ич|овна|евна|ьевна|ична|инична)$/i;
+  return patronymic.test(parts[1])&&!patronymic.test(parts[2])
+    ? `${parts[2]} ${parts[0]} ${parts[1]}`
+    : parts.join(' ');
+}
 
 const corrections={
   'Брянская область':{
@@ -78,6 +87,8 @@ const corrections={
   'Республика Мордовия':{leader:'Александр Иванович Дробин',role:'Президент'},
   'Республика Хакасия':{leader:'Григорий Давидович Пехотник',role:'Председатель'},
   'Иркутская область':{leader:'Игорь Эдуардович Пикерский',role:'Президент',phone:'Тел.: (3952) 20-91-22, 20-91-23'},
+  'Костромская область':{leader:'Ганин Павел',role:'Председатель'},
+  'Республика Карелия':{leader:'Цвибель Дмитрий Григорьевич',role:'Председатель'},
   'Еврейская автономная область':{leader:'Наум Беньаминович Ливант',role:'Руководитель'},
   'Ивановская область':{leader:'Юсфин Елена Леонидовна',role:'Председатель'},
   'Калужская область':{leader:'Денисов Борис Михайлович',role:'Председатель'},
@@ -132,6 +143,10 @@ process.nextTick(()=>{
     if(district.name==='Южный федеральный округ')for(const branch of newBranches){
       if(!district.regions.some(region=>region.name===branch.name))district.regions.push(branch);
     }
+  }
+  for(const district of districts)for(const region of district.regions){
+    region.leader=normalizeFullName(region.leader);
+    if(Array.isArray(region.leaders))region.leaders=region.leaders.map(person=>({...person,name:normalizeFullName(person.name)}));
   }
   html=html.slice(0,dataStart)+JSON.stringify(districts)+html.slice(dataEnd);
   const css=`<style>
