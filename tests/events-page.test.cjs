@@ -27,17 +27,53 @@ function eventSlice(slug){
   return html.slice(start,next===-1?html.length:next);
 }
 
-test('publishes five unique normalized film events without the duplicated Shenkman entry',()=>{
-  assert.equal((html.match(/data-event-slug="/g)||[]).length,5);
+test('publishes seven unique events including the two November 2026 announcements',()=>{
+  assert.equal((html.match(/data-event-slug="/g)||[]).length,7);
   assert.equal((html.match(/data-event-slug="shenkman-posledniy-polet"/g)||[]).length,1);
   for(const title of [
     'Бимбат. Жизнь над землёй',
     'Из ада в ад',
     'Шенкман. Последний полёт',
     'Образ еврея в советском кино',
-    'Каруза'
+    'Каруза',
+    'Единство народов — в силе диалога',
+    'Новые горизонты — 2026'
   ])assert.match(html,new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.doesNotMatch(html,/Здесь будут размещены основные материалы|Раздел наполняется/);
+});
+
+test('publishes concise copy, dates and supplied posters for the November events',()=>{
+  const announcements=[
+    {
+      slug:'edinstvo-narodov-v-sile-dialoga',
+      src:'/assets/events/edinstvo-narodov-2026.jpg',
+      alt:'Афиша ежегодной конференции ФЕНКА «Единство народов — в силе диалога»',
+      date:'2026-11-23',
+      label:'23 ноября 2026',
+      copy:'Встреча руководителей региональных автономий, молодёжных лидеров и общественных организаций'
+    },
+    {
+      slug:'novye-gorizonty-2026',
+      src:'/assets/events/novye-gorizonty-2026.jpg',
+      alt:'Афиша образовательной программы ФЕНКА «Новые горизонты — 2026»',
+      date:'2026-11-20',
+      endDate:'2026-11-24',
+      label:'20–24 ноября 2026',
+      copy:'Программа для молодых лидеров еврейских автономий и общественных организаций'
+    }
+  ];
+  for(const item of announcements){
+    const event=eventSlice(item.slug);
+    assert.match(event,new RegExp(`<img[^>]+src="${item.src.replaceAll('/','\\/')}"[^>]+alt="${item.alt}"`));
+    assert.match(event,new RegExp(`datetime="${item.date}"`));
+    if(item.endDate)assert.match(event,new RegExp(`datetime="${item.endDate}"`));
+    assert.match(event,new RegExp(item.label));
+    assert.match(event,new RegExp(item.copy));
+    assert.match(event,/<strong>Москва<\/strong>/);
+    assert.ok(fs.existsSync(`dist${item.src}`),`${item.src} is copied to the published site`);
+  }
+  assert.doesNotMatch(eventSlice('edinstvo-narodov-v-sile-dialoga'),/Россия — страна, в которой переплетаются судьбы/);
+  assert.doesNotMatch(eventSlice('novye-gorizonty-2026'),/Ведь будущее еврейских общин зависит/);
 });
 
 test('presents the section as a general FENKA events listing without cinema-only introductions',()=>{
@@ -64,7 +100,7 @@ test('preserves supplied dates, guest times, screening times and addresses witho
   assert.match(october,/1953–1991/);
 });
 
-test('publishes the four supplied posters in full without replacing the remaining poster slot',()=>{
+test('publishes all supplied posters in full without replacing the remaining poster slot',()=>{
   const posters=[
     ['shenkman-posledniy-polet','/assets/events/shenkman-posledniy-polet.webp','Афиша фильма «Шенкман. Последний полёт»'],
     ['karuza','/assets/events/karuza.webp','Афиша фильма «Каруза»'],
@@ -77,7 +113,7 @@ test('publishes the four supplied posters in full without replacing the remainin
     assert.doesNotMatch(event,/loading="lazy"/,'event posters are ready when their cards enter view');
     assert.ok(fs.existsSync(`dist${src}`),`${src} is copied to the published site`);
   }
-  assert.equal((html.match(/class="event-card__poster-image"/g)||[]).length,4);
+  assert.equal((html.match(/class="event-card__poster-image"/g)||[]).length,6);
   assert.equal((html.match(/Афиша будет добавлена/g)||[]).length,0);
   const css=fs.readFileSync('dist/shared/events.css','utf8');
   assert.match(css,/\.event-card__poster-image\s*\{[^}]*object-fit:\s*contain/s);
@@ -85,8 +121,9 @@ test('publishes the four supplied posters in full without replacing the remainin
 
 test('uses semantic disclosures and adaptive 4:5 poster frames in the published page',()=>{
   assert.match(html,/href="\/shared\/events\.css"/);
-  assert.equal((html.match(/<details class="event-card__details">/g)||[]).length,5);
-  assert.equal((html.match(/class="event-card__poster(?: event-card__poster--image)?"/g)||[]).length,5);
+  assert.equal((html.match(/href="\/shared\/events\.css"/g)||[]).length,1);
+  assert.equal((html.match(/<details class="event-card__details">/g)||[]).length,7);
+  assert.equal((html.match(/class="event-card__poster(?: event-card__poster--image)?"/g)||[]).length,7);
   const css=fs.readFileSync('dist/shared/events.css','utf8');
   assert.match(css,/aspect-ratio:\s*4\s*\/\s*5/);
   assert.match(css,/@media\s*\(max-width:\s*720px\)/);

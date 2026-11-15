@@ -23,7 +23,7 @@ test('keeps the approved hero untouched while installing the reference section o
       cursor=next;
     }
     for(const title of ['Код наследия','Культурный отдел ФЕНКА','Новые горизонты','Фестиваль еврейской музыки в Казани'])assert.match(html,new RegExp(title));
-    for(const date of ['2026-10-14','2026-11-03'])assert.match(html,new RegExp(date));
+    for(const date of ['2026-11-20','2026-11-23'])assert.match(html,new RegExp(date));
     for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.webp','shkola-liderov-fenka.jpg','festival-evrejskoj-muzyki.jpg'])assert.match(html,new RegExp(`<img[^>]+${cover}`));
   }
 });
@@ -70,11 +70,12 @@ test('builds the combined homepage feed with preserved events and news',()=>{
   assert.match(feed,/class="[^"]*home-feed__news/);
   assert.equal((feed.match(/class="home-event-row"/g)||[]).length,2);
   assert.equal((feed.match(/class="home-news-entry(?: |")/g)||[]).length,4);
-  for(const date of ['2026-10-14','2026-11-03'])assert.match(feed,new RegExp(date));
-  for(const title of ['Киноклуб ФЕНКА в Доме народов России','Лекция «Еврейское наследие регионов России»'])assert.match(feed,new RegExp(title));
+  for(const date of ['2026-11-20','2026-11-23'])assert.match(feed,new RegExp(date));
+  for(const title of ['Новые горизонты — 2026','Единство народов — в силе диалога'])assert.match(feed,new RegExp(title));
+  assert.match(feed,/time class="home-event-row__date-range"/);
   assert.equal((feed.match(/<img class="home-news-entry__image"/g)||[]).length,4);
   assert.doesNotMatch(feed,/href="\/news\/" aria-label="Читать новость/);
-  for(const action of ['Подробнее','Регистрация','Читать новость'])assert.match(feed,new RegExp(action));
+  for(const action of ['Подробнее','Читать новость'])assert.match(feed,new RegExp(action));
   assert.match(styles,/\.home-feed__grid\s*\{[^}]*grid-template-columns:repeat\(2/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.home-feed__grid\s*\{[^}]*grid-template-columns:1fr/);
   assert.match(styles,/\.home-event-row>a[^\{]*\{[^}]*width:44px[^}]*height:44px/);
@@ -161,6 +162,7 @@ test('keeps the compact reference composition on mobile without stacking four ov
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.project-mosaic\{[^}]*height:auto/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.project-mosaic__rail \.project-mosaic__card\{[^}]*grid-template-columns:1fr/);
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-event-row\{[^}]*grid-template-columns:76px minmax\(0,1fr\)/);
+  assert.match(styles,/\.home-event-row time\.home-event-row__date-range\s*\{[^}]*grid-template-columns:1fr/);
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-news-entry[^\{]*\{[^}]*padding-right:0/);
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-news-entry>i\{[^}]*display:none/);
 });

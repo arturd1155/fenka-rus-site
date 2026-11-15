@@ -5,6 +5,8 @@ const {buildEventsMain}=require('../site/events-content.cjs');
 const root=path.resolve(__dirname,'..');
 const dist=path.join(root,'dist');
 const eventAssets=[
+  'novye-gorizonty-2026.jpg',
+  'edinstvo-narodov-2026.jpg',
   'shenkman-posledniy-polet.webp',
   'karuza.webp',
   'bimbat-zhizn-nad-zemley.webp',
