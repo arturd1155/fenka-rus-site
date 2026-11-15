@@ -43,7 +43,7 @@ test('build emits the heritage library inside the shared FENKA shell',()=>{
 test('heritage styling is local, responsive, and exposes accessible controls',()=>{
   const html=fs.readFileSync('dist/media/heritage/index.html','utf8');
   const css=fs.readFileSync('dist/media/heritage/heritage.css','utf8');
-  assert.match(html,/href="\/media\/heritage\/heritage\.css"/);
+  assert.match(html,/href="\/media\/heritage\/heritage\.css(?:\?[^\"]+)?"/);
   assert.match(html,/role="dialog"/);
   assert.match(html,/aria-modal="true"/);
   assert.match(html,/data-image-fallback/);
@@ -55,12 +55,14 @@ test('heritage styling is local, responsive, and exposes accessible controls',()
 });
 
 test('desktop heritage hero shows all three portrait covers without cropping',()=>{
+  const html=fs.readFileSync('dist/media/heritage/index.html','utf8');
   const css=fs.readFileSync('dist/media/heritage/heritage.css','utf8');
   const mosaic=css.match(/\.heritage-hero__mosaic\{[^}]*\}/)?.[0]||'';
   const covers=css.match(/\.heritage-hero__mosaic img\{[^}]*\}/)?.[0]||'';
   assert.match(mosaic,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
   assert.match(covers,/object-fit:contain/);
   assert.doesNotMatch(css,/\.heritage-hero__mosaic img:nth-child\(2\)\{[^}]*grid-row:span 2/);
+  assert.match(html,/heritage\.css\?v=20261115-hero-covers/);
 });
 
 test('heritage client script implements normalized search and modal cleanup',()=>{

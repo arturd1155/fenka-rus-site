@@ -17,6 +17,6 @@ function renderHeritageBody(){
   </main>`;
 }
 function pageDocument({title,header,body,footer,heritage=false,heritageStyles=false}){
-  return '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' — ФЕНКА</title><link rel="stylesheet" href="/shared/site-shell.css">'+(heritage||heritageStyles?'<link rel="stylesheet" href="/media/heritage/heritage.css">':'')+'</head><body>'+header+body+footer+'<script src="/shared/site-shell.js"></script>'+(heritage?'<script defer src="/media/heritage/data/videos.js"></script><script defer src="/media/heritage/data/sinagogi.js"></script><script defer src="/media/heritage/heritage.js"></script>':'')+'</body></html>';
+  return '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' — ФЕНКА</title><link rel="stylesheet" href="/shared/site-shell.css">'+(heritage||heritageStyles?'<link rel="stylesheet" href="/media/heritage/heritage.css?v=20261115-hero-covers">':'')+'</head><body>'+header+body+footer+'<script src="/shared/site-shell.js"></script>'+(heritage?'<script defer src="/media/heritage/data/videos.js"></script><script defer src="/media/heritage/data/sinagogi.js"></script><script defer src="/media/heritage/heritage.js"></script>':'')+'</body></html>';
 }
 module.exports={renderMediaRedirect,renderHeritageBody,pageDocument};
