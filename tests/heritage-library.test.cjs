@@ -60,6 +60,8 @@ test('desktop heritage hero shows all three portrait covers without cropping',()
   const mosaic=css.match(/\.heritage-hero__mosaic\{[^}]*\}/)?.[0]||'';
   const covers=css.match(/\.heritage-hero__mosaic img\{[^}]*\}/)?.[0]||'';
   assert.match(mosaic,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(mosaic,/width:100%/);
+  assert.doesNotMatch(mosaic,/width:118%/);
   assert.match(covers,/object-fit:contain/);
   assert.doesNotMatch(css,/\.heritage-hero__mosaic img:nth-child\(2\)\{[^}]*grid-row:span 2/);
   assert.match(html,/heritage\.css\?v=20261115-hero-covers/);
