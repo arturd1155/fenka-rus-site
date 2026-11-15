@@ -77,4 +77,5 @@ test('project build publishes the controller and responsive form styles',()=>{
   assert.match(css,/\[data-mail-status\]\[data-state="success"\]/);
   assert.match(css,/\[data-mail-status\]\[data-state="error"\]/);
   assert.match(css,/\.project-application__actions button:disabled/);
+  assert.match(css,/\.heritage-action-grid\{[^}]*grid-template-columns:repeat\(auto-fit,/);
 });

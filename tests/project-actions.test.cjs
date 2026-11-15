@@ -103,7 +103,8 @@ test('application projects render one background-sending form without mailto CTA
     assert.match(html,/name="contact"[^>]*required/);
     assert.match(html,/name="consent"[^>]*required/);
     assert.match(html,/data-mail-status[^>]*aria-live="polite"/);
-    assert.match(html,/src="\/mail-forms\.js\?v=20261115-projects1"/);
+    assert.match(html,/<button type="submit"[^>]*disabled[^>]*data-mail-submit/);
+    assert.match(html,/src="\/mail-forms\.js\?v=20261115-projects2"/);
     assert.match(html,/src="\/shared\/project-forms\.js\?v=20261115-projects1"/);
     assert.doesNotMatch(html,/href="mailto:/);
   }

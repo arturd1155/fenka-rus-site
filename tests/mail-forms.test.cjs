@@ -5,7 +5,7 @@ const fs=require('node:fs');
 
 function makeBoundForm({valid=true,checked=true}={}){
   const status={textContent:'',dataset:{}};
-  const button={type:'submit',name:'',disabled:false};
+  const button={type:'submit',name:'',disabled:true};
   const elements=[
     {name:'fullName',type:'text',value:'Анна',dataset:{mailLabel:'ФИО'}},
     {name:'consent',type:'checkbox',value:'yes',checked,dataset:{mailLabel:'Согласие на обработку данных'}},
@@ -109,6 +109,14 @@ test('bindMailForms sends checked consent as a confirmed field',async()=>{
       ['Согласие на обработку данных','Подтверждено']
     ]);
   });
+});
+
+test('bindMailForms enables a privacy-safe submit button only after binding',()=>{
+  const {doc,button}=makeBoundForm();
+
+  bindMailForms(doc,async()=>({success:true}));
+
+  assert.equal(button.disabled,false);
 });
 
 test('bindMailForms does not submit an invalid form',async()=>{

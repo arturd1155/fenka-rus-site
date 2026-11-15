@@ -39,6 +39,8 @@
     if(!doc)return;
     const send=submitter||submitToInbox;
     doc.querySelectorAll('[data-mail-form]').forEach(form=>{
+      const button=form.querySelector('[type="submit"]');
+      if(button)button.disabled=false;
       form.addEventListener('submit',async event=>{
         event.preventDefault();
         if(!form.reportValidity()||form.dataset.sending==='true')return;
@@ -50,7 +52,6 @@
             element.type==='checkbox'?(element.dataset.mailValue||'Подтверждено'):data.get(element.name)
           ]);
         const status=form.querySelector('[data-mail-status]');
-        const button=form.querySelector('[type="submit"]');
         form.dataset.sending='true';
         form.setAttribute('aria-busy','true');
         if(button)button.disabled=true;
