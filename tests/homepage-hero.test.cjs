@@ -76,9 +76,14 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
-  assert.match(html,/href="style\.css\?v=20261115-mobile14"/);
+  assert.match(html,/href="style\.css\?v=20261115-mobile15"/);
   assert.match(html,/src="hero-controller\.js\?v=20261114-mobile10"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
+});
+
+test('hero removes the culture collage overlay on desktop and mobile',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(css,/\.hero-collage\{display:none!important\}/);
 });
 
 test('homepage renders a decorative animated network behind clickable markers',()=>{
