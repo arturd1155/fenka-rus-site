@@ -14,7 +14,11 @@ for(const file of [
   'youth-phone.jpg',
   'youth-desktop.jpg',
   'social-phone.jpg',
-  'social-desktop.jpg'
+  'social-desktop.jpg',
+  'regional-phone.jpg',
+  'regional-desktop.jpg',
+  'dialogue-phone.jpg',
+  'dialogue-desktop.jpg'
 ]){
   fs.copyFileSync(path.join(source,file),path.join(destination,file));
 }

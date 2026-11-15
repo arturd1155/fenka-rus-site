@@ -238,3 +238,25 @@ test('social programs direction serves the supplied desktop and phone photograph
     'dist/assets/home/social-desktop.jpg'
   ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
 });
+
+test('regional development direction serves the supplied desktop and phone photographs',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    const html=read(file);
+    assert.match(html,/<picture class="direction-tile__media direction-tile__media--regional">[\s\S]*?<source media="\(max-width: 720px\)" srcset="\/assets\/home\/regional-phone\.jpg">[\s\S]*?<img src="\/assets\/home\/regional-desktop\.jpg"[^>]+width="1254"[^>]+height="1254"/);
+  }
+  for(const file of [
+    'dist/assets/home/regional-phone.jpg',
+    'dist/assets/home/regional-desktop.jpg'
+  ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
+});
+
+test('interethnic dialogue direction serves the supplied desktop and phone photographs',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    const html=read(file);
+    assert.match(html,/<picture class="direction-tile__media direction-tile__media--dialogue">[\s\S]*?<source media="\(max-width: 720px\)" srcset="\/assets\/home\/dialogue-phone\.jpg">[\s\S]*?<img src="\/assets\/home\/dialogue-desktop\.jpg"[^>]+width="971"[^>]+height="1619"/);
+  }
+  for(const file of [
+    'dist/assets/home/dialogue-phone.jpg',
+    'dist/assets/home/dialogue-desktop.jpg'
+  ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
+});
