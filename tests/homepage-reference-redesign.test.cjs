@@ -120,8 +120,13 @@ test('news image build removes stale generated assets before copying',()=>{
 
 test('cache-busts the corrected reference layout for immediate visibility',()=>{
   for(const file of ['index.html','dist/index.html']){
-    assert.match(read(file),/homepage-reference\.css\?v=20261115-reference3/);
+    assert.match(read(file),/homepage-reference\.css\?v=20261115-reference4/);
   }
+});
+
+test('keeps direction photographs above the card background on mobile',()=>{
+  const styles=read('homepage-reference.css');
+  assert.match(styles,/\.direction-tile\{[^}]*isolation:isolate/);
 });
 
 test('provides homepage responsive and reduced-motion resilience',()=>{
