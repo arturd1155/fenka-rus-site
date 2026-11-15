@@ -76,7 +76,7 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
-  assert.match(html,/href="style\.css\?v=20261115-mobile12"/);
+  assert.match(html,/href="style\.css\?v=20261115-mobile13"/);
   assert.match(html,/src="hero-controller\.js\?v=20261114-mobile10"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
@@ -107,8 +107,10 @@ test('homepage map animation adds desktop effects and a lightweight mobile treat
   }
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data:before\{[^}]*animation:fenkaMobileContourGlow/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core\{[^}]*animation:fenkaMobileRouteFlow/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--glow\{[^}]*animation:fenkaMobileLineGlow/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker:nth-child\(4n\+1\):after\{[^}]*display:block[^}]*animation:fenkaMobileMarkerPulse/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data:after\{display:none/);
-  for(const name of ['fenkaMobileContourGlow','fenkaMobileRouteFlow']){
+  for(const name of ['fenkaMobileContourGlow','fenkaMobileRouteFlow','fenkaMobileLineGlow','fenkaMobileMarkerPulse']){
     assert.match(css,new RegExp(`@keyframes ${name}`));
   }
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hero-map__data:before,\.hero-map__data:after,\.hero-network__line--core,\.hero-region-marker:after\{animation:none!important/);
@@ -130,7 +132,7 @@ test('mobile hero overlays the complete animated map directly on the handshake',
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__geography\{display:block/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__pulse\{display:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core\{[^}]*stroke-dasharray:\.035 \.065[^}]*animation:fenkaMobileRouteFlow/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core\{[^}]*stroke-dasharray:\.025 \.045[^}]*animation:fenkaMobileRouteFlow 3\.4s/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker:before\{[^}]*animation:none/);
 });
 
