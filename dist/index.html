@@ -11,6 +11,7 @@
   <link rel="preload" as="image" href="homepage-regions-map-v2.webp?v=20261112-concept2" type="image/webp" media="(min-width: 721px)">
   <link rel="preload" as="image" href="homepage-regions-mobile.webp?v=20261112-concept2" type="image/webp" media="(max-width: 720px)">
   <link rel="stylesheet" href="style.css?v=20261114-mobile10">
+  <link rel="stylesheet" href="homepage-reference.css?v=20261115-reference1">
 <link rel="stylesheet" href="/shared/site-shell.css"></head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -122,11 +123,24 @@
       </div>
     </div>
 
-    <section class="section join home-join" id="join">
-      <div class="shell"><p class="eyebrow red">Присоединиться</p><h2>Станьте частью<br>общего дела</h2><div class="join-grid"><a href="/regions/"><h3>Найти отделение</h3><i>→</i></a><a href="/contacts/"><h3>Стать партнёром</h3><i>→</i></a><a href="/contacts/"><h3>Создать отделение</h3><i>→</i></a><a class="join-accent" href="/support/"><h3>Поддержать проекты</h3><i>→</i></a></div></div>
+    <section class="section home-join" id="join">
+      <div class="shell home-join__layout">
+        <header class="home-join__heading"><p class="eyebrow red">Присоединиться</p><h2>Станьте частью<br>общего дела</h2></header>
+        <div class="home-join__grid">
+          <a class="home-join__action" href="/regions/"><span>Найти отделение</span><i aria-hidden="true">→</i></a>
+          <a class="home-join__action" href="/contacts/"><span>Стать партнёром</span><i aria-hidden="true">→</i></a>
+          <a class="home-join__action" href="/contacts/"><span>Создать отделение</span><i aria-hidden="true">→</i></a>
+          <a class="home-join__action home-join__action--accent" href="/support/"><span>Поддержать проекты</span><i aria-hidden="true">→</i></a>
+        </div>
+      </div>
     </section>
 
-    <section class="newsletter home-newsletter"><div class="shell newsletter-grid"><div><p class="eyebrow">Будьте в курсе</p><h2>Новости ФЕНКА</h2><p>Культура, проекты и важные события регионов — в одной рассылке.</p></div><form><label><span>Ваше имя</span><input type="text" placeholder="Имя"></label><label><span>Электронная почта</span><input type="email" placeholder="name@example.ru"></label><button class="button button-red" type="button">Подписаться</button></form></div></section>
+    <section class="home-newsletter" aria-labelledby="newsletter-title">
+      <div class="shell home-newsletter__layout">
+        <div class="home-newsletter__copy"><p class="eyebrow">Будьте в курсе</p><h2 id="newsletter-title">Новости ФЕНКА</h2><p>Культура, проекты и важные события регионов — в одной рассылке.</p></div>
+        <form class="home-newsletter__form"><label for="newsletter-name"><span>Ваше имя</span></label><input id="newsletter-name" name="name" type="text" autocomplete="name" placeholder="Имя"><label for="newsletter-email"><span>Электронная почта</span></label><input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="name@example.ru"><button type="button">Подписаться</button></form>
+      </div>
+    </section>
   </main>
 <footer class="global-footer"><div><img src="/fenka-logo-official.png" alt="ФЕНКА"><p>Люди. Культура. Развитие.</p></div><nav><a href="/regions/">Регионы</a><a href="/leadership/">Руководство</a><a href="/documents/">Документы</a><a href="/reports/">Отчётность</a><a href="/about/">О ФЕНКА</a><a href="/projects/">Проекты</a><a href="/youth/">Молодёжный департамент ФЕНКА</a><a href="/events/">События</a><a href="/media/heritage/">Медиатека</a><a href="/news/">Новости</a><a href="/support/">Помочь</a><a href="/contacts/">Контакты</a><a href="/privacy/">Политика конфиденциальности</a></nav><div class="global-footer__social"><strong>Социальные сети</strong><a href="https://vk.ru/fenkarus?ysclid=mue1bx5o93573807833" target="_blank" rel="noopener noreferrer">ВКонтакте</a><a href="https://t.me/fenkarus" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://max.ru/join/t1856SKfg2tv8TdYnIjARxurVWQK_ATuRZmt5hLfPoo" target="_blank" rel="noopener noreferrer">MAX</a></div></footer>
   <script src="hero-controller.js?v=20261114-mobile10"></script><script src="app.js?v=20261114-mobile10"></script>
