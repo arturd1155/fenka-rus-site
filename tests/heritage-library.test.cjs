@@ -54,6 +54,15 @@ test('heritage styling is local, responsive, and exposes accessible controls',()
   assert.doesNotMatch(css,/(^|})\s*body\s*\{/m);
 });
 
+test('desktop heritage hero shows all three portrait covers without cropping',()=>{
+  const css=fs.readFileSync('dist/media/heritage/heritage.css','utf8');
+  const mosaic=css.match(/\.heritage-hero__mosaic\{[^}]*\}/)?.[0]||'';
+  const covers=css.match(/\.heritage-hero__mosaic img\{[^}]*\}/)?.[0]||'';
+  assert.match(mosaic,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(covers,/object-fit:contain/);
+  assert.doesNotMatch(css,/\.heritage-hero__mosaic img:nth-child\(2\)\{[^}]*grid-row:span 2/);
+});
+
 test('heritage client script implements normalized search and modal cleanup',()=>{
   const js=fs.readFileSync('dist/media/heritage/heritage.js','utf8');
   assert.match(js,/function normalizeQuery/);
