@@ -216,3 +216,14 @@ test('culture and heritage direction serves the supplied desktop and phone photo
     'dist/assets/home/culture-desktop.jpg'
   ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
 });
+
+test('youth initiatives direction serves the supplied desktop and phone photographs',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    const html=read(file);
+    assert.match(html,/<picture class="direction-tile__media direction-tile__media--youth">[\s\S]*?<source media="\(max-width: 720px\)" srcset="\/assets\/home\/youth-phone\.jpg">[\s\S]*?<img src="\/assets\/home\/youth-desktop\.jpg"[^>]+width="971"[^>]+height="1619"/);
+  }
+  for(const file of [
+    'dist/assets/home/youth-phone.jpg',
+    'dist/assets/home/youth-desktop.jpg'
+  ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
+});
