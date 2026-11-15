@@ -244,7 +244,7 @@ test('homepage initiatives use a responsive full-card editorial mosaic',()=>{
   assert.equal((block.match(/<a[^>]*class="project-mosaic__card(?:\s|\")/g)||[]).length,4);
   assert.equal((block.match(/project-mosaic__lead/g)||[]).length,1);
   assert.match(block,/href="\/projects\/kod-naslediya\/"[^>]*class="project-mosaic__card project-mosaic__lead"/);
-  for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.webp','shkola-liderov-fenka.jpg','festival-evrejskoj-muzyki.jpg'])assert.match(block,new RegExp(cover.replace('.','\\.')));
+  for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.jpg','shkola-liderov-fenka.jpg','festival-evrejskoj-muzyki.jpg'])assert.match(block,new RegExp(cover.replace('.','\\.')));
   for(const qualifier of ['Флагманский проект','Федеральная программа','Новые возможности','Казань'])assert.match(block,new RegExp(qualifier));
   assert.match(css,/\.project-mosaic\{[^}]*grid-template-columns/);
   assert.match(css,/\.project-mosaic__card:focus-visible,[^{]*\.home-event-row>a:focus-visible,[^{]*\.home-news-entry:focus-visible\{[^}]*outline:/);

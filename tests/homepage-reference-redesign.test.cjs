@@ -24,7 +24,7 @@ test('keeps the approved hero untouched while installing the reference section o
     }
     for(const title of ['Код наследия','Культурный отдел ФЕНКА','Новые горизонты','Фестиваль еврейской музыки в Казани'])assert.match(html,new RegExp(title));
     for(const date of ['2026-11-20','2026-11-23'])assert.match(html,new RegExp(date));
-    for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.webp','shkola-liderov-fenka.jpg','festival-evrejskoj-muzyki.jpg'])assert.match(html,new RegExp(`<img[^>]+${cover}`));
+    for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.jpg','shkola-liderov-fenka.jpg','festival-evrejskoj-muzyki.jpg'])assert.match(html,new RegExp(`<img[^>]+${cover}`));
   }
 });
 
@@ -60,6 +60,8 @@ test('builds the four-project mosaic without dropping existing initiatives',()=>
   for(const title of ['Код наследия','Культурный отдел ФЕНКА','Новые горизонты','Фестиваль еврейской музыки в Казани'])assert.match(section,new RegExp(title));
   assert.match(styles,/\.project-mosaic__media\s*\{[^}]*aspect-ratio:16\/9/);
   assert.match(styles,/\.project-mosaic__media img\s*\{[^}]*object-fit:contain/);
+  assert.match(section,/class="project-mosaic__card project-mosaic__culture-card"[\s\S]*?<img src="\/assets\/projects\/kulturnyj-otdel\.jpg"/);
+  assert.match(styles,/\.project-mosaic__culture-card \.project-mosaic__media img\{[^}]*width:100%[^}]*object-fit:cover/);
 });
 
 test('builds the combined homepage feed with preserved events and news',()=>{
@@ -121,7 +123,7 @@ test('news image build removes stale generated assets before copying',()=>{
 
 test('cache-busts the corrected reference layout for immediate visibility',()=>{
   for(const file of ['index.html','dist/index.html']){
-    assert.match(read(file),/homepage-reference\.css\?v=20261115-reference4/);
+    assert.match(read(file),/homepage-reference\.css\?v=20261116-culture1/);
   }
 });
 
