@@ -513,6 +513,7 @@ test('published pages contain no links that jump to the top as placeholders',()=
 test('projects archive is fully migrated into internal catalogue and detail pages',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,25);
+  assert.doesNotMatch(catalogue,/project-card__number/);
   assert.doesNotMatch(catalogue,/Видеоролики на канале ФЕНКА/);
   assert.equal(fs.existsSync('dist/projects/videoroliki-na-kanale-fenka/index.html'),false);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
