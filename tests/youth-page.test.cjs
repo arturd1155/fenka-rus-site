@@ -12,7 +12,7 @@ test('youth page publishes the approved cinematic navigation hero without number
   assert.match(html,/class="youth-landing"/);
   assert.match(html,/href="\/shared\/youth\.css"/);
   assert.match(html,/src="\/shared\/youth\.js"/);
-  assert.match(html,/src="\/assets\/youth\/youth-hero\.jpg"/);
+  assert.match(html,/src="\/assets\/youth\/youth-hero-community\.jpg"/);
   for(const anchor of ['department','directions','team','projects','application']){
     assert.match(html,new RegExp(`href="#${anchor}"`));
     assert.match(html,new RegExp(`id="${anchor}"`));
@@ -21,6 +21,16 @@ test('youth page publishes the approved cinematic navigation hero without number
   assert.doesNotMatch(html,/>0[1-5]</);
   assert.doesNotMatch(html,/55\s+регионах/i);
   assert.doesNotMatch(html,/Структура подготовлена к наполнению/);
+});
+
+test('youth page uses the supplied community photograph as its opening image',()=>{
+  const html=fs.readFileSync('dist/youth/index.html','utf8');
+  assert.match(html,/src="\/assets\/youth\/youth-hero-community\.jpg"[^>]+width="1280"[^>]+height="854"/);
+  assert.equal(fs.existsSync('dist/assets/youth/youth-hero-community.jpg'),true);
+  assert.deepEqual(
+    fs.readFileSync('dist/assets/youth/youth-hero-community.jpg'),
+    fs.readFileSync('site-assets/youth/youth-hero-community.jpg')
+  );
 });
 
 test('youth page keeps four approved focus areas and a mobile-safe interaction contract',()=>{

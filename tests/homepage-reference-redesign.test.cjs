@@ -41,7 +41,7 @@ test('builds the FENKA system ribbon from four local visual segments',()=>{
 test('builds the six-tile directions panorama with a mobile snap strip',()=>{
   const html=read('index.html');
   const styles=readStyles();
-  assert.equal((html.match(/class="direction-tile/g)||[]).length,6);
+  assert.equal((html.match(/class="direction-tile"/g)||[]).length,6);
   assert.match(html,/class="direction-panorama"/);
   assert.match(styles,/\.direction-panorama\s*\{[^}]*grid-template-columns:repeat\(6/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-panorama\s*\{[^}]*overflow-x:auto[^}]*scroll-snap-type:x mandatory/);
@@ -188,4 +188,15 @@ test('publishes the approved homepage wording, current phone and working newslet
     assert.match(html,/<script src="mail-forms\.js"><\/script>/);
   }
   assert.match(read('homepage-reference.css'),/\.home-newsletter__status\{[^}]*grid-column:1\/-1/);
+});
+
+test('education direction serves the supplied desktop and phone photographs',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    const html=read(file);
+    assert.match(html,/<picture class="direction-tile__media direction-tile__media--education">[\s\S]*?<source media="\(max-width: 720px\)" srcset="\/assets\/home\/education-phone\.jpg">[\s\S]*?<img src="\/assets\/home\/education-desktop\.jpg"[^>]+width="971"[^>]+height="1619"/);
+  }
+  for(const file of [
+    'dist/assets/home/education-phone.jpg',
+    'dist/assets/home/education-desktop.jpg'
+  ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
 });
