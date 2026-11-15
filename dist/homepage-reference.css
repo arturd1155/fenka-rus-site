@@ -31,15 +31,18 @@ body>.global-footer{padding:60px max(32px,calc((100% - 1240px)/2)) 34px;display:
 .home-system__copy h2{max-width:470px;margin:8px 0 16px;font-size:clamp(38px,3.6vw,54px);line-height:1.04}
 .home-system__copy>p:not(.eyebrow){max-width:460px;font-size:13px;line-height:1.6}
 .home-arrow-link{margin-top:20px}
-.fenka-ribbon{min-height:330px;gap:8px;transform:rotate(-1deg)}
-.fenka-ribbon:before{inset:17% 10%}
+.fenka-ribbon{min-height:400px;gap:12px;transform:none}
+.fenka-ribbon:before{display:none}
+.fenka-ribbon__segment{border-radius:28px!important}
+.fenka-ribbon__segment img{z-index:0;opacity:.9}
+.fenka-ribbon__segment:after{z-index:1;background:linear-gradient(180deg,rgba(4,20,36,.12),rgba(4,20,36,.2) 42%,rgba(4,20,36,.82))}
 .fenka-ribbon__segment b{font-size:clamp(20px,1.7vw,27px)}
 .fenka-ribbon__segment small{margin-top:4px;font-size:9px}
-.fenka-ribbon__segment--people span{left:28px;bottom:21px}
-.fenka-ribbon__segment--regions span{right:29px;top:22px}
+.fenka-ribbon__segment--people span{left:28px;top:22px;bottom:auto}
+.fenka-ribbon__segment--regions span{right:29px;top:22px;bottom:auto}
 .fenka-ribbon__segment--culture span{left:29px;bottom:22px}
 .fenka-ribbon__segment--development span{right:29px;bottom:21px}
-.fenka-ribbon__core{min-height:104px;padding:17px}
+.fenka-ribbon__core{width:44%;min-height:118px;padding:17px;transform:translate(-50%,-50%)}
 .fenka-ribbon__core strong{margin:5px 0 4px;font-size:clamp(27px,2.8vw,40px)}
 .fenka-ribbon__core p{margin-top:7px;font-size:9px}
 
@@ -116,10 +119,16 @@ body>.global-footer{padding:42px max(32px,calc((100% - 1240px)/2)) 26px;gap:36px
 @media(max-width:720px){
   .home-system{padding:44px 0 48px}
   .home-system__copy h2{font-size:clamp(34px,9.5vw,46px)}
-  .fenka-ribbon{min-height:440px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:7px;transform:none}
-  .fenka-ribbon:before{display:block;inset:22% 8%}
-  .fenka-ribbon__segment{border-radius:22px!important}
-  .fenka-ribbon__segment span{left:15px!important;right:auto!important;top:auto!important;bottom:14px!important;text-align:left!important}
+  .fenka-ribbon{min-height:520px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:8px;transform:none}
+  .fenka-ribbon:before{display:none}
+  .fenka-ribbon__segment{border-radius:24px!important}
+  .fenka-ribbon__segment span{transform:none}
+  .fenka-ribbon__segment--people span,.fenka-ribbon__segment--regions span{top:16px!important;bottom:auto!important}
+  .fenka-ribbon__segment--people span{left:16px!important;right:auto!important;text-align:left!important}
+  .fenka-ribbon__segment--regions span{left:auto!important;right:16px!important;text-align:right!important}
+  .fenka-ribbon__segment--culture span,.fenka-ribbon__segment--development span{top:auto!important;bottom:16px!important}
+  .fenka-ribbon__segment--culture span{left:16px!important;right:auto!important;text-align:left!important}
+  .fenka-ribbon__segment--development span{left:auto!important;right:16px!important;text-align:right!important}
   .fenka-ribbon__segment small{display:none}
   .fenka-ribbon__segment b{font-size:19px}
   .fenka-ribbon__core{width:62%;min-height:100px;padding:15px}

@@ -120,7 +120,7 @@ test('news image build removes stale generated assets before copying',()=>{
 
 test('cache-busts the corrected reference layout for immediate visibility',()=>{
   for(const file of ['index.html','dist/index.html']){
-    assert.match(read(file),/homepage-reference\.css\?v=20261115-reference2/);
+    assert.match(read(file),/homepage-reference\.css\?v=20261115-reference3/);
   }
 });
 
@@ -136,7 +136,7 @@ test('matches the compact editorial rhythm of the approved desktop reference',()
   const styles=read('homepage-reference.css');
   assert.match(styles,/\/\* Exact reference density correction \*\//);
   assert.match(styles,/\.home-system\{[^}]*padding:52px 0 56px/);
-  assert.match(styles,/\.fenka-ribbon\{[^}]*min-height:330px/);
+  assert.match(styles,/\.fenka-ribbon\{[^}]*min-height:400px[^}]*transform:none/);
   assert.match(styles,/\.home-directions\{[^}]*padding:46px 0 48px/);
   assert.match(styles,/\.direction-tile\{[^}]*height:260px/);
   assert.match(styles,/\.direction-tile img\{[^}]*object-fit:cover/);
@@ -149,7 +149,7 @@ test('matches the compact editorial rhythm of the approved desktop reference',()
 
 test('keeps the compact reference composition on mobile without stacking four oversized system cards',()=>{
   const styles=read('homepage-reference.css');
-  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.fenka-ribbon\{[^}]*min-height:440px[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)[^}]*grid-template-rows:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.fenka-ribbon\{[^}]*min-height:520px[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)[^}]*grid-template-rows:repeat\(2,minmax\(0,1fr\)\)/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-tile[^\{]*\{[^}]*height:300px/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-tile h3\{[^}]*font-size:20px/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-tile p\{[^}]*font-size:10px/);
@@ -158,6 +158,15 @@ test('keeps the compact reference composition on mobile without stacking four ov
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-event-row\{[^}]*grid-template-columns:76px minmax\(0,1fr\)/);
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-news-entry[^\{]*\{[^}]*padding-right:0/);
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-news-entry>i\{[^}]*display:none/);
+});
+
+test('keeps FENKA system images and labels clear on desktop and mobile',()=>{
+  const styles=read('homepage-reference.css');
+  assert.match(styles,/\.fenka-ribbon:before\{display:none\}/);
+  assert.match(styles,/\.fenka-ribbon__segment img\{[^}]*z-index:0[^}]*opacity:\.9/);
+  assert.match(styles,/\.fenka-ribbon__segment:after\{[^}]*z-index:1/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.fenka-ribbon__segment--people span,\.fenka-ribbon__segment--regions span\{[^}]*top:16px!important[^}]*bottom:auto!important/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.fenka-ribbon__segment--culture span,\.fenka-ribbon__segment--development span\{[^}]*top:auto!important[^}]*bottom:16px!important/);
 });
 
 test('keeps compact editorial labels readable at normal desktop zoom',()=>{
