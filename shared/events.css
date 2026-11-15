@@ -114,6 +114,7 @@
 
 .page-events .event-card{
   display:grid;
+  scroll-margin-top:96px;
   grid-template-columns:minmax(230px,290px) minmax(0,1fr);
   overflow:hidden;
   background:#fff;
@@ -271,6 +272,14 @@
   font-size:17px;
   font-weight:800;
 }
+
+.page-events .event-schedule__date-range{
+  display:flex;
+  gap:4px;
+  align-items:baseline;
+}
+
+.page-events .event-schedule__date-range i{font-style:normal}
 
 .page-events .event-schedule__date span{
   display:block;
