@@ -152,11 +152,11 @@
 @media(max-width:900px){.initiative-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto}.initiative-card--lead,.initiative-card--culture,.initiative-card--horizons{grid-column:span 1;grid-row:auto;min-height:390px}.initiative-card--lead,.initiative-card--festival{grid-column:1/-1;min-height:520px}.initiative-card--festival{min-height:380px}}
 @media(max-width:640px){.projects.initiatives{padding:78px 0}.initiatives-heading{margin-bottom:30px;align-items:flex-start}.initiatives-heading .text-link{margin-top:8px}.initiative-grid{grid-template-columns:1fr;gap:14px}.initiative-card--lead,.initiative-card--culture,.initiative-card--horizons,.initiative-card--festival{grid-column:auto;aspect-ratio:16/10;min-height:0}.initiative-content{padding:20px}.initiative-topline{top:18px;left:20px;right:20px}.initiative-index,.initiative-summary{display:none}.initiative-content h3,.initiative-card--lead .initiative-content h3{margin:0 45px 0 0;font-size:clamp(22px,7.6vw,34px);line-height:1.08}.initiative-arrow{right:18px;bottom:18px;width:39px;height:39px;font-size:18px}}
 
-/* Mobile hero: keep the exact Russia map aligned above the handshake. */
+/* Mobile hero: place the exact Russia map directly on the handshake. */
 @keyframes fenkaMobileContourGlow{0%,100%{opacity:.22;transform:scale(1)}50%{opacity:.38;transform:scale(1.012)}}
 @keyframes fenkaMobileRouteFlow{to{stroke-dashoffset:-.4}}
 @media(max-width:720px){
-  .hero-map__data{left:50%;top:clamp(56px,8.5dvh,84px);width:108vw;max-width:none;aspect-ratio:1280/650;transform:translate3d(-50%,0,0) scaleX(1.04);transform-origin:50% 0;filter:drop-shadow(0 0 18px rgba(47,183,255,.44))}
+  .hero-map__data{left:50%;top:clamp(148px,23dvh,208px);width:108vw;max-width:none;aspect-ratio:1280/650;transform:translate3d(-50%,0,0) scaleX(1.04);transform-origin:50% 0;filter:drop-shadow(0 0 18px rgba(47,183,255,.44))}
   .hero-map__data:before{animation:fenkaMobileContourGlow 4.8s ease-in-out infinite;transform-origin:center;will-change:opacity,transform;opacity:.24;filter:brightness(1.9) saturate(1.4) blur(2px) drop-shadow(0 0 12px rgba(38,178,255,.72))}
   .hero-network__line--glow{stroke-width:3;filter:none;opacity:.3}
   .hero-network__line--core{stroke-dasharray:.035 .065;stroke-dashoffset:0;animation:fenkaMobileRouteFlow 6.2s linear infinite}

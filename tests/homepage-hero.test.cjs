@@ -76,7 +76,7 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
-  assert.match(html,/href="style\.css\?v=20261115-mobile11"/);
+  assert.match(html,/href="style\.css\?v=20261115-mobile12"/);
   assert.match(html,/src="hero-controller\.js\?v=20261114-mobile10"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
@@ -114,7 +114,7 @@ test('homepage map animation adds desktop effects and a lightweight mobile treat
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hero-map__data:before,\.hero-map__data:after,\.hero-network__line--core,\.hero-region-marker:after\{animation:none!important/);
 });
 
-test('mobile hero places the complete animated map directly above the handshake',()=>{
+test('mobile hero overlays the complete animated map directly on the handshake',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(html,/<source media="\(max-width: 720px\)" srcset="homepage-regions-mobile\.webp\?v=20261112-concept2" type="image\/webp">/);
   assert.match(html,/class="hero-map__geography" src="homepage-russia-overlay\.svg\?v=20261112-concept2"/);
@@ -125,7 +125,7 @@ test('mobile hero places the complete animated map directly above the handshake'
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*max-height:none/);
   assert.match(css,/\.hero-map__art img\{[^}]*max-height:none[^}]*object-fit:cover/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*width:100%[^}]*max-height:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*top:clamp\(56px,8\.5dvh,84px\)[^}]*width:108vw[^}]*max-width:none[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\) scaleX\(1\.04\)/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*top:clamp\(148px,23dvh,208px\)[^}]*width:108vw[^}]*max-width:none[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\) scaleX\(1\.04\)/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*mix-blend-mode:screen/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__geography\{display:block/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
