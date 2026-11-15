@@ -640,6 +640,8 @@ test('publishes the ten newly supplied project covers on catalogue cards and det
   assert.match(styles,/\.project-card__cover img\{[^}]*object-fit:contain/);
   assert.match(styles,/\.project-detail__cover\{[^}]*aspect-ratio:16\/9/);
   assert.match(styles,/\.project-detail__cover img\{[^}]*object-fit:contain/);
+  const flagshipStyles=fs.readFileSync('dist/shared/heritage-project.css','utf8');
+  assert.match(flagshipStyles,/\.heritage-banner img\{[^}]*object-fit:contain/);
 });
 
 test('every project card and detail page uses its locally hosted cover',()=>{
