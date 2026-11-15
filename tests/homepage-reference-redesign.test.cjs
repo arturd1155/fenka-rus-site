@@ -110,10 +110,51 @@ test('copies the dedicated homepage stylesheet during every distribution build',
   assert.equal(read('dist/homepage-reference.css'),read('homepage-reference.css'));
 });
 
+test('cache-busts the corrected reference layout for immediate visibility',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    assert.match(read(file),/homepage-reference\.css\?v=20261115-reference2/);
+  }
+});
+
 test('provides homepage responsive and reduced-motion resilience',()=>{
   const styles=readStyles();
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.home-join__layout\s*\{[^}]*grid-template-columns:1fr/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.home-newsletter__layout\s*\{[^}]*grid-template-columns:1fr/);
   assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-join__grid\s*\{[^}]*grid-template-columns:1fr/);
   assert.match(styles,/@media\(prefers-reduced-motion:reduce\)\{[\s\S]*\.home-join__action[\s\S]*\.home-newsletter/);
+});
+
+test('matches the compact editorial rhythm of the approved desktop reference',()=>{
+  const styles=read('homepage-reference.css');
+  assert.match(styles,/\/\* Exact reference density correction \*\//);
+  assert.match(styles,/\.home-system\{[^}]*padding:52px 0 56px/);
+  assert.match(styles,/\.fenka-ribbon\{[^}]*min-height:330px/);
+  assert.match(styles,/\.home-directions\{[^}]*padding:46px 0 48px/);
+  assert.match(styles,/\.direction-tile\{[^}]*height:260px/);
+  assert.match(styles,/\.direction-tile img\{[^}]*object-fit:cover/);
+  assert.match(styles,/\.home-projects\{[^}]*padding:48px 0 52px/);
+  assert.match(styles,/\.project-mosaic\{[^}]*height:430px/);
+  assert.match(styles,/\.home-feed\{[^}]*padding:46px 0 50px/);
+  assert.match(styles,/\.home-join\{[^}]*padding:34px 0 36px/);
+  assert.match(styles,/\.home-newsletter\{[^}]*padding:32px 0 34px/);
+});
+
+test('keeps the compact reference composition on mobile without stacking four oversized system cards',()=>{
+  const styles=read('homepage-reference.css');
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.fenka-ribbon\{[^}]*min-height:440px[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)[^}]*grid-template-rows:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-tile[^\{]*\{[^}]*height:300px/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-tile h3\{[^}]*font-size:20px/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-tile p\{[^}]*font-size:10px/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.project-mosaic\{[^}]*height:auto/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.project-mosaic__rail \.project-mosaic__card\{[^}]*grid-template-columns:1fr/);
+  assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-event-row\{[^}]*grid-template-columns:76px minmax\(0,1fr\)/);
+  assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-news-entry[^\{]*\{[^}]*padding-right:0/);
+  assert.match(styles,/@media\(max-width:420px\)\{[\s\S]*\.home-news-entry>i\{[^}]*display:none/);
+});
+
+test('keeps compact editorial labels readable at normal desktop zoom',()=>{
+  const styles=read('homepage-reference.css');
+  assert.match(styles,/\.fenka-ribbon__segment small\{[^}]*font-size:9px/);
+  assert.match(styles,/\.fenka-ribbon__core p\{[^}]*font-size:9px/);
+  assert.match(styles,/\.direction-tile p\{[^}]*font-size:9px/);
 });
