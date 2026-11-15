@@ -227,3 +227,14 @@ test('youth initiatives direction serves the supplied desktop and phone photogra
     'dist/assets/home/youth-desktop.jpg'
   ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
 });
+
+test('social programs direction serves the supplied desktop and phone photographs',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    const html=read(file);
+    assert.match(html,/<picture class="direction-tile__media direction-tile__media--social">[\s\S]*?<source media="\(max-width: 720px\)" srcset="\/assets\/home\/social-phone\.jpg">[\s\S]*?<img src="\/assets\/home\/social-desktop\.jpg"[^>]+width="971"[^>]+height="1619"/);
+  }
+  for(const file of [
+    'dist/assets/home/social-phone.jpg',
+    'dist/assets/home/social-desktop.jpg'
+  ])assert.equal(fs.existsSync(file),true,`${file} must be published`);
+});
