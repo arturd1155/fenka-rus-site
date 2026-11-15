@@ -45,6 +45,7 @@ process.nextTick(()=>{
   fs.rmSync(path.join(dist,'assets','projects','videoroliki-na-kanale-fenka.webp'),{force:true});
   fs.copyFileSync(path.join(root,'shared','projects.css'),path.join(dist,'shared','projects.css'));
   fs.copyFileSync(path.join(root,'shared','heritage-project.css'),path.join(dist,'shared','heritage-project.css'));
+  fs.copyFileSync(path.join(root,'shared','project-forms.js'),path.join(dist,'shared','project-forms.js'));
   const coversDir=path.join(dist,'assets','projects');
   fs.mkdirSync(coversDir,{recursive:true});
   for(const project of projects)fs.copyFileSync(path.join(root,'site-assets','projects',coverFile(project)),path.join(coversDir,coverFile(project)));

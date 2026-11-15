@@ -54,13 +54,13 @@
         form.dataset.sending='true';
         form.setAttribute('aria-busy','true');
         if(button)button.disabled=true;
-        if(status)status.textContent='Отправляем…';
+        if(status){status.textContent='Отправляем…';status.dataset.state='pending';}
         try{
           await send({recipient:form.dataset.mailRecipient,subject:form.dataset.mailSubject,fields});
           form.reset();
-          if(status)status.textContent='Спасибо! Данные отправлены в ФЕНКА.';
+          if(status){status.textContent='Спасибо! Данные отправлены в ФЕНКА.';status.dataset.state='success';}
         }catch{
-          if(status)status.textContent='Не удалось отправить. Попробуйте ещё раз или напишите на info@fenkar.ru.';
+          if(status){status.textContent='Не удалось отправить. Попробуйте ещё раз или напишите на info@fenkar.ru.';status.dataset.state='error';}
         }finally{
           delete form.dataset.sending;
           form.removeAttribute('aria-busy');

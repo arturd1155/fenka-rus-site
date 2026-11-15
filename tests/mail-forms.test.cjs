@@ -4,7 +4,7 @@ const {submitToInbox,bindMailForms}=require('../mail-forms.js');
 const fs=require('node:fs');
 
 function makeBoundForm({valid=true,checked=true}={}){
-  const status={textContent:''};
+  const status={textContent:'',dataset:{}};
   const button={type:'submit',name:'',disabled:false};
   const elements=[
     {name:'fullName',type:'text',value:'Анна',dataset:{mailLabel:'ФИО'}},
@@ -134,6 +134,7 @@ test('bindMailForms blocks a duplicate submission while the first is pending',as
     const first=form.submitHandler({preventDefault(){}});
     await form.submitHandler({preventDefault(){}});
     assert.equal(calls,1);
+    assert.equal(doc.querySelectorAll('[data-mail-form]')[0].querySelector('[data-mail-status]').dataset.state,'pending');
 
     release();
     await first;
@@ -150,5 +151,18 @@ test('bindMailForms restores controls and shows inbox fallback after rejection',
     assert.equal(button.disabled,false);
     assert.equal(form.attributes['aria-busy'],undefined);
     assert.match(status.textContent,/info@fenkar\.ru/);
+    assert.equal(status.dataset.state,'error');
+  });
+});
+
+test('bindMailForms marks a delivered request as successful',async()=>{
+  await withFakeFormData(async()=>{
+    const {doc,form,status}=makeBoundForm();
+    bindMailForms(doc,async()=>({success:true}));
+
+    await form.submitHandler({preventDefault(){}});
+
+    assert.equal(status.dataset.state,'success');
+    assert.match(status.textContent,/Спасибо/);
   });
 });
