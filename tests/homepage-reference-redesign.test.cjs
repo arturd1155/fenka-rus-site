@@ -72,8 +72,10 @@ test('builds the combined homepage feed with preserved events and news',()=>{
   assert.equal((feed.match(/class="home-news-entry(?: |")/g)||[]).length,4);
   for(const date of ['2026-10-14','2026-11-03'])assert.match(feed,new RegExp(date));
   for(const title of ['Киноклуб ФЕНКА в Доме народов России','Лекция «Еврейское наследие регионов России»','ЕНКА Евпатории получила в дар сидур XVIII века','первый семейный национальный забег'])assert.match(feed,new RegExp(title));
+  for(const action of ['Подробнее','Регистрация','Читать новость'])assert.match(feed,new RegExp(action));
   assert.match(styles,/\.home-feed__grid\s*\{[^}]*grid-template-columns:repeat\(2/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.home-feed__grid\s*\{[^}]*grid-template-columns:1fr/);
+  assert.match(styles,/\.home-event-row>a[^\{]*\{[^}]*width:44px[^}]*height:44px/);
 });
 
 test('builds the four-action participation band from current destinations',()=>{
@@ -99,6 +101,13 @@ test('finishes homepage accessibility with labelled fields, real footer links, a
   assert.match(styles,/\.home-join__action:focus-visible/);
   assert.match(styles,/\.home-newsletter[^,{]*:focus-visible/);
   assert.match(styles,/footer[^,{]*:focus-visible/);
+  assert.match(styles,/\.footer-grid>div>a:not\(\.brand\)\{[^}]*min-height:44px/);
+  assert.match(styles,/\.global-footer a\{[^}]*min-height:44px/);
+});
+
+test('copies the dedicated homepage stylesheet during every distribution build',()=>{
+  assert.match(read('scripts/build-site.cjs'),/require\('\.\/copy-homepage-reference-css\.cjs'\)/);
+  assert.equal(read('dist/homepage-reference.css'),read('homepage-reference.css'));
 });
 
 test('provides homepage responsive and reduced-motion resilience',()=>{

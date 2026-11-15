@@ -2,7 +2,7 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const html=fs.readFileSync('index.html','utf8');
-const css=fs.readFileSync('style.css','utf8');
+const css=fs.readFileSync('style.css','utf8')+fs.readFileSync('homepage-reference.css','utf8');
 
 test('hero exposes the agreed narrative and one primary action',()=>{
   assert.match(html,/id="homeHero"/);
@@ -169,40 +169,35 @@ test('homepage initializes one interruptible hero controller',()=>{
 });
 
 test('about FENKA section explains the federal system accessibly',()=>{
-  assert.equal((html.match(/class="shell fenka-system"/g)||[]).length,1);
-  assert.equal((html.match(/class="fenka-system-core"/g)||[]).length,1);
-  assert.equal((html.match(/class="fenka-system-node"/g)||[]).length,4);
-  for(const label of ['Автономии и общины','Лидеры и участники','Память и наследие','Проекты и инициативы']){
+  assert.equal((html.match(/class="shell home-system__layout"/g)||[]).length,1);
+  assert.equal((html.match(/class="fenka-ribbon__core"/g)||[]).length,1);
+  assert.equal((html.match(/class="fenka-ribbon__segment/g)||[]).length,4);
+  for(const label of ['Люди','Регионы','Культура','Развитие']){
     assert.match(html,new RegExp(label));
   }
-  assert.match(html,/class="fenka-system-link" href="\/about\/"/);
+  assert.match(html,/class="home-arrow-link" href="\/about\/"/);
   assert.doesNotMatch(html,/manifesto-points|fenka-timeline|needs-verification/);
   assert.doesNotMatch(html,/Точная дата и архивная справка будут добавлены|Исторические этапы будут подтверждены/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*?\.fenka-system-map\{grid-template-columns:1fr;grid-template-areas:"core" "left" "right"/);
-  assert.match(css,/@media\(max-width:420px\)\{\.fenka-system-column\{grid-template-columns:1fr\}/);
-  assert.match(css,/\.fenka-system-head>\*,\.fenka-system-column\{min-width:0\}/);
-  assert.match(css,/\.fenka-system-node\{[^}]*min-width:0/);
-  assert.match(css,/\.fenka-system-link:focus-visible\{outline:3px solid var\(--red\);outline-offset:6px\}/);
-  assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.fenka-system-node,\.fenka-system-core,\.fenka-system-link span\{transition:none!important;transform:none!important\}\}/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*?\.fenka-ribbon\{[^}]*grid-template-columns:1fr/);
+  assert.match(css,/\.home-arrow-link:focus-visible,[^{]*\.direction-tile:focus-visible\{[^}]*outline:/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*?\.fenka-ribbon__segment img/);
 });
 
 test('homepage directions use the approved federal panorama without changing destinations',()=>{
-  const block=html.match(/<section class="section directions directions--federal"[\s\S]*?<\/section>/)?.[0]||'';
+  const block=html.match(/<section class="section directions home-directions"[\s\S]*?<\/section>/)?.[0]||'';
   assert.match(block,/Сохраняем наследие[\s\S]*Создаём будущее/);
-  const cards=[...block.matchAll(/<a href="([^"]+)" class="direction-card">/g)];
+  const cards=[...block.matchAll(/<a href="([^"]+)" class="direction-tile">/g)];
   assert.equal(cards.length,6);
   assert.deepEqual(cards.map(match=>match[1]),['/projects/','/projects/','/regions/','/youth/','/support/','/about/']);
   assert.doesNotMatch(block,/class="direction-index"/,'direction cards must not display numeric labels');
-  assert.match(css,/\.direction-grid\{[^}]*grid-template-columns:repeat\(3,1fr\)/);
-  assert.match(css,/@media\(max-width:900px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:repeat\(2,1fr\)/);
-  assert.match(css,/@media\(max-width:560px\)[\s\S]*\.direction-grid\{[^}]*grid-template-columns:1fr/);
-  assert.match(css,/\.direction-card:focus-visible\{[^}]*outline:/);
-  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.direction-card\{[^}]*transition:none!important/);
-  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.direction-card:before,\.direction-arrow\{transition:none!important;transform:none!important\}/);
+  assert.match(css,/\.direction-panorama\{[^}]*grid-template-columns:repeat\(6/);
+  assert.match(css,/@media\(max-width:900px\)[\s\S]*\.direction-panorama\{[^}]*overflow-x:auto[^}]*scroll-snap-type:x mandatory/);
+  assert.match(css,/\.direction-tile:focus-visible\{[^}]*outline:/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.direction-tile/);
 });
 
 test('distribution contains every homepage dependency',()=>{
-  for(const file of ['index.html','style.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png','homepage-regions-map-v2.webp','homepage-regions-mobile.webp','homepage-russia-overlay.svg']){
+  for(const file of ['index.html','style.css','homepage-reference.css','app.js','hero-controller.js','fenka-logo-official.png','fenka-regions-visual-clean.png','homepage-regions-map-v2.webp','homepage-regions-mobile.webp','homepage-russia-overlay.svg']){
     assert.equal(fs.existsSync(`dist/${file}`),true,`missing dist/${file}`);
   }
 });
@@ -223,25 +218,22 @@ test('homepage omits the president and online library promos',()=>{
 
 test('homepage omits prototype copy and join card numbers',()=>{
   assert.doesNotMatch(html,/Даты и названия в прототипе демонстрационные/);
-  const join=html.match(/<section class="section join"[\s\S]*?<\/section>/)?.[0]||'';
+  const join=html.match(/<section class="section home-join"[\s\S]*?<\/section>/)?.[0]||'';
   assert.equal((join.match(/<a\b/g)||[]).length,4);
   assert.doesNotMatch(join,/<span>0[1-4]<\/span>/);
 });
 
 test('homepage initiatives use a responsive full-card editorial mosaic',()=>{
-  const css=fs.readFileSync('style.css','utf8');
-  const block=html.match(/<section class="section projects(?:\s[^"]*)?"[\s\S]*?<\/section>/)?.[0]||'';
-  assert.equal((block.match(/<a[^>]*class="initiative-card(?:\s|\")/g)||[]).length,4);
-  assert.equal((block.match(/initiative-card--lead/g)||[]).length,1);
-  assert.match(block,/href="\/projects\/kod-naslediya\/"[^>]*class="initiative-card initiative-card--lead"/);
-  assert.match(block,/initiative-art--horizons/);
-  for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.webp','festival-evrejskoj-muzyki.webp'])assert.match(css,new RegExp(cover.replace('.','\\.')));
-  assert.match(css,/\.initiative-grid\{[^}]*grid-template-columns:repeat\(12,1fr\)/);
-  assert.match(css,/\.initiative-card:focus-visible\{[^}]*outline:/);
-  assert.match(css,/@media\(hover:hover\)[\s\S]*\.initiative-card:hover \.initiative-art\{[^}]*transform:scale/);
-  assert.match(css,/@media\(max-width:900px\)[\s\S]*\.initiative-grid\{[^}]*grid-template-columns:repeat\(2,1fr\)/);
-  assert.match(css,/@media\(max-width:640px\)[\s\S]*\.initiative-grid\{[^}]*grid-template-columns:1fr/);
-  assert.match(css,/@media\(max-width:640px\)[\s\S]*\.initiative-card--lead,[^\{]*\.initiative-card--festival\{[^}]*aspect-ratio:16\/10[^}]*min-height:0/);
+  const block=html.match(/<section class="section projects home-projects"[\s\S]*?<\/section>/)?.[0]||'';
+  assert.equal((block.match(/<a[^>]*class="project-mosaic__card(?:\s|\")/g)||[]).length,4);
+  assert.equal((block.match(/project-mosaic__lead/g)||[]).length,1);
+  assert.match(block,/href="\/projects\/kod-naslediya\/"[^>]*class="project-mosaic__card project-mosaic__lead"/);
+  for(const cover of ['kod-naslediya.jpg','kulturnyj-otdel.webp','shkola-liderov-fenka.jpg','festival-evrejskoj-muzyki.jpg'])assert.match(block,new RegExp(cover.replace('.','\\.')));
+  for(const qualifier of ['Флагманский проект','Федеральная программа','Новые возможности','Казань'])assert.match(block,new RegExp(qualifier));
+  assert.match(css,/\.project-mosaic\{[^}]*grid-template-columns/);
+  assert.match(css,/\.project-mosaic__card:focus-visible,[^{]*\.home-event-row>a:focus-visible,[^{]*\.home-news-entry:focus-visible\{[^}]*outline:/);
+  assert.match(css,/@media\(hover:hover\)[\s\S]*\.project-mosaic__card:hover img\{[^}]*transform:scale/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.project-mosaic__rail \.project-mosaic__card\{[^}]*grid-template-columns:1fr/);
 });
 
 test('distribution uses homepage at root and regions as a site section',()=>{
