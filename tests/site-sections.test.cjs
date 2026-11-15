@@ -613,7 +613,7 @@ test('uses the six supplied project covers without numbering their catalogue car
   }
 });
 
-test('publishes the ten newly supplied project covers on catalogue cards and detail pages without cropping',()=>{
+test('publishes the supplied project covers and fills every project frame without side fields',()=>{
   const slugs=[
     'rossiya-mnogonatsionalnaya',
     'ruka-druzhby',
@@ -624,10 +624,15 @@ test('publishes the ten newly supplied project covers on catalogue cards and det
     'shkola-liderov-fenka',
     'edinstvo-natsij',
     'fishki-ot-ilezera-i-mishki',
-    'mezhdunarodnyj-forum-evrejskoj-molodyozhi'
+    'mezhdunarodnyj-forum-evrejskoj-molodyozhi',
+    'litsa-rossii-xxi-vek',
+    'den-spaseniya-i-osvobozhdeniya',
+    'vinogradniki-akivy',
+    'kulturnyj-otdel'
   ];
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   const styles=fs.readFileSync('dist/shared/projects.css','utf8');
+  const flagshipStyles=fs.readFileSync('dist/shared/heritage-project.css','utf8');
   for(const slug of slugs){
     const cover=`/assets/projects/${slug}.jpg`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${slug}.jpg is missing`);
@@ -637,11 +642,9 @@ test('publishes the ten newly supplied project covers on catalogue cards and det
     assert.match(detail,new RegExp(cover.replaceAll('/','\\/')));
   }
   assert.match(styles,/\.project-card__cover\{[^}]*aspect-ratio:16\/9/);
-  assert.match(styles,/\.project-card__cover img\{[^}]*object-fit:contain/);
   assert.match(styles,/\.project-detail__cover\{[^}]*aspect-ratio:16\/9/);
-  assert.match(styles,/\.project-detail__cover img\{[^}]*object-fit:contain/);
-  const flagshipStyles=fs.readFileSync('dist/shared/heritage-project.css','utf8');
-  assert.match(flagshipStyles,/\.heritage-banner img\{[^}]*object-fit:contain/);
+  assert.match(styles,/\.project-card__cover img,.project-detail__cover img\{object-fit:cover\}/);
+  assert.match(flagshipStyles,/\.heritage-banner img\{object-fit:cover\}/);
 });
 
 test('publishes the supplied Country of Heroes cover on its card and detail page',()=>{
@@ -660,7 +663,7 @@ test('every project card and detail page uses its locally hosted cover',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
   for(const project of projects){
-    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi']);
+    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi','litsa-rossii-xxi-vek','den-spaseniya-i-osvobozhdeniya','vinogradniki-akivy','kulturnyj-otdel']);
     const cover=`/assets/projects/${project.slug}${jpgSlugs.has(project.slug)?'.jpg':'.webp'}`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
     assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));
