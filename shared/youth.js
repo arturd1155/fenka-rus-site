@@ -54,25 +54,38 @@
     if(event.target===dialog)closeApplication();
   });
 
-  form?.addEventListener('submit',event=>{
+  form?.addEventListener('submit',async event=>{
     event.preventDefault();
-    if(!form.reportValidity())return;
+    if(!form.reportValidity()||form.dataset.sending==='true')return;
     const data=new FormData(form);
     const subject='Для Мирры Флейс — заявка в Молодёжный департамент ФЕНКА';
-    const lines=[
-      'Здравствуйте, Мирра Михайловна!',
-      '',
-      'Хочу оставить заявку на участие в Молодёжном департаменте ФЕНКА.',
-      '',
-      `ФИО: ${data.get('fullName')}`,
-      `Город или регион: ${data.get('city')}`,
-      `Контакт для связи: ${data.get('contact')}`,
-      `Интерес: ${data.get('interest')}`,
-      `Комментарий: ${data.get('message')||'—'}`
+    const fields=[
+      ['Получатель','Мирра Михайловна Флейс'],
+      ['ФИО',data.get('fullName')],
+      ['Город или регион',data.get('city')],
+      ['Контакт для связи',data.get('contact')],
+      ['Интерес',data.get('interest')],
+      ['Комментарий',data.get('message')||'—'],
+      ['Согласие на обработку персональных данных','Да']
     ];
-    if(status)status.textContent='Открываем почтовое приложение. Проверьте заявку и нажмите «Отправить» в письме.';
     const recipient=form.dataset.mailRecipient||'info@fenkar.ru';
-    if(recipient!=='info@fenkar.ru')return;
-    window.location.href=`mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+    const button=form.querySelector('[type="submit"]');
+    form.dataset.sending='true';
+    form.setAttribute('aria-busy','true');
+    if(button)button.disabled=true;
+    if(status)status.textContent='Отправляем заявку…';
+    try{
+      const mailForms=window.FenkaMailForms;
+      if(!mailForms?.submitToInbox)throw new Error('Mail service unavailable');
+      await mailForms.submitToInbox({recipient,subject,fields});
+      form.reset();
+      if(status)status.textContent='Спасибо! Заявка отправлена в Молодёжный департамент ФЕНКА.';
+    }catch{
+      if(status)status.textContent='Не удалось отправить заявку. Попробуйте ещё раз или напишите на info@fenkar.ru.';
+    }finally{
+      delete form.dataset.sending;
+      form.removeAttribute('aria-busy');
+      if(button)button.disabled=false;
+    }
   });
 })();
