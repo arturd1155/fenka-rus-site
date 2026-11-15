@@ -46,3 +46,31 @@ test('builds the six-tile directions panorama with a mobile snap strip',()=>{
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.direction-panorama\s*\{[^}]*overflow-x:auto[^}]*scroll-snap-type:x mandatory/);
   assert.match(styles,/\.direction-tile img\s*\{[^}]*object-fit:contain/);
 });
+
+test('builds the four-project mosaic without dropping existing initiatives',()=>{
+  const html=read('index.html');
+  const styles=read('style.css');
+  const section=html.match(/<section class="[^"]*home-projects[\s\S]*?<\/section>/)?.[0]||'';
+  assert.match(section,/class="[^"]*\bproject-mosaic\b/);
+  assert.equal((section.match(/project-mosaic__card/g)||[]).length,4);
+  assert.equal((section.match(/project-mosaic__lead/g)||[]).length,1);
+  assert.match(section,/class="project-mosaic__rail"[\s\S]*?(project-mosaic__card[\s\S]*?){3}/);
+  for(const href of ['/projects/kod-naslediya/','/projects/kulturnyj-otdel/','/projects/','/projects/festival-evrejskoj-muzyki/'])assert.match(section,new RegExp(`href="${href}"`));
+  for(const title of ['Код наследия','Культурный отдел ФЕНКА','Новые горизонты','Фестиваль еврейской музыки в Казани'])assert.match(section,new RegExp(title));
+  assert.match(styles,/\.project-mosaic__media\s*\{[^}]*aspect-ratio:16\/9/);
+  assert.match(styles,/\.project-mosaic__media img\s*\{[^}]*object-fit:contain/);
+});
+
+test('builds the combined homepage feed with preserved events and news',()=>{
+  const html=read('index.html');
+  const styles=read('style.css');
+  const feed=html.match(/<div class="home-feed">[\s\S]*?<\/div>\s*<section class="section join/)?.[0]||'';
+  assert.match(feed,/class="[^"]*home-feed__events/);
+  assert.match(feed,/class="[^"]*home-feed__news/);
+  assert.equal((feed.match(/class="home-event-row"/g)||[]).length,2);
+  assert.equal((feed.match(/class="home-news-entry(?: |")/g)||[]).length,4);
+  for(const date of ['2026-10-14','2026-11-03'])assert.match(feed,new RegExp(date));
+  for(const title of ['Киноклуб ФЕНКА в Доме народов России','Лекция «Еврейское наследие регионов России»','ЕНКА Евпатории получила в дар сидур XVIII века','первый семейный национальный забег'])assert.match(feed,new RegExp(title));
+  assert.match(styles,/\.home-feed__grid\s*\{[^}]*grid-template-columns:repeat\(2/);
+  assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.home-feed__grid\s*\{[^}]*grid-template-columns:1fr/);
+});
