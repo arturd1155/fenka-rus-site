@@ -97,6 +97,7 @@ body>.global-footer{padding:60px max(32px,calc((100% - 1240px)/2)) 34px;display:
 .home-newsletter__copy h2{font-size:clamp(31px,3vw,44px)}
 .home-newsletter__copy>p:last-child{margin-top:8px}
 .home-newsletter__form input{height:44px}
+.home-newsletter__status{grid-column:1/-1;margin:4px 0 0;color:#b9cad7;font-size:10px;line-height:1.4}
 .home-newsletter__form button{min-height:44px}
 body>.global-footer{padding:42px max(32px,calc((100% - 1240px)/2)) 26px;gap:36px}
 
