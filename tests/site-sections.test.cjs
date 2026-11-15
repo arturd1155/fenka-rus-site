@@ -512,7 +512,7 @@ test('projects archive is fully migrated into internal catalogue and detail page
   assert.equal(fs.existsSync('dist/projects/videoroliki-na-kanale-fenka/index.html'),false);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
   assert.doesNotMatch(catalogue,/Архив объединяет 25 программ ФЕНКА|class="projects-intro"/);
-  for(const title of ['Память и будущее','Международный фестиваль еврейской музыки в Казани','Культурный отдел','Школа лидеров ФЕНКА','Синергия'])assert.match(catalogue,new RegExp(title));
+  for(const title of ['Память и будущее','Международный фестиваль еврейской музыки в Казани','Культурный отдел ФЕНКА','Новые горизонты','Синергия'])assert.match(catalogue,new RegExp(title));
   for(const slug of ['pamyat-i-budushhee','festival-evrejskoj-muzyki','kulturnyj-otdel','shkola-liderov-fenka','strana-geroev']){
     const file=`dist/projects/${slug}/index.html`;
     assert.equal(fs.existsSync(file),true,`${file} is missing`);
@@ -566,6 +566,33 @@ test('publishes all eight projects from the approved project brief in the flagsh
     assert.match(detail,/class="heritage-banner"/);
     assert.match(detail,/class="heritage-action-grid"/);
     assert.match(detail,/class="heritage-support"/);
+  }
+});
+
+test('publishes the twelve fully written FENKA projects in the flagship layout',()=>{
+  const projects=[
+    ['kulturnyj-otdel','Культурный отдел ФЕНКА','Сохраняем наследие. Вдохновляем поколения. Объединяем культуры.','Культура живёт, пока её помнят.','Наша цель — не просто сохранить наследие предков','Наши мероприятия'],
+    ['edinstvo-natsij','Единство наций','Разные традиции. Общие ценности. Одна большая дружба.','Дети не рождаются с предрассудками.','Наша цель — воспитать поколение','Записать ребёнка'],
+    ['vinogradniki-akivy','Виноградники Авот','Мудрость поколений. Ответы для сегодняшнего дня.','Мир меняется каждый день.','культурное наследие — это не только история прошлого','Присоединиться к занятиям'],
+    ['den-spaseniya-i-osvobozhdeniya','День спасения и освобождения','Помним подвиг. Чтим героев. Передаём память.','Они сражались не только за Победу.','истинной ценности мира, человеческой жизни','Принять участие'],
+    ['vserossijskaya-programma-etnicheskoe-raznoobrazie-sila-rossii','Этническое разнообразие — сила России','Разные культуры. Общие ценности. Единое будущее.','В России живут десятки народов','различия между нами не разделяют, а обогащают','Участвовать в конкурсе'],
+    ['litsa-rossii-xxi-vek','Лица России. XXI век','Разные лица. Разные истории. Одна страна.','У каждой страны есть своё лицо.','Проект реализован с использованием гранта','Посмотреть книгу-альбом'],
+    ['shkola-liderov-fenka','Новые горизонты','Новое поколение лидеров. Новые возможности для общин.','Будущее не появляется само.','сформировать сильную команду молодых лидеров','Стать участником'],
+    ['strana-geroev-2','Страна героев','Разные судьбы. Сильные поступки. Одна страна.','Герои не всегда носят награды.','героизм не зависит от национальности','Предложить героя'],
+    ['kinoforum-rukopozhatie','Кинофорум «Рукопожатие»','Рукопожатие — первый шаг к примирению.','Иногда, чтобы понять другого человека','уважение и диалог способны преодолеть','Смотреть программу'],
+    ['litsa-rossii','Лица России','37 историй. 37 судеб. Одна страна.','У каждого народа — своя история.','национальная идентичность и общероссийское единство','Познакомиться с героями'],
+    ['klub-mezhnatsionalnyh-initsiativ','Клуб межнациональных инициатив','Объединяем опыт. Развиваем инициативы. Создаём будущее.','Большие перемены начинаются с небольших инициатив.','25 готовых к реализации межнациональных инициатив','Библиотека лучших практик'],
+    ['rossiya-mnogonatsionalnaya','Россия многонациональная','Разные народы. Уникальные традиции. Одна Россия.','У России тысячи лиц','сохранить культурную память','Смотреть фотовыставку']
+  ];
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  for(const [slug,title,slogan,intro,detailText,action] of projects){
+    const detail=fs.readFileSync(`dist/projects/${slug}/index.html`,'utf8');
+    for(const text of [title,slogan,intro,detailText,action]) assert.ok(detail.includes(text),`${slug} must include: ${text}`);
+    assert.match(detail,/class="heritage-banner"/);
+    assert.match(detail,/class="heritage-action-grid"/);
+    assert.match(detail,/class="heritage-support"/);
+    const card=catalogue.match(new RegExp(`<a class="project-card[^>]*href="/projects/${slug}/">[\\s\\S]*?</a>`))?.[0]||'';
+    assert.doesNotMatch(card,/project-card__number/);
   }
 });
 

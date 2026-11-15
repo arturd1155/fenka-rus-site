@@ -1,4 +1,7 @@
+const completeProjects=require('./project-briefs.cjs');
+
 module.exports={
+  ...completeProjects,
   'kinoklub-fenka-v-dome-narodov-rossii':{
     title:'Киноклуб ФЕНКА',slogan:'Больше, чем кино. Пространство, которое объединяет.',
     intro:'Иногда один фильм способен рассказать больше, чем сотни книг. А разговор после просмотра — изменить взгляд на привычные вещи.',
