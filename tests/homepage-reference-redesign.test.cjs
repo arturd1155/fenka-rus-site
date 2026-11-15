@@ -175,3 +175,17 @@ test('keeps compact editorial labels readable at normal desktop zoom',()=>{
   assert.match(styles,/\.fenka-ribbon__core p\{[^}]*font-size:9px/);
   assert.match(styles,/\.direction-tile p\{[^}]*font-size:9px/);
 });
+
+test('publishes the approved homepage wording, current phone and working newsletter handoff',()=>{
+  for(const file of ['index.html','dist/index.html']){
+    const html=read(file);
+    assert.doesNotMatch(html,/Федеральный центр/);
+    assert.doesNotMatch(html,/конкретные культурные проекты/);
+    assert.doesNotMatch(html,/Россия · единое культурное пространство/);
+    assert.match(html,/href="tel:\+74991301143">\+7 \(499\) 130-11-43<\/a>/);
+    assert.match(html,/<form class="home-newsletter__form"[^>]+data-mail-form[^>]+data-mail-recipient="info@fenkar\.ru"/);
+    assert.match(html,/<button type="submit">Подписаться<\/button>/);
+    assert.match(html,/<script src="mail-forms\.js"><\/script>/);
+  }
+  assert.match(read('homepage-reference.css'),/\.home-newsletter__status\{[^}]*grid-column:1\/-1/);
+});

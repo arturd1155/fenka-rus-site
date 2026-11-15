@@ -84,7 +84,9 @@ test('participation calls open one structured application dialog and preselect a
   assert.match(html,/info@fenkar\.ru/);
   assert.match(js,/dataset\.projectInterest/);
   assert.match(js,/encodeURIComponent/);
-  assert.match(js,/mailto:info@fenkar\.ru/);
+  assert.match(js,/mailto:\$\{recipient\}/);
+  assert.match(html,/id="youthApplicationForm"[^>]+data-mail-recipient="info@fenkar\.ru"/);
+  assert.match(js,/form\.dataset\.mailRecipient/);
   assert.match(js,/reportValidity\(\)/);
 });
 

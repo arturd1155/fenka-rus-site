@@ -71,6 +71,8 @@
       `Комментарий: ${data.get('message')||'—'}`
     ];
     if(status)status.textContent='Открываем почтовое приложение. Проверьте заявку и нажмите «Отправить» в письме.';
-    window.location.href=`mailto:info@fenkar.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+    const recipient=form.dataset.mailRecipient||'info@fenkar.ru';
+    if(recipient!=='info@fenkar.ru')return;
+    window.location.href=`mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
   });
 })();

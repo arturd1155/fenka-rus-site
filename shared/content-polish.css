@@ -21,6 +21,21 @@
 .page-privacy .legal-document ol{margin:24px 0 0}
 .page-events .content-scaffold,.page-support .content-scaffold{gap:24px}
 .page-events .content-scaffold>*,.page-support .content-scaffold>*{padding:32px}
+.page-support .support-intro{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:16px 48px;align-items:end;margin-bottom:40px}
+.page-support .support-kicker{grid-column:1/-1;margin:0;color:var(--r);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.page-support .support-intro h2{margin:0;font-family:Georgia,serif;font-size:clamp(34px,4vw,58px);font-weight:400;line-height:1.04;color:var(--b)}
+.page-support .support-intro>p:last-child{max-width:620px;margin:0;color:#60778b;font-size:18px;line-height:1.65}
+.page-support .support-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.page-support .support-option{display:flex;min-width:0;min-height:300px;flex-direction:column;padding:32px;border:1px solid #dfe5ec;border-radius:24px;background:#fff;box-shadow:0 16px 44px rgba(0,34,68,.08)}
+.page-support .support-option h3{margin:0 0 16px;font-family:Georgia,serif;font-size:30px;font-weight:400;line-height:1.15;color:var(--b)}
+.page-support .support-option p{margin:0;color:#60778b;line-height:1.65}
+.page-support .support-option a{display:flex;min-height:48px;align-items:center;justify-content:space-between;gap:16px;margin-top:auto;padding-top:32px;color:var(--b);font-weight:800;text-decoration:none}
+.page-support .support-option a span{color:var(--r);font-size:22px;transition:transform .2s ease}
+.page-support .support-option a:hover span{transform:translateX(4px)}
+.page-support .support-option a:focus-visible{outline:3px solid var(--r);outline-offset:6px}
+.page-support .support-option--accent{border-color:#d62c45;background:linear-gradient(145deg,#d62c45,#a9162c)}
+.page-support .support-option--accent h3,.page-support .support-option--accent p,.page-support .support-option--accent a,.page-support .support-option--accent a span{color:#fff}
 .page-contacts .contacts-layout{gap:24px}
 .page-contacts .contacts-map{margin-top:24px}
-@media(max-width:760px){.content-polished .section-hero{padding:40px 0 48px}.content-polished .section-hero .breadcrumbs{margin-bottom:20px}.content-polished .section-hero h1:after{width:64px;margin-top:20px}.content-polished .section-hero+.section-content{padding:40px 0 64px}.page-documents .document-groups{gap:40px}.page-documents .document-group h2{margin-bottom:20px;font-size:32px}.page-reports .reports-grid{gap:16px}.page-reports .report-card{min-height:280px;padding:28px}.page-privacy .legal-document{padding:24px}.page-privacy .legal-document__header{margin-bottom:24px;padding-bottom:24px}.page-events .content-scaffold,.page-support .content-scaffold{grid-template-columns:1fr}.page-events .content-scaffold aside,.page-support .content-scaffold aside{grid-column:auto}.page-events .content-scaffold>*,.page-support .content-scaffold>*{min-width:0;padding:24px;overflow-wrap:anywhere}}
+@media(max-width:900px){.page-support .support-options{grid-template-columns:1fr}.page-support .support-option{min-height:240px}}
+@media(max-width:760px){.content-polished .section-hero{padding:40px 0 48px}.content-polished .section-hero .breadcrumbs{margin-bottom:20px}.content-polished .section-hero h1:after{width:64px;margin-top:20px}.content-polished .section-hero+.section-content{padding:40px 0 64px}.page-documents .document-groups{gap:40px}.page-documents .document-group h2{margin-bottom:20px;font-size:32px}.page-reports .reports-grid{gap:16px}.page-reports .report-card{min-height:280px;padding:28px}.page-privacy .legal-document{padding:24px}.page-privacy .legal-document__header{margin-bottom:24px;padding-bottom:24px}.page-events .content-scaffold,.page-support .content-scaffold{grid-template-columns:1fr}.page-events .content-scaffold aside,.page-support .content-scaffold aside{grid-column:auto}.page-events .content-scaffold>*,.page-support .content-scaffold>*{min-width:0;padding:24px;overflow-wrap:anywhere}.page-support .support-intro{grid-template-columns:1fr;gap:16px;margin-bottom:28px}.page-support .support-intro>p:last-child{font-size:16px}.page-support .support-option{min-height:220px;padding:24px;border-radius:20px}.page-support .support-option h3{font-size:27px}}

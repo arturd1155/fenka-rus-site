@@ -19,7 +19,7 @@
   <div class="service-bar">
     <div class="shell service-inner">
       <span>Федеральная общественная организация</span>
-      <div><a href="mailto:info@fenkar.ru">info@fenkar.ru</a><a href="tel:+74953090011">+7 495 309-00-11</a><button type="button" class="plain-button">RU</button><button type="button" class="plain-button">Версия для слабовидящих</button></div>
+      <div><a href="mailto:info@fenkar.ru">info@fenkar.ru</a><a href="tel:+74991301143">+7 (499) 130-11-43</a><button type="button" class="plain-button">RU</button><button type="button" class="plain-button">Версия для слабовидящих</button></div>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
         <h1>ФЕНКА объединяет регионы, людей и проекты в единое культурное пространство.</h1>
         <a class="button button-red hero-primary" id="heroCta" href="/#aboutFenka">Узнать о ФЕНКА</a>
       </div>
-      <div class="hero-progress" aria-hidden="true"><span></span><small>Россия · единое культурное пространство</small></div>
+      <div class="hero-progress" aria-hidden="true"><span></span></div>
       <noscript><p>ФЕНКА объединяет регионы, людей и проекты в единое культурное пространство.</p></noscript>
     </section>
 
@@ -55,7 +55,7 @@
         <div class="home-system__copy">
           <p class="eyebrow red">Что такое ФЕНКА</p>
           <h2>Единая система поддержки еврейской жизни в России.</h2>
-          <p>ФЕНКА соединяет федеральный уровень, региональные автономии и конкретные культурные проекты. Так локальные инициативы становятся частью общего пространства.</p>
+          <p>ФЕНКА соединяет федеральный уровень, региональные автономии и культурные проекты. Так локальные инициативы становятся частью общего пространства.</p>
           <a class="home-arrow-link" href="/about/">Подробнее о ФЕНКА <span aria-hidden="true">→</span></a>
         </div>
         <div class="fenka-ribbon" aria-label="Как устроена ФЕНКА">
@@ -75,7 +75,7 @@
             <img src="/assets/projects/shkola-liderov-fenka.jpg" width="1672" height="939" loading="lazy" decoding="async" alt="Образовательный проект «Новые горизонты»">
             <span><b>Развитие</b><small>Проекты и инициативы</small></span>
           </article>
-          <div class="fenka-ribbon__core"><small>Федеральный центр</small><strong>ФЕНКА</strong><i aria-hidden="true"></i><p>Объединяет · поддерживает · представляет</p></div>
+          <div class="fenka-ribbon__core"><strong>ФЕНКА</strong><i aria-hidden="true"></i><p>Объединяет · поддерживает · представляет</p></div>
         </div>
       </div>
     </section>
@@ -150,12 +150,12 @@
     <section class="home-newsletter" aria-labelledby="newsletter-title">
       <div class="shell home-newsletter__layout">
         <div class="home-newsletter__copy"><p class="eyebrow">Будьте в курсе</p><h2 id="newsletter-title">Новости ФЕНКА</h2><p>Культура, проекты и важные события регионов — в одной рассылке.</p></div>
-        <form class="home-newsletter__form"><label for="newsletter-name"><span>Ваше имя</span></label><input id="newsletter-name" name="name" type="text" autocomplete="name" placeholder="Имя"><label for="newsletter-email"><span>Электронная почта</span></label><input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="name@example.ru"><button type="button">Подписаться</button></form>
+        <form class="home-newsletter__form" data-mail-form data-mail-recipient="info@fenkar.ru" data-mail-subject="Подписка на новости ФЕНКА"><label for="newsletter-name"><span>Ваше имя</span></label><input id="newsletter-name" name="name" data-mail-label="Имя" type="text" autocomplete="name" placeholder="Имя" required><label for="newsletter-email"><span>Электронная почта</span></label><input id="newsletter-email" name="email" data-mail-label="Электронная почта" type="email" autocomplete="email" placeholder="name@example.ru" required><button type="submit">Подписаться</button><p class="home-newsletter__status" data-mail-status aria-live="polite"></p></form>
       </div>
     </section>
   </main>
 
   <footer><div class="shell footer-grid"><div><a class="brand footer-brand" href="/" aria-label="ФЕНКА — главная"><img src="fenka-logo-official.png" width="1311" height="343" alt="ФЕНКА — Федеральная еврейская национально-культурная автономия"></a><p>Люди. Культура. Развитие.</p><p>Москва · <a href="mailto:info@fenkar.ru">info@fenkar.ru</a><br><a href="tel:+74953090011">+7 495 309-00-11</a></p></div><div><h3>Организация</h3><a href="/about/">О ФЕНКА</a><a href="/leadership/">Руководство</a><a href="/documents/">Документы</a><a href="/reports/">Отчётность</a></div><div><h3>Деятельность</h3><a href="/regions/">Регионы</a><a href="/projects/">Проекты</a><a href="/youth/">Молодёжный департамент</a><a href="/media/heritage/">Медиатека</a></div><div><h3>Информация</h3><a href="/events/">События</a><a href="/news/">Новости</a><a href="/contacts/">Контакты</a><a href="/support/">Поддержать</a></div></div><div class="shell footer-bottom"><span>© 2026 ОО «ФЕНКА»</span><a href="/privacy/">Политика конфиденциальности</a><span>Федеральная еврейская национально-культурная автономия</span></div></footer>
-  <script src="hero-controller.js?v=20261115-mobile11"></script><script src="app.js?v=20261114-mobile10"></script>
+  <script src="hero-controller.js?v=20261115-mobile11"></script><script src="mail-forms.js"></script><script src="app.js?v=20261114-mobile10"></script>
 </body>
 </html>

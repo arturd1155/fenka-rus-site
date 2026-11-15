@@ -18,6 +18,7 @@ test('published institutional pages omit internal publishing notes',()=>{
     assert.doesNotMatch(html,new RegExp(generic.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')),`${slug} must not expose the internal publishing note`);
     assert.match(html,new RegExp(`<body class="page-${slug}`));
     assert.match(html,/href="\/shared\/content-polish\.css"/);
+    assert.equal((html.match(/href="\/shared\/content-polish\.css"/g)||[]).length,1,`${slug} must load content-polish.css once`);
   }
 });
 
@@ -35,6 +36,13 @@ test('contacts page omits the legacy transfer note',()=>{
   assert.doesNotMatch(html,/Контактные данные перенесены с/);
   assert.doesNotMatch(html,/class="contacts-source"/);
   assert.doesNotMatch(html,/fenka\.online\/kontakty/);
+});
+
+test('support page replaces internal placeholders with real ways to help',()=>{
+  const html=read('support');
+  for(const text of ['Поддержать проекты','Стать партнёром','Помочь делом'])assert.match(html,new RegExp(text));
+  assert.match(html,/mailto:info@fenkar\.ru\?subject=/);
+  assert.doesNotMatch(html,/Структура раздела|Материалы и публикации|Раздел наполняется|Содержание будет добавлено/);
 });
 
 test('about page removes transfer notes, charter caption and decorative counters only',()=>{
