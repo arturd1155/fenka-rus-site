@@ -64,7 +64,7 @@ test('desktop heritage hero shows all three portrait covers without cropping',()
   assert.doesNotMatch(mosaic,/width:118%/);
   assert.match(covers,/object-fit:contain/);
   assert.doesNotMatch(css,/\.heritage-hero__mosaic img:nth-child\(2\)\{[^}]*grid-row:span 2/);
-  assert.match(html,/heritage\.css\?v=20261115-hero-covers/);
+  assert.match(html,/heritage\.css\?v=20261115-hero-covers-2/);
 });
 
 test('heritage client script implements normalized search and modal cleanup',()=>{
