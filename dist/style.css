@@ -154,6 +154,7 @@
 
 /* The decorative culture collage is intentionally removed on every viewport. */
 .hero-collage{display:none!important}
+.story-hero{min-height:220vh}
 
 /* Mobile hero: place the exact Russia map directly on the handshake. */
 @keyframes fenkaMobileContourGlow{0%,100%{opacity:.28;transform:scale(1)}50%{opacity:.7;transform:scale(1.025)}}
@@ -161,6 +162,7 @@
 @keyframes fenkaMobileLineGlow{0%,100%{opacity:.24}50%{opacity:.68}}
 @keyframes fenkaMobileMarkerPulse{0%{opacity:.12;transform:scale(.55)}55%{opacity:.9;transform:scale(1.65)}100%{opacity:0;transform:scale(2.1)}}
 @media(max-width:720px){
+  .story-hero{min-height:170vh}
   .hero-map__data{left:50%;top:clamp(280px,42dvh,405px);width:108vw;max-width:none;aspect-ratio:1280/650;transform:translate3d(-50%,0,0) scaleX(1.04);transform-origin:50% 0;filter:drop-shadow(0 0 18px rgba(47,183,255,.44))}
   .hero-map__data:before{animation:fenkaMobileContourGlow 2.9s ease-in-out infinite;transform-origin:center;will-change:opacity,transform;opacity:.28;filter:brightness(2.05) saturate(1.5) blur(2px) drop-shadow(0 0 15px rgba(38,178,255,.82))}
   .hero-network__line--glow{stroke-width:3;filter:none;opacity:.3;animation:fenkaMobileLineGlow 2.5s ease-in-out infinite}

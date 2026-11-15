@@ -3,9 +3,7 @@
   function getHeroScene(progress,reducedMotion=false){
     if(reducedMotion)return'official';
     const value=clampProgress(progress);
-    if(value<.34)return'network';
-    if(value<.72)return'culture';
-    return'official';
+    return value<.42?'network':'official';
   }
   const api={clampProgress,getHeroScene};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;

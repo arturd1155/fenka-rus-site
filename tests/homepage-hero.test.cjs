@@ -76,8 +76,8 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
-  assert.match(html,/href="style\.css\?v=20261115-mobile15"/);
-  assert.match(html,/src="hero-controller\.js\?v=20261114-mobile10"/);
+  assert.match(html,/href="style\.css\?v=20261115-mobile16"/);
+  assert.match(html,/src="hero-controller\.js\?v=20261115-mobile11"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
 
@@ -169,9 +169,15 @@ test('styles define all scenes and accessibility fallbacks',()=>{
   assert.match(sceneCss,/@media\s*\(max-width:\s*720px\)/);
 });
 
+test('hero uses a short scroll track so the message follows the map promptly',()=>{
+  const css=fs.readFileSync('style.css','utf8');
+  assert.match(css,/\.story-hero\{[^}]*min-height:220vh/);
+  assert.match(css,/@media\(max-width:720px\)\{[\s\S]*?\.story-hero\{min-height:170vh\}/);
+});
+
 test('homepage initializes one interruptible hero controller',()=>{
   const js=fs.readFileSync('app.js','utf8');
-  assert.match(html,/<script src="hero-controller\.js\?v=20261114-mobile10"><\/script>[\s\S]*<script src="app\.js\?v=20261114-mobile10"><\/script>/);
+  assert.match(html,/<script src="hero-controller\.js\?v=20261115-mobile11"><\/script>[\s\S]*<script src="app\.js\?v=20261114-mobile10"><\/script>/);
   assert.match(js,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(js,/addEventListener\('scroll'/);
   assert.match(js,/cancelAnimationFrame/);
