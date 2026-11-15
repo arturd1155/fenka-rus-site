@@ -218,7 +218,7 @@ test('homepage omits the president and online library promos',()=>{
   assert.doesNotMatch(html,/Слово президента ФЕНКА/i);
   assert.doesNotMatch(html,/Онлайн-библиотека/i);
   assert.doesNotMatch(html,/href="\/#media"/);
-  assert.ok((html.match(/href="\/media\/"/g)||[]).length>=2,'desktop and mobile media navigation must use /media/');
+  assert.ok((html.match(/href="\/media\/heritage\/"/g)||[]).length>=2,'desktop and mobile media navigation must open the library directly');
 });
 
 test('homepage omits prototype copy and join card numbers',()=>{
@@ -264,7 +264,7 @@ test('homepage does not duplicate the regions map and both headers use canonical
   const regionsSource=fs.readFileSync('regions-interactive.html','utf8');
   assert.doesNotMatch(html,/<section class="map-section/);
   assert.doesNotMatch(fs.readFileSync('app.js','utf8'),/regionSearch/);
-  const routes=['/#aboutFenka','/regions/','/#projects','/#events','/media/','/#news'];
+  const routes=['/#aboutFenka','/regions/','/#projects','/#events','/media/heritage/','/#news'];
   for(const route of routes){
     assert.match(html,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`home missing ${route}`);
     assert.match(regionsSource,new RegExp(`href="${route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}"`),`regions missing ${route}`);

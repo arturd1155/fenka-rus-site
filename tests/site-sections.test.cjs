@@ -5,7 +5,7 @@ const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 
 const routes=['regions','leadership','documents','reports','about','projects','youth','events','media','news','support','contacts','privacy'];
-const primary=['/about/','/regions/','/projects/','/youth/','/events/','/media/','/news/','/contacts/','/support/'];
+const primary=['/about/','/regions/','/projects/','/youth/','/events/','/media/heritage/','/news/','/contacts/','/support/'];
 const publishingNote='Раздел ФЕНКА подготовлен для размещения актуальной и проверенной информации.';
 
 test('site structure defines every approved route in order',()=>{
@@ -17,6 +17,11 @@ test('build creates every approved route with shared navigation',()=>{
   execFileSync(process.execPath,['scripts/build-site.cjs']);
   for(const slug of routes){
     const html=fs.readFileSync(`dist/${slug}/index.html`,'utf8');
+    if(slug==='media'){
+      assert.match(html,/http-equiv="refresh" content="0; url=\/media\/heritage\/"/);
+      assert.doesNotMatch(html,/<header class="global-header"/);
+      continue;
+    }
     assert.match(html,/<header class="global-header"/);
     assert.match(html,/<main(?: id="main")?>/);
     assert.match(html,/<footer class="global-footer"/);

@@ -14,13 +14,18 @@ test('heritage source data and thumbnails are present locally',()=>{
   assert.equal(fs.existsSync('site/heritage/thumbnails/sinagogi-cover.jpg'),true);
 });
 
-test('build emits a media landing page with an internal heritage entry point',()=>{
+test('media navigation targets the online library directly',()=>{
+  const {sections}=require('../site/site-structure.cjs');
+  const media=sections.find(section=>section.slug==='media');
+  assert.equal(media.path,'/media/heritage/');
+});
+
+test('legacy media path redirects to the online library without an intermediate page',()=>{
   const html=fs.readFileSync('dist/media/index.html','utf8');
-  assert.match(html,/Медиатека ФЕНКА/);
-  assert.match(html,/href="\/media\/heritage\/heritage\.css"/);
-  assert.match(html,/href="\/media\/heritage\/"/);
-  assert.match(html,/Наследие ФЕНКА/);
-  assert.doesNotMatch(html,/arturd1155\.github\.io\/nasledie-fenka/);
+  assert.match(html,/<link rel="canonical" href="https:\/\/www\.fenka-rus\.ru\/media\/heritage\/">/);
+  assert.match(html,/<meta http-equiv="refresh" content="0; url=\/media\/heritage\/">/);
+  assert.match(html,/location\.replace\(['"]\/media\/heritage\/['"]\)/);
+  assert.doesNotMatch(html,/media-landing|Медиатека ФЕНКА/);
 });
 
 test('build emits the heritage library inside the shared FENKA shell',()=>{
@@ -83,7 +88,6 @@ test('homepage keeps the heritage library out of the streamlined front page',()=
   const html=fs.readFileSync('dist/index.html','utf8');
   assert.doesNotMatch(html,/\/media\/heritage\/#/);
   assert.doesNotMatch(html,/\/media\/heritage\/thumbnails\//);
-  assert.match(html,/href="\/media\/"/);
 });
 
 test('homepage flagship initiatives are distinct from the media library',()=>{
