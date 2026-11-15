@@ -185,7 +185,7 @@ test('publishes the approved homepage wording, current phone and working newslet
     assert.match(html,/href="tel:\+74991301143">\+7 \(499\) 130-11-43<\/a>/);
     assert.match(html,/<form class="home-newsletter__form"[^>]+data-mail-form[^>]+data-mail-recipient="info@fenkar\.ru"/);
     assert.match(html,/<button type="submit">Подписаться<\/button>/);
-    assert.match(html,/<script src="mail-forms\.js"><\/script>/);
+    assert.match(html,/<script src="mail-forms\.js\?v=20261115-direct1"><\/script>/);
   }
   assert.match(read('homepage-reference.css'),/\.home-newsletter__status\{[^}]*grid-column:1\/-1/);
 });

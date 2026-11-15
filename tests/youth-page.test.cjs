@@ -11,7 +11,7 @@ test('youth page publishes the approved cinematic navigation hero without number
   const html=fs.readFileSync('dist/youth/index.html','utf8');
   assert.match(html,/class="youth-landing"/);
   assert.match(html,/href="\/shared\/youth\.css"/);
-  assert.match(html,/src="\/shared\/youth\.js"/);
+  assert.match(html,/src="\/shared\/youth\.js\?v=20261115-direct1"/);
   assert.match(html,/src="\/assets\/youth\/youth-hero-community\.jpg"/);
   for(const anchor of ['department','directions','team','projects','application']){
     assert.match(html,new RegExp(`href="#${anchor}"`));
@@ -93,11 +93,13 @@ test('participation calls open one structured application dialog and preselect a
   assert.match(html,/Мирр[аы] Флейс/);
   assert.match(html,/info@fenkar\.ru/);
   assert.match(js,/dataset\.projectInterest/);
-  assert.match(js,/encodeURIComponent/);
-  assert.match(js,/mailto:\$\{recipient\}/);
+  assert.match(html,/src="\/mail-forms\.js\?v=20261115-direct1"/);
+  assert.match(js,/window\.FenkaMailForms[\s\S]*mailForms\.submitToInbox/);
+  assert.doesNotMatch(js,/window\.location\.href\s*=\s*`mailto:/);
   assert.match(html,/id="youthApplicationForm"[^>]+data-mail-recipient="info@fenkar\.ru"/);
   assert.match(js,/form\.dataset\.mailRecipient/);
   assert.match(js,/reportValidity\(\)/);
+  assert.doesNotMatch(html,/откроется почтовое приложение/i);
 });
 
 test('youth content stays mobile-safe, readable and limited to the youth visual layer',()=>{

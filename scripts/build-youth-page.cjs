@@ -12,10 +12,11 @@ function buildYouthPage(){
   html=html
     .replace(/<link rel="preload" as="image" href="\/assets\/youth\/youth-hero(?:-community)?\.jpg">/g,'')
     .replace(/<link rel="stylesheet" href="\/shared\/youth\.css">/g,'')
-    .replace(/<script src="\/shared\/youth\.js"><\/script>/g,'')
+    .replace(/<script src="\/mail-forms\.js(?:\?[^\"]*)?"><\/script>/g,'')
+    .replace(/<script src="\/shared\/youth\.js(?:\?[^\"]*)?"><\/script>/g,'')
     .replace('<link rel="stylesheet" href="/shared/site-shell.css">','<link rel="stylesheet" href="/shared/site-shell.css"><link rel="preload" as="image" href="/assets/youth/youth-hero-community.jpg"><link rel="stylesheet" href="/shared/youth.css">')
     .replace(/<main id="main">[\s\S]*?<\/main>/,pageSource)
-    .replace('</body>','<script src="/shared/youth.js"></script></body>');
+    .replace('</body>','<script src="/mail-forms.js?v=20261115-direct1"></script><script src="/shared/youth.js?v=20261115-direct1"></script></body>');
 
   fs.writeFileSync(pagePath,html);
   fs.copyFileSync(path.join(root,'shared','youth.css'),path.join(dist,'shared','youth.css'));
