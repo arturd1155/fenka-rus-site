@@ -1,7 +1,43 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {submitToInbox}=require('../mail-forms.js');
+const {submitToInbox,bindMailForms}=require('../mail-forms.js');
 const fs=require('node:fs');
+
+function makeBoundForm({valid=true,checked=true}={}){
+  const status={textContent:''};
+  const button={type:'submit',name:'',disabled:false};
+  const elements=[
+    {name:'fullName',type:'text',value:'Анна',dataset:{mailLabel:'ФИО'}},
+    {name:'consent',type:'checkbox',value:'yes',checked,dataset:{mailLabel:'Согласие на обработку данных'}},
+    button
+  ];
+  const form={
+    elements,
+    dataset:{mailRecipient:'info@fenkar.ru',mailSubject:'Тестовая заявка'},
+    attributes:{},
+    reportValidity:()=>valid,
+    reset(){},
+    setAttribute(name,value){this.attributes[name]=value;},
+    removeAttribute(name){delete this.attributes[name];},
+    querySelector(selector){
+      if(selector==='[data-mail-status]')return status;
+      if(selector==='[type="submit"]')return button;
+      return null;
+    },
+    addEventListener(type,handler){if(type==='submit')this.submitHandler=handler;}
+  };
+  const doc={querySelectorAll:selector=>selector==='[data-mail-form]'?[form]:[]};
+  return {doc,form,status,button};
+}
+
+async function withFakeFormData(run){
+  const NativeFormData=global.FormData;
+  global.FormData=class{
+    constructor(form){this.form=form;}
+    get(name){return this.form.elements.find(element=>element.name===name)?.value??null;}
+  };
+  try{return await run();}finally{global.FormData=NativeFormData;}
+}
 
 test('submitToInbox posts the form to the FENKA inbox without opening mailto',async()=>{
   let request;
@@ -58,4 +94,61 @@ test('published forms load the cache-busted background sender',()=>{
   const youth=fs.readFileSync('dist/youth/index.html','utf8');
   assert.match(youth,/src="\/mail-forms\.js\?v=20261115-direct1"/);
   assert.match(youth,/src="\/shared\/youth\.js\?v=20261115-direct1"/);
+});
+
+test('bindMailForms sends checked consent as a confirmed field',async()=>{
+  await withFakeFormData(async()=>{
+    const {doc,form}=makeBoundForm();
+    let sent;
+    bindMailForms(doc,async options=>{sent=options;return {success:true};});
+
+    await form.submitHandler({preventDefault(){}});
+
+    assert.deepEqual(sent.fields,[
+      ['ФИО','Анна'],
+      ['Согласие на обработку данных','Подтверждено']
+    ]);
+  });
+});
+
+test('bindMailForms does not submit an invalid form',async()=>{
+  await withFakeFormData(async()=>{
+    const {doc,form}=makeBoundForm({valid:false,checked:false});
+    let calls=0;
+    bindMailForms(doc,async()=>{calls+=1;});
+
+    await form.submitHandler({preventDefault(){}});
+
+    assert.equal(calls,0);
+  });
+});
+
+test('bindMailForms blocks a duplicate submission while the first is pending',async()=>{
+  await withFakeFormData(async()=>{
+    const {doc,form}=makeBoundForm();
+    let calls=0;
+    let release;
+    const pending=new Promise(resolve=>{release=resolve;});
+    bindMailForms(doc,async()=>{calls+=1;await pending;return {success:true};});
+
+    const first=form.submitHandler({preventDefault(){}});
+    await form.submitHandler({preventDefault(){}});
+    assert.equal(calls,1);
+
+    release();
+    await first;
+  });
+});
+
+test('bindMailForms restores controls and shows inbox fallback after rejection',async()=>{
+  await withFakeFormData(async()=>{
+    const {doc,form,status,button}=makeBoundForm();
+    bindMailForms(doc,async()=>{throw new Error('offline');});
+
+    await form.submitHandler({preventDefault(){}});
+
+    assert.equal(button.disabled,false);
+    assert.equal(form.attributes['aria-busy'],undefined);
+    assert.match(status.textContent,/info@fenkar\.ru/);
+  });
 });

@@ -44,8 +44,11 @@
         if(!form.reportValidity()||form.dataset.sending==='true')return;
         const data=new FormData(form);
         const fields=[...form.elements]
-          .filter(element=>element.name&&element.type!=='submit'&&element.type!=='checkbox')
-          .map(element=>[element.dataset.mailLabel||element.name,data.get(element.name)]);
+          .filter(element=>element.name&&element.type!=='submit'&&(element.type!=='checkbox'||element.checked))
+          .map(element=>[
+            element.dataset.mailLabel||element.name,
+            element.type==='checkbox'?(element.dataset.mailValue||'Подтверждено'):data.get(element.name)
+          ]);
         const status=form.querySelector('[data-mail-status]');
         const button=form.querySelector('[type="submit"]');
         form.dataset.sending='true';
