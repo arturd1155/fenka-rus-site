@@ -75,8 +75,8 @@ test('handshake stays subordinate to the exact map layer',()=>{
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art:after\{[^}]*radial-gradient\(ellipse at 50% 57%/);
 });
 
-test('homepage cache-busts hero CSS and JavaScript after mobile fixes',()=>{
-  assert.match(html,/href="style\.css\?v=20261114-mobile10"/);
+test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
+  assert.match(html,/href="style\.css\?v=20261115-mobile11"/);
   assert.match(html,/src="hero-controller\.js\?v=20261114-mobile10"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
@@ -96,7 +96,7 @@ test('homepage renders a decorative animated network behind clickable markers',(
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*\.hero-region-markers\{display:block/);
 });
 
-test('homepage map animation adds the approved contour sweep with safe fallbacks',()=>{
+test('homepage map animation adds desktop effects and a lightweight mobile treatment',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(css,/\.hero-map__data:before\{[^}]*homepage-russia-overlay\.svg[^}]*animation:fenkaContourBreath/);
   assert.match(css,/\.hero-map__data:after\{[^}]*animation:fenkaMapSweep/);
@@ -105,13 +105,16 @@ test('homepage map animation adds the approved contour sweep with safe fallbacks
   for(const name of ['fenkaContourBreath','fenkaMapSweep','fenkaRouteFlow','fenkaMarkerRing']){
     assert.match(css,new RegExp(`@keyframes ${name}`));
   }
-  assert.match(css,/@media\(max-width:720px\)\{\.hero-map__data:before\{animation:none/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data:before\{[^}]*animation:fenkaMobileContourGlow/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core\{[^}]*animation:fenkaMobileRouteFlow/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data:after\{display:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core,\.hero-region-marker:after\{animation:none/);
+  for(const name of ['fenkaMobileContourGlow','fenkaMobileRouteFlow']){
+    assert.match(css,new RegExp(`@keyframes ${name}`));
+  }
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hero-map__data:before,\.hero-map__data:after,\.hero-network__line--core,\.hero-region-marker:after\{animation:none!important/);
 });
 
-test('mobile hero shows the whole map and disables expensive continuous effects',()=>{
+test('mobile hero places the complete animated map directly above the handshake',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(html,/<source media="\(max-width: 720px\)" srcset="homepage-regions-mobile\.webp\?v=20261112-concept2" type="image\/webp">/);
   assert.match(html,/class="hero-map__geography" src="homepage-russia-overlay\.svg\?v=20261112-concept2"/);
@@ -122,13 +125,13 @@ test('mobile hero shows the whole map and disables expensive continuous effects'
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*max-height:none/);
   assert.match(css,/\.hero-map__art img\{[^}]*max-height:none[^}]*object-fit:cover/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*width:100%[^}]*max-height:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*width:min\(92vw,1280px\)[^}]*max-width:calc\(100% - 24px\)[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\)/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*top:clamp\(56px,8\.5dvh,84px\)[^}]*width:108vw[^}]*max-width:none[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\) scaleX\(1\.04\)/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*mix-blend-mode:screen/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__geography\{display:block/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__pulse\{display:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line\{animation:none;stroke-dashoffset:0/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker:before\{animation:none/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__line--core\{[^}]*stroke-dasharray:\.035 \.065[^}]*animation:fenkaMobileRouteFlow/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-region-marker:before\{[^}]*animation:none/);
 });
 
 test('mobile hero assets and exact geography are included in the static build',()=>{
