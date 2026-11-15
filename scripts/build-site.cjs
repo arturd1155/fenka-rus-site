@@ -5,6 +5,7 @@ require('./build-leadership-photos-hook.cjs');
 require('./build-region-leaders-hook.cjs');
 require('./build-projects-hook.cjs');
 require('./build-news-hook.cjs');
+require('./build-homepage-news-hook.cjs');
 require('./build-homepage-map-hook.cjs');
 require('./build-homepage-map-overlay.cjs');
 require('./copy-homepage-map-assets.cjs');

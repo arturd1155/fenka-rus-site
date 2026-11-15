@@ -71,7 +71,9 @@ test('builds the combined homepage feed with preserved events and news',()=>{
   assert.equal((feed.match(/class="home-event-row"/g)||[]).length,2);
   assert.equal((feed.match(/class="home-news-entry(?: |")/g)||[]).length,4);
   for(const date of ['2026-10-14','2026-11-03'])assert.match(feed,new RegExp(date));
-  for(const title of ['Киноклуб ФЕНКА в Доме народов России','Лекция «Еврейское наследие регионов России»','ЕНКА Евпатории получила в дар сидур XVIII века','первый семейный национальный забег'])assert.match(feed,new RegExp(title));
+  for(const title of ['Киноклуб ФЕНКА в Доме народов России','Лекция «Еврейское наследие регионов России»'])assert.match(feed,new RegExp(title));
+  assert.equal((feed.match(/<img class="home-news-entry__image"/g)||[]).length,4);
+  assert.doesNotMatch(feed,/href="\/news\/" aria-label="Читать новость/);
   for(const action of ['Подробнее','Регистрация','Читать новость'])assert.match(feed,new RegExp(action));
   assert.match(styles,/\.home-feed__grid\s*\{[^}]*grid-template-columns:repeat\(2/);
   assert.match(styles,/@media\(max-width:720px\)\{[\s\S]*\.home-feed__grid\s*\{[^}]*grid-template-columns:1fr/);
@@ -108,6 +110,12 @@ test('finishes homepage accessibility with labelled fields, real footer links, a
 test('copies the dedicated homepage stylesheet during every distribution build',()=>{
   assert.match(read('scripts/build-site.cjs'),/require\('\.\/copy-homepage-reference-css\.cjs'\)/);
   assert.equal(read('dist/homepage-reference.css'),read('homepage-reference.css'));
+});
+
+test('news image build removes stale generated assets before copying',()=>{
+  const hook=fs.readFileSync('scripts/build-homepage-news-hook.cjs','utf8');
+  assert.match(hook,/fs\.rmSync\(target,\{recursive:true,force:true\}\)/);
+  assert.match(hook,/fs\.cpSync\(assets,target,\{recursive:true\}\)/);
 });
 
 test('cache-busts the corrected reference layout for immediate visibility',()=>{

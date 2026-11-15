@@ -3,14 +3,26 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {execFileSync}=require('node:child_process');
 
-test('old FENKA sitemap inventory contains 5,493 unique news from 2018 through 2026',()=>{
-  const {readNewsSitemaps}=require('../scripts/news-source.cjs');
-  const files=[1,2,3,4,5,6].map(n=>n===1?'news-sitemap-jina.txt':`news-sitemap${n}-jina.txt`);
-  const news=readNewsSitemaps(files);
-  assert.equal(news.length,5493);
-  assert.equal(new Set(news.map(item=>item.url)).size,5493);
+test('current FENKA inventory contains the migrated archive and can grow',()=>{
+  const news=JSON.parse(fs.readFileSync('site/news-index.json','utf8'));
+  assert.ok(news.length>=5503);
+  assert.equal(new Set(news.map(item=>item.url)).size,news.length);
   assert.deepEqual([...new Set(news.map(item=>item.year))].sort(),[2018,2019,2020,2021,2022,2023,2024,2025,2026]);
   assert.ok(news.every(item=>item.slug&&item.date&&item.internalUrl===`/news/${item.slug}/`));
+  assert.ok(news.every(item=>typeof item.image!=='string'||item.image.startsWith('/news-images/')));
+});
+
+test('localized image manifest points to valid WebP files',()=>{
+  const path=require('node:path');
+  const manifest=JSON.parse(fs.readFileSync('site/news-image-manifest.json','utf8'));
+  assert.ok(Object.keys(manifest).length>=5296);
+  for(const local of Object.values(manifest)){
+    const file=path.join('site-assets',local);
+    assert.equal(fs.existsSync(file),true,`missing ${local}`);
+    const header=fs.readFileSync(file).subarray(0,12);
+    assert.equal(header.subarray(0,4).toString('ascii'),'RIFF',`${local} is not RIFF`);
+    assert.equal(header.subarray(8,12).toString('ascii'),'WEBP',`${local} is not WebP`);
+  }
 });
 
 test('legacy page parser keeps article copy and removes old-site chrome',()=>{

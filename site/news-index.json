@@ -1,5 +1,85 @@
 [
   {
+    "url": "https://fenka.online/news/sinagogi-mira/",
+    "slug": "sinagogi-mira",
+    "date": "2026-11-13T12:00:00+00:00",
+    "year": 2026,
+    "internalUrl": "/news/sinagogi-mira/",
+    "image": "/news-images/2026/1aba18d1c30b02b588c3.webp"
+  },
+  {
+    "url": "https://fenka.online/news/nizhegorodtsy-prodolzhayut-proekt-otkrytyj-vizit-v-sinagogu/",
+    "slug": "nizhegorodtsy-prodolzhayut-proekt-otkrytyj-vizit-v-sinagogu",
+    "date": "2026-11-13T11:59:59+00:00",
+    "year": 2026,
+    "internalUrl": "/news/nizhegorodtsy-prodolzhayut-proekt-otkrytyj-vizit-v-sinagogu/",
+    "image": "/news-images/2026/09a1f73d38df1381f064.webp"
+  },
+  {
+    "url": "https://fenka.online/news/v-ivanove-proshla-prezentatsiya-knig-yana-brushtejna/",
+    "slug": "v-ivanove-proshla-prezentatsiya-knig-yana-brushtejna",
+    "date": "2026-11-12T11:59:58+00:00",
+    "year": 2026,
+    "internalUrl": "/news/v-ivanove-proshla-prezentatsiya-knig-yana-brushtejna/",
+    "image": "/news-images/2026/2468ccf715fe19966608.webp"
+  },
+  {
+    "url": "https://fenka.online/news/kulturnyj-patrul-i-studenty-posetili-simferopolskij-rov/",
+    "slug": "kulturnyj-patrul-i-studenty-posetili-simferopolskij-rov",
+    "date": "2026-11-12T11:59:57+00:00",
+    "year": 2026,
+    "internalUrl": "/news/kulturnyj-patrul-i-studenty-posetili-simferopolskij-rov/",
+    "image": "/news-images/2026/9fb9a0a67eabfc82c1d9.webp"
+  },
+  {
+    "url": "https://fenka.online/news/ocherednye-posty-orenburgskoj-renka-posvyashheny-nezamenimym-professiyam/",
+    "slug": "ocherednye-posty-orenburgskoj-renka-posvyashheny-nezamenimym-professiyam",
+    "date": "2026-11-12T11:59:56+00:00",
+    "year": 2026,
+    "internalUrl": "/news/ocherednye-posty-orenburgskoj-renka-posvyashheny-nezamenimym-professiyam/",
+    "image": "/news-images/2026/5dc48f7dc7658e555e4b.webp"
+  },
+  {
+    "url": "https://fenka.online/news/v-moskve-vospitannikam-detskogo-doma-pokazali-lentu-ts1yhu-chelovek/",
+    "slug": "v-moskve-vospitannikam-detskogo-doma-pokazali-lentu-ts1yhu-chelovek",
+    "date": "2026-11-11T11:59:55+00:00",
+    "year": 2026,
+    "internalUrl": "/news/v-moskve-vospitannikam-detskogo-doma-pokazali-lentu-ts1yhu-chelovek/",
+    "image": "/news-images/2026/b51a31fca319ef464b8c.webp"
+  },
+  {
+    "url": "https://fenka.online/news/v-tule-proshel-festival-natsionalnyh-kultur-strana-v-miniatyure-2/",
+    "slug": "v-tule-proshel-festival-natsionalnyh-kultur-strana-v-miniatyure-2",
+    "date": "2026-11-11T11:59:54+00:00",
+    "year": 2026,
+    "internalUrl": "/news/v-tule-proshel-festival-natsionalnyh-kultur-strana-v-miniatyure-2/",
+    "image": "/news-images/2026/95c5cc8b152439ad86b1.webp"
+  },
+  {
+    "url": "https://fenka.online/news/ivanovtsy-raznyh-natsionalnostej-prigotovili-koshernuyu-solyanku-mira/",
+    "slug": "ivanovtsy-raznyh-natsionalnostej-prigotovili-koshernuyu-solyanku-mira",
+    "date": "2026-11-11T11:59:53+00:00",
+    "year": 2026,
+    "internalUrl": "/news/ivanovtsy-raznyh-natsionalnostej-prigotovili-koshernuyu-solyanku-mira/",
+    "image": "/news-images/2026/372c7bec868683e93334.webp"
+  },
+  {
+    "url": "https://fenka.online/news/sinagoga-glazgo/",
+    "slug": "sinagoga-glazgo",
+    "date": "2026-11-10T11:59:52+00:00",
+    "year": 2026,
+    "internalUrl": "/news/sinagoga-glazgo/",
+    "image": "/news-images/2026/ae18a654a728eb72e775.webp"
+  },
+  {
+    "url": "https://fenka.online/news/na-ulichnoj-vystavke-vo-imya-mira-druzhby-i-dobra-u-kurskoj-evrejskoj-avtonomii-est-svoj-stend/",
+    "slug": "na-ulichnoj-vystavke-vo-imya-mira-druzhby-i-dobra-u-kurskoj-evrejskoj-avtonomii-est-svoj-stend",
+    "date": "2026-11-10T11:59:51+00:00",
+    "year": 2026,
+    "internalUrl": "/news/na-ulichnoj-vystavke-vo-imya-mira-druzhby-i-dobra-u-kurskoj-evrejskoj-avtonomii-est-svoj-stend/",
+    "image": "/news-images/2026/5af9e1f6aab87fbebc1b.webp"
+  },
+  {
     "url": "https://fenka.online/news/v-orenburgskoj-oblasti-obsudili-profilaktiku-ekstremizma-sredi-molodezhi/",
     "date": "2026-11-02T09:05:32+00:00",
     "year": 2026,
