@@ -644,12 +644,23 @@ test('publishes the ten newly supplied project covers on catalogue cards and det
   assert.match(flagshipStyles,/\.heritage-banner img\{[^}]*object-fit:contain/);
 });
 
+test('publishes the supplied Country of Heroes cover on its card and detail page',()=>{
+  const slug='strana-geroev-2';
+  const cover=`/assets/projects/${slug}.jpg`;
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  const card=catalogue.match(new RegExp(`<a class="project-card[^>]*href="/projects/${slug}/">[\\s\\S]*?</a>`))?.[0]||'';
+  const detail=fs.readFileSync(`dist/projects/${slug}/index.html`,'utf8');
+  assert.equal(fs.existsSync(`dist${cover}`),true,`${slug}.jpg is missing`);
+  assert.match(card,new RegExp(cover.replaceAll('/','\\/')));
+  assert.match(detail,new RegExp(cover.replaceAll('/','\\/')));
+});
+
 test('every project card and detail page uses its locally hosted cover',()=>{
   const projects=require('../site/projects-data.cjs');
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
   for(const project of projects){
-    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi']);
+    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi']);
     const cover=`/assets/projects/${project.slug}${jpgSlugs.has(project.slug)?'.jpg':'.webp'}`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
     assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));

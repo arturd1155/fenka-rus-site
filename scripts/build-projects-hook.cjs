@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..');
 const dist=path.join(root,'dist');
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const write=(file,value)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,value)};
-const jpgCovers=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi']);
+const jpgCovers=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi']);
 const coverFile=project=>project.slug+(jpgCovers.has(project.slug)?'.jpg':'.webp');
 
 process.nextTick(()=>{
