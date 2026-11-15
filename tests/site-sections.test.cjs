@@ -613,12 +613,41 @@ test('uses the six supplied project covers without numbering their catalogue car
   }
 });
 
+test('publishes the ten newly supplied project covers on catalogue cards and detail pages without cropping',()=>{
+  const slugs=[
+    'rossiya-mnogonatsionalnaya',
+    'ruka-druzhby',
+    'dialog',
+    'strana-geroev',
+    'litsa-rossii',
+    'klub-mezhnatsionalnyh-initsiativ',
+    'shkola-liderov-fenka',
+    'edinstvo-natsij',
+    'fishki-ot-ilezera-i-mishki',
+    'mezhdunarodnyj-forum-evrejskoj-molodyozhi'
+  ];
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  const styles=fs.readFileSync('dist/shared/projects.css','utf8');
+  for(const slug of slugs){
+    const cover=`/assets/projects/${slug}.jpg`;
+    assert.equal(fs.existsSync(`dist${cover}`),true,`${slug}.jpg is missing`);
+    const card=catalogue.match(new RegExp(`<a class="project-card[^>]*href="/projects/${slug}/">[\\s\\S]*?</a>`))?.[0]||'';
+    assert.match(card,new RegExp(cover.replaceAll('/','\\/')));
+    const detail=fs.readFileSync(`dist/projects/${slug}/index.html`,'utf8');
+    assert.match(detail,new RegExp(cover.replaceAll('/','\\/')));
+  }
+  assert.match(styles,/\.project-card__cover\{[^}]*aspect-ratio:16\/9/);
+  assert.match(styles,/\.project-card__cover img\{[^}]*object-fit:contain/);
+  assert.match(styles,/\.project-detail__cover\{[^}]*aspect-ratio:16\/9/);
+  assert.match(styles,/\.project-detail__cover img\{[^}]*object-fit:contain/);
+});
+
 test('every project card and detail page uses its locally hosted cover',()=>{
   const projects=require('../site/projects-data.cjs');
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
   for(const project of projects){
-    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki']);
+    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi']);
     const cover=`/assets/projects/${project.slug}${jpgSlugs.has(project.slug)?'.jpg':'.webp'}`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
     assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));
