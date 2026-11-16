@@ -24,6 +24,11 @@
   background: #fff;
 }
 
+.leadership-card__portrait--melnikov img {
+  object-fit: contain;
+  object-position: center bottom;
+}
+
 .leadership-card__portrait:has(img)::before,
 .leadership-card__portrait:has(img)::after {
   display: none;

@@ -338,7 +338,7 @@ test('migrates all leadership records and approved council portraits',()=>{
   assert.doesNotMatch(leadership,/wp-content\/uploads/);
   assert.doesNotMatch(leadership,/Состав перенесён со страницы/);
   const portraits={
-    'sergey-melnikov.jpg':'Мельников Сергей Евгеньевич',
+    'sergey-melnikov.webp':'Мельников Сергей Евгеньевич',
     'igor-dabakarov.jpg':'Дабакаров Игорь Амнерович',
     'german-zakharyaev.png':'Захарьяев Герман Рашбилович',
     'alexander-boroda.png':'Борода Александр Моисеевич',
@@ -369,14 +369,14 @@ test('migrates all leadership records and approved council portraits',()=>{
   }
 });
 test('uses the newly supplied portrait of president Sergey Melnikov',()=>{
-  const sourceHash=crypto.createHash('sha256').update(fs.readFileSync('leadership-photos/sergey-melnikov.jpg')).digest('hex');
-  assert.equal(sourceHash,'356269ba86793644095198bb0b52bc44d422ae6b2963396989db2a799ab3e779');
-  assert.equal(fs.existsSync('leadership-photos/sergey-melnikov.png'),false,'legacy PNG must not overwrite the approved JPG during optimization');
-  const optimizedHash=crypto.createHash('sha256').update(fs.readFileSync('leadership-photos/optimized/sergey-melnikov.jpg')).digest('hex');
-  const publishedHash=crypto.createHash('sha256').update(fs.readFileSync('dist/leadership-photos/optimized/sergey-melnikov.jpg')).digest('hex');
-  assert.equal(publishedHash,optimizedHash,'published portrait must match the newly optimized portrait');
+  const sourceHash=crypto.createHash('sha256').update(fs.readFileSync('leadership-photos/sergey-melnikov.webp')).digest('hex');
+  assert.equal(sourceHash,'070c345d8602330778a0df0be10a67f8d2413d043430326cc112c29cf7b6a6e4');
+  assert.equal(fs.existsSync('leadership-photos/sergey-melnikov.png'),false,'legacy PNG must not overwrite the approved WEBP during optimization');
+  const publishedHash=crypto.createHash('sha256').update(fs.readFileSync('dist/leadership-photos/optimized/sergey-melnikov.webp')).digest('hex');
+  assert.equal(publishedHash,'6584b91aca25950ca08884b65fabf652816728383ff5e97a6f7fcfbadab7bfe9','published portrait must use the optimized full-length WEBP');
   const leadership=fs.readFileSync('dist/leadership/index.html','utf8');
-  assert.match(leadership,/leadership-card__portrait--melnikov[\s\S]*?\/leadership-photos\/optimized\/sergey-melnikov\.jpg\?v=20261114-melnikov2/);
+  assert.match(leadership,/leadership-card__portrait--melnikov[\s\S]*?\/leadership-photos\/optimized\/sergey-melnikov\.webp\?v=20261116-melnikov3/);
+  assert.match(fs.readFileSync('shared/leadership-photos.css','utf8'),/\.leadership-card__portrait--melnikov img\s*\{[^}]*object-fit:\s*contain[^}]*object-position:\s*center bottom/);
 });
 
 test('every leadership card opens an accessible internal profile with official information',()=>{

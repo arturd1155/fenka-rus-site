@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const portraits = [
-  ['СМ', 'sergey-melnikov.jpg', 'Мельников Сергей Евгеньевич', 'melnikov'],
+  ['СМ', 'sergey-melnikov.webp', 'Мельников Сергей Евгеньевич', 'melnikov'],
   ['ДИ', 'igor-dabakarov.jpg', 'Дабакаров Игорь Амнерович', 'dabakarov'],
   ['ЗГ', 'german-zakharyaev.png', 'Захарьяев Герман Рашбилович', 'zakharyaev'],
   ['БА', 'alexander-boroda.png', 'Борода Александр Моисеевич', 'boroda'],
@@ -110,7 +110,7 @@ process.nextTick(() => {
     fs.copyFileSync(path.join(root, 'leadership-photos', 'optimized', optimizedFile), path.join(output, optimizedFile));
     const placeholder = `<div class="leadership-card__portrait" aria-hidden="true"><span>${initials}</span></div>`;
     const loading = index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
-    const portraitVersion = slug === 'melnikov' ? '?v=20261114-melnikov2' : '';
+    const portraitVersion = slug === 'melnikov' ? '?v=20261116-melnikov3' : '';
     const portrait = `<div class="leadership-card__portrait leadership-card__portrait--${slug}"><img src="/leadership-photos/optimized/${optimizedFile}${portraitVersion}" alt="${name}" width="720" height="900" ${loading} decoding="async"></div>`;
     if (!html.includes(placeholder)) throw new Error(`Leadership placeholder not found: ${name}`);
     html = html.replace(placeholder, portrait);
