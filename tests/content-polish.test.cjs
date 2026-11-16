@@ -13,7 +13,7 @@ test('site build wires the content cleanup after the about-page hook',()=>{
 });
 
 test('published institutional pages omit internal publishing notes',()=>{
-  for(const slug of ['reports','privacy','events','support','documents','contacts']){
+  for(const slug of ['privacy','events','support','documents','contacts']){
     const html=read(slug);
     assert.doesNotMatch(html,new RegExp(generic.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')),`${slug} must not expose the internal publishing note`);
     assert.match(html,new RegExp(`<body class="page-${slug}`));
@@ -61,9 +61,9 @@ test('about page removes transfer notes, charter caption and decorative counters
 
 test('page-specific spacing stylesheet is local and mobile safe',()=>{
   const css=fs.readFileSync('dist/shared/content-polish.css','utf8');
-  for(const selector of ['.page-documents','.page-reports','.page-privacy','.page-contacts'])assert.match(css,new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  for(const selector of ['.page-documents','.page-privacy','.page-contacts'])assert.match(css,new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.match(css,/@media\(max-width:760px\)/);
   assert.match(css,/overflow-wrap:anywhere/);
-  assert.match(css,/\.page-reports \.report-card,\.page-contacts \.contacts-card\{min-width:0/);
+  assert.match(css,/\.page-documents \.report-card,\.page-contacts \.contacts-card\{min-width:0/);
   assert.match(css,/@media\(max-width:760px\)[\s\S]*\.page-events \.content-scaffold,\.page-support \.content-scaffold\{grid-template-columns:1fr\}/);
 });

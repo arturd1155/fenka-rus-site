@@ -17,6 +17,12 @@ test('build creates every approved route with shared navigation',()=>{
   execFileSync(process.execPath,['scripts/build-site.cjs']);
   for(const slug of routes){
     const html=fs.readFileSync(`dist/${slug}/index.html`,'utf8');
+    if(slug==='reports'){
+      assert.match(html,/http-equiv="refresh" content="0; url=\/documents\/#financial-reports"/);
+      assert.match(html,/href="\/documents\/#financial-reports"/);
+      assert.doesNotMatch(html,/<header class="global-header"/);
+      continue;
+    }
     if(slug==='media'){
       assert.match(html,/http-equiv="refresh" content="0; url=\/media\/heritage\/"/);
       assert.doesNotMatch(html,/<header class="global-header"/);
@@ -28,7 +34,7 @@ test('build creates every approved route with shared navigation',()=>{
     for(const path of primary) assert.match(html,new RegExp(`href="${path.replaceAll('/','\\/')}"`));
     assert.equal((html.match(/aria-current="page"/g)||[]).length,slug==='privacy'?0:1);
   }
-  for(const slug of ['reports','privacy','events','support','documents','contacts']){
+  for(const slug of ['privacy','events','support','documents','contacts']){
     const html=fs.readFileSync(`dist/${slug}/index.html`,'utf8');
     assert.doesNotMatch(html,new RegExp(publishingNote.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   }
@@ -50,6 +56,8 @@ test('shared shell is responsive, keyboard accessible and has official social li
   for(const href of ['https://vk.ru/fenkarus?ysclid=mue1bx5o93573807833','https://t.me/fenkarus','https://max.ru/join/t1856SKfg2tv8TdYnIjARxurVWQK_ATuRZmt5hLfPoo']) assert.match(footer,new RegExp(href.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   const socialBlock=footer.match(/<div class="global-footer__social">([\s\S]*?)<\/div>/)?.[1]||'';
   assert.equal((socialBlock.match(/rel="noopener noreferrer"/g)||[]).length,3);
+  assert.match(js,/\.global-nav a\[href="\/reports\/"\],\.global-footer a\[href="\/reports\/"\]/);
+  assert.match(js,/forEach\(link=>link\.remove\(\)\)/);
 });
 
 test('homepage and regions use permanent routes without duplicate homepage map',()=>{
@@ -296,17 +304,19 @@ test('approved landscape portraits fill their white 4:5 frames at a readable sca
     assert.ok(ratio>=0.58,`${file} remains too small in its frame (${ratio})`);
   }
 });
-test('migrates documents and financial reports without legacy source captions',()=>{
+test('keeps financial reports inside documents and redirects the legacy route',()=>{
   const documents=fs.readFileSync('dist/documents/index.html','utf8');
   const reports=fs.readFileSync('dist/reports/index.html','utf8');
   assert.match(documents,/Ustav-ot-29\.01\.2023g\.\.pdf/);
   assert.match(documents,/RegistracijaRENKA\.rar/);
   assert.match(documents,/fz-o-naccult-avtonomii\.rtf/);
   assert.doesNotMatch(documents,/Источник: старый сайт ФЕНКА/);
-  for(const id of ['ZABS_y82JjFctw','bbUazqvc18eTxg','FmTywswvMQrgxQ']) assert.match(reports,new RegExp(id));
-  assert.match(reports,/2022/);
-  assert.match(reports,/2021/);
-  assert.match(reports,/2020/);
+  assert.match(documents,/id="financial-reports"/);
+  assert.match(documents,/Финансовая отчётность/);
+  for(const id of ['ZABS_y82JjFctw','bbUazqvc18eTxg','FmTywswvMQrgxQ']) assert.match(documents,new RegExp(id));
+  for(const year of ['2022','2021','2020']) assert.match(documents,new RegExp(`Финансовый отчёт ОО «ФЕНКА» за ${year} год`));
+  assert.match(reports,/url=\/documents\/#financial-reports/);
+  assert.doesNotMatch(reports,/class="reports-grid"/);
 });
 test('migrates the approved personal data consent without legacy placeholders',()=>{
   const privacy=fs.readFileSync('dist/privacy/index.html','utf8');
@@ -507,7 +517,8 @@ test('published pages contain no links that jump to the top as placeholders',()=
   const home=fs.readFileSync('dist/index.html','utf8');
   assert.match(home,/href="\/leadership\/">Руководство/);
   assert.match(home,/href="\/documents\/">Документы/);
-  assert.match(home,/href="\/reports\/">Отчётность/);
+  const shellJs=fs.readFileSync('dist/shared/site-shell.js','utf8');
+  assert.match(shellJs,/\.global-nav a\[href="\/reports\/"\],\.global-footer a\[href="\/reports\/"\]/);
 });
 
 test('projects archive is fully migrated into internal catalogue and detail pages',()=>{

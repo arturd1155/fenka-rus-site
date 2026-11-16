@@ -102,7 +102,8 @@ test('finishes homepage accessibility with labelled fields, real footer links, a
     assert.match(newsletter,new RegExp(`<label[^>]+for="${id}"`));
     assert.match(newsletter,new RegExp(`<input[^>]+id="${id}"[^>]+name="`));
   }
-  for(const href of ['/about/','/leadership/','/documents/','/reports/','/regions/','/projects/','/youth/','/media/heritage/','/events/','/news/','/contacts/','/privacy/','/support/'])assert.match(html,new RegExp(`href="${href}"`));
+  for(const href of ['/about/','/leadership/','/documents/','/regions/','/projects/','/youth/','/media/heritage/','/events/','/news/','/contacts/','/privacy/','/support/'])assert.match(html,new RegExp(`href="${href}"`));
+  assert.doesNotMatch(html,/href="\/reports\/"/);
   assert.match(styles,/\.home-join__action:focus-visible/);
   assert.match(styles,/\.home-newsletter[^,{]*:focus-visible/);
   assert.match(styles,/footer[^,{]*:focus-visible/);
