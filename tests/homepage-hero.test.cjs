@@ -76,7 +76,7 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
-  assert.match(html,/href="style\.css\?v=20261115-mobile16"/);
+  assert.match(html,/href="style\.css\?v=20261121-map89"/);
   assert.match(html,/src="hero-controller\.js\?v=20261115-mobile11"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
@@ -124,7 +124,7 @@ test('homepage map animation adds desktop effects and a lightweight mobile treat
 test('mobile hero overlays the complete animated map directly on the handshake',()=>{
   const css=fs.readFileSync('style.css','utf8');
   assert.match(html,/<source media="\(max-width: 720px\)" srcset="homepage-regions-mobile\.webp\?v=20261112-concept2" type="image\/webp">/);
-  assert.match(html,/class="hero-map__geography" src="homepage-russia-overlay\.svg\?v=20261112-concept2"/);
+  assert.match(html,/class="hero-map__geography" src="homepage-russia-overlay\.svg\?v=20261121-map89"/);
   assert.match(html,/src="homepage-regions-map-v2\.webp\?v=20261112-concept2"/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__visual\{[^}]*inset:0[^}]*width:100%[^}]*height:100%/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*object-fit:cover/);
@@ -151,6 +151,17 @@ test('mobile hero assets and exact geography are included in the static build',(
   assert.equal(fs.existsSync('homepage-russia-overlay.svg'),true);
   assert.ok(fs.statSync('homepage-regions-mobile.webp').size<700_000,'mobile hero background must stay below 700 KB');
   assert.ok(fs.statSync('homepage-russia-overlay.svg').size<350_000,'mobile vector map must stay below 350 KB');
+});
+
+test('hero geography contains the current 89-subject map of Russia',()=>{
+  const source=fs.readFileSync('homepage-russia-regions.svg','utf8');
+  const overlay=fs.readFileSync('homepage-russia-overlay.svg','utf8');
+  const published=fs.readFileSync('dist/homepage-russia-overlay.svg','utf8');
+  const expectedRegionIds='adygea,altai-kray,altai-rep,amur,arkhangelsk,astrakhan,bashkortostan,belgorod,bryansk,buryatia,chechnya,chelyabinsk,chukotka,chuvashia,crimea,dagestan,dnr,ingushetia,irkutsk,ivanovo,jewish-ao,kabardino-balkaria,kaliningrad,kalmykia,kaluga,kamchatka,karachay-cherkessia,karelia,kemerovo,khabarovsk,khakassia,kherson,khmao,kirov,komi,kostroma,krasnodar,krasnoyarsk,kurgan,kursk,leningrad,lipetsk,lnr,magadan,mari-el,mordovia,moscow,moscow-oblast,murmansk,nenets,nizhny-novgorod,north-ossetia,novgorod,novosibirsk,omsk,orenburg,oryol,penza,perm,primorsky,pskov,rostov,ryazan,sakha,sakhalin,samara,saratov,sevastopol,smolensk,spb,stavropol,sverdlovsk,tambov,tatarstan,tomsk,tula,tuva,tver,tyumen,udmurtia,ulyanovsk,vladimir,volgograd,vologda,voronezh,yamalo-nenets,yaroslavl,zabaykalsky,zaporozhye'.split(',');
+  const ids=svg=>[...svg.matchAll(/data-region="([^"]+)"/g)].map(match=>match[1]).sort();
+  assert.deepEqual(ids(source),expectedRegionIds);
+  assert.deepEqual(ids(overlay),expectedRegionIds);
+  assert.equal(overlay,published);
 });
 
 test('hero has a usable no-script and screen-reader structure',()=>{
