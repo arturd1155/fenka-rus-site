@@ -523,13 +523,13 @@ test('published pages contain no links that jump to the top as placeholders',()=
 
 test('projects archive is fully migrated into internal catalogue and detail pages',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
-  assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,25);
+  assert.equal((catalogue.match(/class="project-card(?:\s|\")/g)||[]).length,26);
   assert.doesNotMatch(catalogue,/project-card__number/);
   assert.doesNotMatch(catalogue,/Видеоролики на канале ФЕНКА/);
   assert.equal(fs.existsSync('dist/projects/videoroliki-na-kanale-fenka/index.html'),false);
   assert.doesNotMatch(catalogue,/Структура раздела|Раздел наполняется/);
   assert.doesNotMatch(catalogue,/Архив объединяет 25 программ ФЕНКА|class="projects-intro"/);
-  for(const title of ['Память и будущее','Международный фестиваль еврейской музыки в Казани','Культурный отдел ФЕНКА','Новые горизонты','Синергия'])assert.match(catalogue,new RegExp(title));
+  for(const title of ['Память и будущее','Международный фестиваль еврейской музыки в Казани','Культурный отдел ФЕНКА','Новые горизонты','Синергия','Цикл экскурсий «Еврейская Москва»'])assert.match(catalogue,new RegExp(title));
   for(const slug of ['pamyat-i-budushhee','festival-evrejskoj-muzyki','kulturnyj-otdel','shkola-liderov-fenka','strana-geroev']){
     const file=`dist/projects/${slug}/index.html`;
     assert.equal(fs.existsSync(file),true,`${file} is missing`);
@@ -583,6 +583,19 @@ test('publishes all eight projects from the approved project brief in the flagsh
     assert.match(detail,/class="heritage-banner"/);
     assert.match(detail,/class="heritage-action-grid"/);
     assert.match(detail,/class="heritage-support"/);
+  }
+});
+
+test('publishes the approved care and Jewish Moscow tour programs with supplied covers',()=>{
+  const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
+  const care=fs.readFileSync('dist/projects/zabota-o-svoih/index.html','utf8');
+  const tours=fs.readFileSync('dist/projects/tsikl-ekskursij-evrejskaya-moskva/index.html','utf8');
+  for(const text of ['председателей региональных еврейских национально-культурных автономий','один раз в год пройти санаторно-курортное оздоровление','Забота о тех, кто заботится о других'])assert.match(care,new RegExp(text));
+  for(const text of ['Цикл экскурсий «Еврейская Москва»','История, которая оживает на улицах города','архитектурными памятниками, историческими кварталами','история живёт, пока мы её помним'])assert.match(tours,new RegExp(text));
+  for(const slug of ['zabota-o-svoih','tsikl-ekskursij-evrejskaya-moskva']){
+    const cover=`/assets/projects/${slug}.jpg`;
+    assert.equal(fs.existsSync(`dist${cover}`),true,`${slug}.jpg is missing`);
+    assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));
   }
 });
 
@@ -686,7 +699,7 @@ test('every project card and detail page uses its locally hosted cover',()=>{
   const catalogue=fs.readFileSync('dist/projects/index.html','utf8');
   assert.equal((catalogue.match(/class="project-card__cover"/g)||[]).length,projects.length);
   for(const project of projects){
-    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi','litsa-rossii-xxi-vek','den-spaseniya-i-osvobozhdeniya','vinogradniki-akivy','kulturnyj-otdel']);
+    const jpgSlugs=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi','litsa-rossii-xxi-vek','den-spaseniya-i-osvobozhdeniya','vinogradniki-akivy','kulturnyj-otdel','tsikl-ekskursij-evrejskaya-moskva']);
     const cover=`/assets/projects/${project.slug}${jpgSlugs.has(project.slug)?'.jpg':'.webp'}`;
     assert.equal(fs.existsSync(`dist${cover}`),true,`${cover} is missing`);
     assert.match(catalogue,new RegExp(cover.replaceAll('/','\\/')));

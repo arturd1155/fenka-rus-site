@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'..');
 const dist=path.join(root,'dist');
 const esc=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const write=(file,value)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,value);};
-const jpgCovers=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi','litsa-rossii-xxi-vek','den-spaseniya-i-osvobozhdeniya','vinogradniki-akivy','kulturnyj-otdel']);
+const jpgCovers=new Set(['kod-naslediya','kinoklub-fenka-v-dome-narodov-rossii','shalom-rossiya','sinagogi-mira','onko-stop','zabota-o-svoih','tsikl-ekskursij-evrejskaya-moskva','festival-evrejskoj-muzyki','rossiya-mnogonatsionalnaya','ruka-druzhby','dialog','strana-geroev','strana-geroev-2','litsa-rossii','klub-mezhnatsionalnyh-initsiativ','shkola-liderov-fenka','edinstvo-natsij','fishki-ot-ilezera-i-mishki','mezhdunarodnyj-forum-evrejskoj-molodyozhi','litsa-rossii-xxi-vek','den-spaseniya-i-osvobozhdeniya','vinogradniki-akivy','kulturnyj-otdel']);
 const coverFile=project=>project.slug+(jpgCovers.has(project.slug)?'.jpg':'.webp');
 const actionOptions=action=>action[3]||{};
 const isFormAction=action=>action[2]==='#project-application';

@@ -69,7 +69,8 @@ test('support-only projects expose one support action and no upper action grid',
     'rossiya-mnogonatsionalnaya',
     'ruka-druzhby',
     'dialog',
-    'strana-geroev'
+    'strana-geroev',
+    'tsikl-ekskursij-evrejskaya-moskva'
   ];
   for(const slug of slugs){
     const html=read(slug);
