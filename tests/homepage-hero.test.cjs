@@ -76,7 +76,7 @@ test('handshake stays subordinate to the exact map layer',()=>{
 });
 
 test('homepage cache-busts the stylesheet after the mobile hero composition update',()=>{
-  assert.match(html,/href="style\.css\?v=20261121-map89"/);
+  assert.match(html,/href="style\.css\?v=20261121-map89-lift1"/);
   assert.match(html,/src="hero-controller\.js\?v=20261115-mobile11"/);
   assert.match(html,/src="app\.js\?v=20261114-mobile10"/);
 });
@@ -132,7 +132,7 @@ test('mobile hero overlays the complete animated map directly on the handshake',
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__art img\{[^}]*max-height:none/);
   assert.match(css,/\.hero-map__art img\{[^}]*max-height:none[^}]*object-fit:cover/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*width:100%[^}]*max-height:none/);
-  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*top:clamp\(280px,42dvh,405px\)[^}]*width:108vw[^}]*max-width:none[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\) scaleX\(1\.04\)/);
+  assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__data\{[^}]*left:50%[^}]*top:clamp\(250px,38dvh,365px\)[^}]*width:108vw[^}]*max-width:none[^}]*aspect-ratio:1280\/650[^}]*translate3d\(-50%,0,0\) scaleX\(1\.04\)/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map \.hero-map__geography\{[^}]*mix-blend-mode:screen/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-map__geography\{display:block/);
   assert.match(css,/@media\(max-width:720px\)[\s\S]*\.hero-network__connection:nth-child\(n\+9\)\{display:none/);
