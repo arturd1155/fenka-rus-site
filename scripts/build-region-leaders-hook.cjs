@@ -49,6 +49,7 @@ const portraits={
   'город Донецк':'donetsk-karnaukh.jpg',
   'Севастополь':'sevastopol-yankovsky.jpg',
   'Калужская область':'kaluga-denisov.jpg',
+  'Липецкая область':'lipetsk-aseev.jpg',
   'Тверская область':'tver-rotenfeld.jpg',
   'Республика Хакасия':'khakassia-pekhotnik.png',
   'Иркутская область':'irkutsk-pikersky.png'

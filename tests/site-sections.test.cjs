@@ -251,6 +251,7 @@ test('publishes all newly approved regional portraits',()=>{
     'город Донецк':'donetsk-karnaukh.jpg',
     'Севастополь':'sevastopol-yankovsky.jpg',
     'Калужская область':'kaluga-denisov.jpg',
+    'Липецкая область':'lipetsk-aseev.jpg',
     'Тверская область':'tver-rotenfeld.jpg',
     'Республика Хакасия':'khakassia-pekhotnik.jpg',
     'Иркутская область':'irkutsk-pikersky.jpg'
@@ -264,7 +265,6 @@ test('uses a single local fallback for leaders without an approved portrait',()=
   const regions=fs.readFileSync('dist/regions/index.html','utf8');
   assert.match(regions,/const defaultRegionalPortrait='\/region-leaders\/optimized\/no-photo\.jpg'/);
   assert.doesNotMatch(regions,/r\.name==='Ленинградская область'\?r\.image:''/);
-  assert.doesNotMatch(regions,/"Липецкая область":"lipetsk-aseev\.jpg"/);
   assert.equal(fs.existsSync('dist/region-leaders/optimized/no-photo.jpg'),true);
   assert.match(regions,/region-leader-photo--placeholder/);
 });
